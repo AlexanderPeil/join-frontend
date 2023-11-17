@@ -1,0 +1,16 @@
+<header (click)="isDropdownOpen = false">
+    <div class="headline">Kanban Project Management Tool</div>
+    <div class="header-logo">
+        <img src="assets/img/join_logo.png" alt="Join-logo">
+    </div>
+    <div class="header-nav">
+        <img class="add-btn-mobile d-none" src="assets/img/add_task_btn_mob.png" alt="add-button">
+        <a class="help-icon" routerLink="/help-page"><img class="header-help-icon" src="assets/img/help_icon.png"></a>
+        <img class="header-user-img" src="assets/img/user_guest.png" (click)="showLogout();stopPropagation($event)">
+        <ul class="logout-menu" [hidden]="!isDropdownOpen">
+            <li class="hide-content" routerLink="/help-page"><span>Help</span></li>
+            <li class="hide-content" routerLink="/legal-notice"><span>Legal notice</span></li>
+            <li (click)="onLogout()"><span>Log out</span></li>
+        </ul>
+    </div>
+</header>

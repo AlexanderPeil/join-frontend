@@ -1,0 +1,93 @@
+<app-header></app-header>
+<app-nav-bar></app-nav-bar>
+
+<!--Main Content-->
+<div class="main-container">
+    <div class="headline-mobile d-none">Kanban Project Management Tool</div>
+    <div class="title-container no-gap">
+        <h1>Summary</h1>
+        <div class="vl"></div>
+        <span class="headline-sub">Everything in a nutshell!</span>
+        <img class="underline d-none" src="assets/img/summary_underline.png" alt="underline">
+    </div>
+
+
+    <div class="sub-container">
+        <!--Tasks Content-->
+
+        <div class="summary-contant-container">
+            <div class="nav-to-container">
+                <a class="nav-to-content" routerLink="/board">
+                    <span class="counter">{{ getTotalTasks() }}</span>
+                    <span class="counter-title">Tasks in Board</span>
+                </a>
+                <a class="nav-to-content" routerLink="/board">
+                    <span class="counter">{{ getTasksInProgress() }}</span>
+                    <span class="counter-title">Tasks in Progress</span>
+                </a>
+                <a class="nav-to-content" routerLink="/board">
+                    <span class="counter">{{ getTasksAwaitingFeedback() }}</span>
+                    <span class="counter-title">Awaiting Feedback</span>
+                </a>
+            </div>
+
+            <!--Urgent Content-->
+            <div class="urgent-container">
+                <a class="urgent" routerLink="/board">
+                    <div class="urg-cont">
+                        <!-- Display the number of urgent tasks -->
+                        <img class="urgency-img" src="assets/img/urgency.png">
+                        <div class="cont-containter">
+                            <span class="counter-urg">{{ urgentTasks.length }}</span>
+                            <span class="counter-title-urg">Urgent</span>
+                        </div>
+                    </div>
+                    <div class="vl-urg"></div>
+                    <div class="dl-containter">
+                        <!-- Display the date of the nearest urgent task -->
+                        <span class="dl-date">{{ formatNearestUrgentTaskDate() }}</span>
+                        <span class="dl-text">Upcoming Deadline</span>
+                    </div>
+                </a>
+            </div>
+
+
+            <!--To-do-done-Content-->
+            <div class="nav-to-container">
+                <div class="todo-done-container">
+                    <a class="todo-done center" routerLink="/board">
+                        <div class="todo-cont no-gap">
+                            <img class="pencil-check-img" src="assets/img/pencil.png">
+                            <img class="d-none hover-img" src="assets/img/check-white.png">
+                            <div class="cont-containter">
+                                <span class="counter-todo counter-mob">{{ getTasksTodo() }}</span>
+                                <span class="counter-title-todo counter-text-mob">To-do</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="todo-done-container">
+                    <a class="todo-done center" routerLink="/board">
+                        <div class="done-cont no-gap">
+                            <img class="pencil-check-img" src="assets/img/check.png">
+                            <img class="d-none hover-img" src="assets/img/check-white.png">
+                            <div class="cont-containter">
+                                <span class="counter-done counter-mob">{{ getTasksDone() }}</span>
+                                <span class="counter-title-done counter-text-mob">Done</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div class="greet-container" *ngIf="!isMobile">
+            <span class="greet">{{greeting}},</span>
+            <span class="username">{{username}}</span>
+        </div>
+        <div class="greet-container-mobile" *ngIf="showMobileGreet">
+            <span class="greet-mobile">{{greeting}},</span>
+            <span class="username-mobile">{{username}}</span>
+        </div>
+    </div>
+</div>

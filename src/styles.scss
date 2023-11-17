@@ -1,1 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: #f5f5f5;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    font-family: Inter, sans-serif;
+}
+
+:root {
+    --nav-width: 232px;
+    --header-height: 89px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #2a3647;
+}
+
+.warning {
+    color: red;
+}
+
+.success {
+    color: green;
+}

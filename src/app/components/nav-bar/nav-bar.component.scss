@@ -1,0 +1,134 @@
+@import '../../shared/variables.scss';
+
+nav {
+    @include column_center;
+    @include font(16px, 400, 120%);
+    padding: 66px 0px;
+    gap: 103px;
+    position: fixed;
+    width: 232px;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    background: $main_color_dark;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0px;
+    z-index: 4;
+    font-family: 'Inter', sans-serif;
+    color: #000000;
+}
+
+.nav-bar {
+    @include flex_direction_column;
+    @include width_height(100%, 229px);
+    gap: 15px;
+}
+
+.nav-main {
+    @include align_items_center;
+    color: #FFFFFF;
+    text-decoration: none;
+    padding: 8px 53px;
+    height: 46px;
+    white-space: nowrap;
+
+    &:hover {
+        background-color: #091931;
+    }
+}
+
+.nav-content {
+    @include align_items_center;
+}
+
+.nav-icon-container {
+    @include justify_content_center;
+    width: 28px;
+    padding-right: 16px;
+}
+
+.legal-notice {
+    @include align_items_center;
+    color: #FFFFFF;
+    text-decoration: none;
+    padding: 8px 34px;
+    height: 31px;
+    margin-top: auto;
+    white-space: nowrap;
+
+    &:hover {
+        background-color: #091931;
+    }
+}
+
+.d-none {
+    display: none !important;
+}
+
+nav a.active {
+    background-color: $main_color_bright;
+    /* Set the desired background color for the focus effect */
+    color: white;
+    /* Set the desired text color for the focus effect */
+}
+
+
+@media(max-width: 1000px) {
+    nav {
+        top: unset;
+        right: 0;
+        width: unset;
+        padding: 0;
+    }
+
+    .nav-bar {
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 0;
+        height: 80px;
+    }
+
+    .nav-content {
+        flex-direction: column;
+        gap: 13px;
+    }
+
+    .nav-main {
+        height: 100%;
+        padding: 0 53px;
+    }
+
+    .nav-icon-container {
+        padding: 0;
+    }
+
+    .legal-notice {
+        display: none;
+    }
+
+    .summary-logo {
+        display: none;
+    }
+
+    .logout-menu {
+        height: 108px;
+        top: 80px;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: unset;
+    }
+
+    .logout-menu span {
+        display: block !important;
+        padding-top: 5px;
+        padding-left: 8px;
+    }
+}
+
+@media(max-width: 700px) {
+    .nav-main {
+        @include width_height(90px, unset);
+        padding: 0;
+        justify-content: center;
+    }
+}

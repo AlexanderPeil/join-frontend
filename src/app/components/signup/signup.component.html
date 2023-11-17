@@ -1,0 +1,22 @@
+<img class="join-logo logo-animation" src="assets/img/join_logo.png" alt="joing-logo">
+<div class="start-bg">
+    <div class="content">
+        <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+            <img routerLink="/login" class="back-img back-img-web" src="assets/img/arrow_left.png" alt="back-img">
+            <img routerLink="/login" class="back-img d-none back-img-sign-up-mobile"
+                src="assets/img/arrow_left_mobile.png" alt="back-img_mob">
+            <span class="heading-span">Sign up</span>
+            <img src="assets/img/underline.png" alt="underline" class="underline" id="hide-underline">
+            <img src="assets/img/log_in_underline_mob.png" alt="underline" class="underline-mobile d-none">
+            <span class="d-none msg-box" [class.d-none]="!userAlreadyExists">This user already exists</span>
+            <input class="input-name-img input-email-pw" type="text" placeholder="Username" formControlName="username">
+            <input class="input-name-img input-email-pw" type="text" placeholder="Firstname" formControlName="firstname">
+            <input class="input-name-img input-email-pw" type="text" placeholder="Lastname" formControlName="lastname">
+            <input class="input-email-img input-email-pw" type="email" placeholder="Email" formControlName="email">
+            <input class="input-password-img input-email-pw" type="password" placeholder="Password" formControlName="password">
+            <input class="input-password-img input-email-pw" type="password" placeholder="Password" formControlName="confirmPasssword">
+            <div *ngIf="signUpForm.errors?.['notSame'] && signUpForm.get('confirmPassword')?.touched">Passwords do not match.</div>
+            <button [disabled]="signUpForm.invalid" class="sign-up-btn btn-font">Sign up</button>
+        </form>
+    </div>
+</div>
