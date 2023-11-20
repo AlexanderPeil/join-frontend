@@ -58,7 +58,7 @@ export class SignUpComponent implements OnInit {
 
     try {
       const formData = this.signUpForm.value;
-      let resp: any = await this.as.signup(formData.username, formData.firstname, formData.lastname, formData.email, formData.password);
+      let resp: any = await this.as.signup(formData);
       localStorage.setItem('token', resp['token']);
       this.router.navigateByUrl('/summary');
     } catch (err) {
@@ -69,6 +69,5 @@ export class SignUpComponent implements OnInit {
       }, 3000);
     }
   }
-
 
 }

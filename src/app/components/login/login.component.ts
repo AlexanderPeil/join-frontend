@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators, AbstractControlOptions, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 
@@ -49,27 +49,27 @@ export class LoginComponent implements OnInit {
 
 
   async onSubmit() {
-    const formData = this.loginForm.value;
-    const email = formData.email ?? '';
-    const password = formData.password ?? '';
+    if (this.loginForm.invalid) {
+      return;
+    }
 
-    if (email && password) {
-      try {
-        let resp: any = await this.as.login(email, password)
-        localStorage.setItem('token', resp['token']);
-        if (formData.rememberMe) {
-          localStorage.setItem('email', email);
-        } else {
-          localStorage.removeItem('email');
-        }
-        this.router.navigateByUrl('/summary');
-      } catch (err) {
-        console.error(err);
-        this.isEmailPasswordInvalid = true;
-        setTimeout(() => {
-          this.isEmailPasswordInvalid = false;
-        }, 3000);
+    try {
+      const formData = this.loginForm.value;
+      const email = formData.email;
+      let resp: any = await this.as.login(formData)
+      localStorage.setItem('token', resp['token']);
+      if (formData.rememberMe) {
+        localStorage.setItem('email', email);
+      } else {
+        localStorage.removeItem('email');
       }
+      this.router.navigateByUrl('/summary');
+    } catch (err) {
+      console.error(err);
+      this.isEmailPasswordInvalid = true;
+      setTimeout(() => {
+        this.isEmailPasswordInvalid = false;
+      }, 3000);
     }
   }
 

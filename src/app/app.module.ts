@@ -18,6 +18,10 @@ import { DialogAddTaskComponent } from './components/dialog-add-task/dialog-add-
 import { DialogEditTaskComponent } from './components/dialog-edit-task/dialog-edit-task.component';
 import { DialogEditContactComponent } from './components/dialog-edit-contact/dialog-edit-contact.component';
 import { AddTaskComponent } from './components/add-task/add-task.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
+
 
 @NgModule({
   declarations: [
@@ -36,12 +40,16 @@ import { AddTaskComponent } from './components/add-task/add-task.component';
     DialogAddTaskComponent,
     DialogEditTaskComponent,
     DialogEditContactComponent,
-    AddTaskComponent
+    AddTaskComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule 
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    DragDropModule,
+    CdkDropList,
+    CdkDrag
   ],
   providers: [],
   bootstrap: [AppComponent]

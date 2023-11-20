@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoService } from 'src/app/shared/services/todo.service';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 
 
 @Component({
@@ -27,26 +27,27 @@ export class AddTaskComponent implements OnInit {
 
 
   constructor(
-    private todoService: TodoService,
+    private ts: TodoService,
+    private fb: FormBuilder,
     private router: Router) {
   }
 
 
   ngOnInit() {
-    this.initializeForm();
+    this.initFormGroup();
   }
 
 
-  initializeForm() {
-    this.todoForm = new FormGroup({
-      title: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
-      due_date: new FormControl('', Validators.required),
-      category: new FormControl('', Validators.required),
-      priority: new FormControl('medium'),
-      status: new FormControl('todo'),
-      assigned_to: new FormArray([]),
-      subtasks: new FormArray([])
+  initFormGroup() {
+    this.todoForm = this.fb.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      due_date: ['', Validators.required],
+      category: ['', Validators.required],
+      priority: ('medium'),
+      status: ('todo'),
+      assigned_to: this.fb.array([], Validators.required),
+      subtasks: this.fb.array([])
     });
   }
 
@@ -55,7 +56,7 @@ export class AddTaskComponent implements OnInit {
     if (this.todoForm.valid) {
       try {
         const formData:TodoData = this.todoForm.value;
-        await this.todoService.createTodo(formData);
+        await this.ts.createTodo(formData);
         this.router.navigateByUrl('/summary');
       } catch (err) {
         console.error(err);

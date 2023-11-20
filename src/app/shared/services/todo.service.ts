@@ -18,4 +18,11 @@ export class TodoService {
     const body = {todoData};
     return lastValueFrom(this.http.post<TodoData>(url, body));
   }
+
+
+  getAllTodos() {
+    const url = environment.baseUrl + '/todos/';
+    return lastValueFrom(this.http.get<TodoData[]>(url));
+  }
+
 }
