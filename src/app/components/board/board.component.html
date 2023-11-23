@@ -28,8 +28,7 @@
                 <div cdkDropList id="todoList" [cdkDropListData]="todo"
                     [cdkDropListConnectedTo]="['inProgressList', 'awaitingFeedbackList', 'doneList']"
                     class="example-list" (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let task of filteredTodoTasks" (mousedown)="onMousedown($event)"
-                        (mouseup)="onMouseup($event, task.id)" cdkDrag>
+                    <div class="example-box" *ngFor="let task of todo" cdkDrag>
                         <div class="card-head" [style.background-color]="task.color">{{ task.category }}</div>
                         <div class="card-body">
                             <h4>{{ task.title }}</h4>
@@ -44,7 +43,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="priority"><img [src]="getPriorityImage(task.prio)" alt="Priority"></div>
+                            <div class="priority"><img [src]="getPriorityImage(task.priority)" alt="Priority"></div>
                         </div>
                     </div>
                 </div>
@@ -56,11 +55,10 @@
                     <h2>In Progress</h2>
                     <button class="add-task" [routerLink]="['/add-task-menu', 'in_progress', '']">+</button>
                 </div>
-                <div cdkDropList id="inProgressList" [cdkDropListData]="in_progress"
+                <div cdkDropList id="inProgressList" [cdkDropListData]="inProgress"
                     [cdkDropListConnectedTo]="['todoList', 'awaitingFeedbackList', 'doneList']" class="example-list"
                     (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let task of filteredInProgressTasks"
-                        (mousedown)="onMousedown($event)" (mouseup)="onMouseup($event, task.id)" cdkDrag>
+                    <div class="example-box" *ngFor="let task of inProgress" cdkDrag>
                         <div class="card-head" [style.background-color]="task.color">{{ task.category }}</div>
                         <div class="card-body">
                             <h4>{{ task.title }}</h4>
@@ -75,7 +73,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="priority"><img [src]="getPriorityImage(task.prio)" alt="Priority"></div>
+                            <div class="priority"><img [src]="getPriorityImage(task.priority)" alt="Priority"></div>
                         </div>
                     </div>
                 </div>
@@ -86,11 +84,10 @@
                     <h2>Awaitng Feedback</h2>
                     <button class="add-task" [routerLink]="['/add-task-menu', 'awaiting_feedback', '']">+</button>
                 </div>
-                <div cdkDropList id="awaitingFeedbackList" [cdkDropListData]="awaiting_feedback"
+                <div cdkDropList id="awaitingFeedbackList" [cdkDropListData]="awaitingFeedback"
                     [cdkDropListConnectedTo]="['todoList', 'inProgressList', 'doneList']" class="example-list"
                     (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let task of filteredAwaitingFeedbacktasks"
-                        (mousedown)="onMousedown($event)" (mouseup)="onMouseup($event, task.id)" cdkDrag>
+                    <div class="example-box" *ngFor="let task of awaitingFeedback" cdkDrag>
                         <div class="card-head" [style.background-color]="task.color">{{ task.category }}</div>
                         <div class="card-body">
                             <h4>{{ task.title }}</h4>
@@ -105,7 +102,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="priority"><img [src]="getPriorityImage(task.prio)" alt="Priority"></div>
+                            <div class="priority"><img [src]="getPriorityImage(task.priority)" alt="Priority"></div>
                         </div>
                     </div>
                 </div>
@@ -119,8 +116,7 @@
                 <div cdkDropList id="doneList" [cdkDropListData]="done"
                     [cdkDropListConnectedTo]="['todoList', 'inProgressList', 'awaitingFeedbackList']"
                     class="example-list" (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let task of filteredDoneTasks" (mousedown)="onMousedown($event)"
-                        (mouseup)="onMouseup($event, task.id)" cdkDrag>
+                    <div class="example-box" *ngFor="let task of done" cdkDrag>
                         <div class="card-head" [style.background-color]="task.color">{{ task.category }}</div>
                         <div class="card-body">
                             <h4>{{ task.title }}</h4>
@@ -135,7 +131,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="priority"><img [src]="getPriorityImage(task.prio)" alt="Priority"></div>
+                            <div class="priority"><img [src]="getPriorityImage(task.priority)" alt="Priority"></div>
                         </div>
                     </div>
                 </div>

@@ -3,6 +3,7 @@ interface TodoData {
     description: string;
     due_date: Date | string; 
     category: string; 
+    color: string;
     priority: 'low' | 'medium' | 'urgent';
     status: 'todo' | 'awaiting_feedback' | 'in_progress' | 'done';
     assigned_to: number[]; 
