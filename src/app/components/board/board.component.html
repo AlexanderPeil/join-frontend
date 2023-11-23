@@ -10,7 +10,7 @@
         </div>
         <div class="search-container">
             <div class="search-box">
-                <input type="text" placeholder="Find Task" [(ngModel)]="searchTerm" (ngModelChange)="filterTasks()">
+                <input type="text" placeholder="Find Task" (input)="applyFilter($event.target.value)">
                 <div class="dividing-line"></div>
                 <div class="search-icon"><img src="assets/img/magnifier.png"></div>
             </div>
@@ -28,7 +28,7 @@
                 <div cdkDropList id="todoList" [cdkDropListData]="todo"
                     [cdkDropListConnectedTo]="['inProgressList', 'awaitingFeedbackList', 'doneList']"
                     class="example-list" (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let task of todo" cdkDrag>
+                    <div class="example-box" *ngFor="let task of getCurrentTasksForStatus('todo')" cdkDrag>
                         <div class="card-head" [style.background-color]="task.color">{{ task.category }}</div>
                         <div class="card-body">
                             <h4>{{ task.title }}</h4>
@@ -58,7 +58,7 @@
                 <div cdkDropList id="inProgressList" [cdkDropListData]="inProgress"
                     [cdkDropListConnectedTo]="['todoList', 'awaitingFeedbackList', 'doneList']" class="example-list"
                     (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let task of inProgress" cdkDrag>
+                    <div class="example-box" *ngFor="let task of getCurrentTasksForStatus('in_progress')" cdkDrag>
                         <div class="card-head" [style.background-color]="task.color">{{ task.category }}</div>
                         <div class="card-body">
                             <h4>{{ task.title }}</h4>
@@ -87,7 +87,7 @@
                 <div cdkDropList id="awaitingFeedbackList" [cdkDropListData]="awaitingFeedback"
                     [cdkDropListConnectedTo]="['todoList', 'inProgressList', 'doneList']" class="example-list"
                     (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let task of awaitingFeedback" cdkDrag>
+                    <div class="example-box" *ngFor="let task of getCurrentTasksForStatus('awaiting_feedback')" cdkDrag>
                         <div class="card-head" [style.background-color]="task.color">{{ task.category }}</div>
                         <div class="card-body">
                             <h4>{{ task.title }}</h4>
@@ -116,7 +116,7 @@
                 <div cdkDropList id="doneList" [cdkDropListData]="done"
                     [cdkDropListConnectedTo]="['todoList', 'inProgressList', 'awaitingFeedbackList']"
                     class="example-list" (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let task of done" cdkDrag>
+                    <div class="example-box" *ngFor="let task of getCurrentTasksForStatus('done')" cdkDrag>
                         <div class="card-head" [style.background-color]="task.color">{{ task.category }}</div>
                         <div class="card-body">
                             <h4>{{ task.title }}</h4>

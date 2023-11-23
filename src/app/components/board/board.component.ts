@@ -18,6 +18,7 @@ import { TodoService } from 'src/app/shared/services/todo.service';
 })
 export class BoardComponent implements OnInit {
   tasks: TodoData[] = [];
+  filteredTasks: TodoData[] | null = null;
   todo: TodoData[] = [];
   inProgress: TodoData[] = [];
   awaitingFeedback: TodoData[] = [];
@@ -69,5 +70,40 @@ export class BoardComponent implements OnInit {
       );
     }
   }
+
+
+  applyFilter(searchTerm: string) {
+    if (!searchTerm) {
+      this.filteredTasks = null;
+      return;
+    }
+    searchTerm = searchTerm.toLowerCase();
+    const allTasks = [...this.todo, ...this.inProgress, ...this.awaitingFeedback, ...this.done];
+    this.filteredTasks = allTasks.filter(task =>
+      task.title.toLowerCase().includes(searchTerm) ||
+      task.description.toLowerCase().includes(searchTerm)
+    );
+  }
+
+
+  getCurrentTasksForStatus(status: string): TodoData[] {
+    if (this.filteredTasks) {
+      return this.filteredTasks.filter(task => task.status === status);
+    }
+
+    switch (status) {
+      case 'todo':
+        return this.todo;
+      case 'in_progress':
+        return this.inProgress;
+      case 'awaiting_feedback':
+        return this.awaitingFeedback;
+      case 'done':
+        return this.done;
+      default:
+        return [];
+    }
+  }
+
 
 }
