@@ -9,6 +9,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { AuthService } from "../../shared/services/auth.service";
 import { TodoService } from 'src/app/shared/services/todo.service';
+import { TodoData } from 'src/app/shared/todo-interface';
 
 
 @Component({
@@ -25,9 +26,7 @@ export class BoardComponent implements OnInit {
   done: TodoData[] = [];
 
 
-  constructor(private ts: TodoService) {
-
-  }
+  constructor(private ts: TodoService) { }
 
 
   ngOnInit(): void {
@@ -48,16 +47,6 @@ export class BoardComponent implements OnInit {
   }
 
 
-  // async initAllTasks() {
-  //   try {
-  //     this.tasks = await this.ts.getAllTodos();
-  //     console.log(this.tasks);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }
-
-
   drop(event: CdkDragDrop<TodoData[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -72,38 +61,38 @@ export class BoardComponent implements OnInit {
   }
 
 
-  applyFilter(searchTerm: string) {
-    if (!searchTerm) {
-      this.filteredTasks = null;
-      return;
-    }
-    searchTerm = searchTerm.toLowerCase();
-    const allTasks = [...this.todo, ...this.inProgress, ...this.awaitingFeedback, ...this.done];
-    this.filteredTasks = allTasks.filter(task =>
-      task.title.toLowerCase().includes(searchTerm) ||
-      task.description.toLowerCase().includes(searchTerm)
-    );
-  }
+  // applyFilter(searchTerm: string) {
+  //   if (!searchTerm) {
+  //     this.filteredTasks = null;
+  //     return;
+  //   }
+  //   searchTerm = searchTerm.toLowerCase();
+  //   const allTasks = [...this.todo, ...this.inProgress, ...this.awaitingFeedback, ...this.done];
+  //   this.filteredTasks = allTasks.filter(task =>
+  //     task.title.toLowerCase().includes(searchTerm) ||
+  //     task.description.toLowerCase().includes(searchTerm)
+  //   );
+  // }
 
 
-  getCurrentTasksForStatus(status: string): TodoData[] {
-    if (this.filteredTasks) {
-      return this.filteredTasks.filter(task => task.status === status);
-    }
+  // getCurrentTasksForStatus(status: string): TodoData[] {
+  //   if (this.filteredTasks) {
+  //     return this.filteredTasks.filter(task => task.status === status);
+  //   }
 
-    switch (status) {
-      case 'todo':
-        return this.todo;
-      case 'in_progress':
-        return this.inProgress;
-      case 'awaiting_feedback':
-        return this.awaitingFeedback;
-      case 'done':
-        return this.done;
-      default:
-        return [];
-    }
-  }
+  //   switch (status) {
+  //     case 'todo':
+  //       return this.todo;
+  //     case 'in_progress':
+  //       return this.inProgress;
+  //     case 'awaiting_feedback':
+  //       return this.awaitingFeedback;
+  //     case 'done':
+  //       return this.done;
+  //     default:
+  //       return [];
+  //   }
+  // }
 
 
 }

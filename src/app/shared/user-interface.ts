@@ -1,4 +1,4 @@
-interface SignUpData {
+export interface SignUpData {
   username: string;
   first_name: string;
   last_name: string;
@@ -7,7 +7,7 @@ interface SignUpData {
 }
 
 
-interface LoginData {
+export interface LoginData {
   username: string;
   password: string;
 }

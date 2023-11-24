@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TodoService } from 'src/app/shared/services/todo.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { TodoData } from 'src/app/shared/todo-interface';
 
 
 @Component({
@@ -10,6 +11,9 @@ import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
   styleUrls: ['./add-task.component.scss']
 })
 export class AddTaskComponent implements OnInit {
+onSubmitAndNavigate() {
+throw new Error('Method not implemented.');
+}
   todoForm!: FormGroup;
   subtaskInput: boolean = false;
   selectedCategory: any;

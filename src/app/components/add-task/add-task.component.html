@@ -29,11 +29,9 @@
                                 <input type="text" placeholder="Category Name" formControlName="category">
                                 <input class="color-picker" type="color" formControlName="color" value="#ff0000">
                                 <img class="category-accept category-member-selection"
-                                    src="../../assets/img/icon_check_subtask.svg" alt="category-accept"
-                                    (click)="categorySelected()">
+                                    src="../../assets/img/icon_check_subtask.svg" alt="category-accept">
                                 <img class="category-cancel category-member-selection"
-                                    src="../../assets/img/icon_cancel_subtask.svg" alt="close-wrapper"
-                                    (click)="toggleCategoryMenu(); resetCategory()">
+                                    src="../../assets/img/icon_cancel_subtask.svg" alt="close-wrapper">
                                 <div class="member-category-wrapper category-wrapper">
                                     <div class="each-member-category each-category"
                                         *ngFor="let category of categories$ | async"
@@ -43,7 +41,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="sector-top" *ngIf="!categoryMenu" (click)="toggleCategoryMenu()">
+                            <div class="sector-top" *ngIf="!categoryMenu">
                                 <p>{{ selectedCategory ? selectedCategory.category : 'Select your Category' }}</p>
                                 <img src="../../assets/img/arrow_down.png">
                             </div>

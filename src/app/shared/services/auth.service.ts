@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { SignUpData } from '../user-interface';
 
 
 @Injectable({
