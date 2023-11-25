@@ -34,9 +34,9 @@
                                     src="../../assets/img/icon_cancel_subtask.svg" alt="close-wrapper">
                                 <div class="member-category-wrapper category-wrapper">
                                     <div class="each-member-category each-category"
-                                        *ngFor="let category of categories$ | async"
+                                        *ngFor="let category of categories"
                                         (click)="clickOnCategory(category)">
-                                        <p>{{ category.category }}</p>
+                                        <p>{{ category.name }}</p>
                                         <div class="category-color" [style.background]="category.color"></div>
                                     </div>
                                 </div>
@@ -61,10 +61,10 @@
                                     src="../../assets/img/icon_cancel_subtask.svg" alt="close-wrapper"
                                     (click)="cancelSelection()">
                                 <div class="member-category-wrapper">
-                                    <div class="each-member-category" *ngFor="let contact of contacts$ | async"
+                                    <div class="each-member-category" *ngFor="let contact of contacts"
                                         (click)="selectContact(contact)"
                                         [ngClass]="{'selected-contact': isSelected(contact)}">
-                                        {{contact.firstName}} {{contact.lastName}}
+                                        {{contact.firstname}} {{contact.lastname}}
                                     </div>
                                 </div>
                             </div>

@@ -42,7 +42,7 @@ export class BoardComponent implements OnInit {
       this.awaitingFeedback = allTasks.filter(task => task.status === 'awaiting_feedback');
       this.done = allTasks.filter(task => task.status === 'done');
     } catch (err) {
-      console.error(err);
+      console.error('Could not load tasks to board.',err);
     }
   }
 

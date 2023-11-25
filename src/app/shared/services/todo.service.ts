@@ -15,14 +15,24 @@ export class TodoService {
 
 
   createTodo(todoData: TodoData) {
-    const url = environment.baseUrl + '/todos/';
-    const body = {todoData};
+    const url = environment.baseUrl + '/tasks/';
+    const body = { todoData };
     return lastValueFrom(this.http.post<TodoData>(url, body));
   }
 
 
+  editTodo() {
+
+  }
+
+
+  deleteTodo() {
+
+  }
+
+
   getAllTodos() {
-    const url = environment.baseUrl + '/todos/';
+    const url = environment.baseUrl + '/tasks/';
     return lastValueFrom(this.http.get<TodoData[]>(url));
   }
 
