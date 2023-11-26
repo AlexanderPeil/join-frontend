@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { SignUpData } from '../user-interface';
+import { jwtDecode } from "jwt-decode";
 
 
 @Injectable({
@@ -32,6 +33,21 @@ export class AuthService {
   async signout() {
     const url = environment.baseUrl + '/logout/';
     await lastValueFrom(this.http.post(url, {}));
+  }
+
+
+  getFirstNameFromToken(): string {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decoded = jwtDecode<{ firstname: string }>(token);
+        return decoded.firstname || 'Guest';
+      } catch (error) {
+        console.error('Token decoding failed', error);
+        return 'Guest';
+      }
+    }
+    return 'Guest';
   }
 
 }
