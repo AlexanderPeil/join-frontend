@@ -6,6 +6,8 @@
         <div class="headline-mobile d-none">Kanban Project Management Tool</div>
         <h1>Add Task</h1>
     </div>
+
+    <!--  TodoForm-Group starts here  -->
     <form [formGroup]="todoForm" (ngSubmit)="onSubmit()">
         <div class="content-container">
             <img class="add-task-btn-mobile" src="../../assets/img/create_task_btn_mobile.png" alt="Create tassk button"
@@ -22,6 +24,8 @@
                     </div>
                 </div>
                 <div>
+
+                    <!--  Category section  -->
                     <div class="selection-container prevent-select">
                         <label>Category</label>
                         <div class="select-wrapper">
@@ -47,6 +51,9 @@
                         </div>
                     </div>
                 </div>
+                <!--  Category section  -->
+
+                <!--  Assigned To section  -->
                 <div formGroupName="profileForm">
                     <div class="selection-container prevent-select">
                         <label>Assigned To</label>
@@ -74,6 +81,8 @@
                     </div>
                 </div>
             </div>
+            <!--  Assigned To section  -->
+
             <div class="middle-gap"></div>
             <div class="right-container width-unset">
                 <div formGroupName="profileForm" class="right-container-mobile">
@@ -81,6 +90,8 @@
                         <label for="date">Due Date</label>
                         <input class="date" type="date" [min]="minDate" formControlName="date">
                     </div>
+
+                    <!-- Prio section -->
                     <div class="features-container">
                         <label>Prio</label>
                         <div class="prio-btn-container">
@@ -97,40 +108,28 @@
                                 (click)="setPriority('low')">Low <img
                                     src="../../assets/img/prio_low_white.png"></button>
                         </div>
+                        <!-- Prio section -->
 
+                        <!-- Subtask section -->
                         <div class="features-container">
-                            <div class="features-container">
-                                <label>Subtasks</label>
-                                <div class="subtask-container">
-                                    <div class="width flex-center" *ngIf="!subtaskInput">
-                                        <input class="subtask-input" placeholder="Add new subtask"
-                                            (click)="addSubtask()" #subtaskInput>
-                                        <img class="plus-icon" src="assets/img/plus_icon.png" (click)="addSubtask()">
-                                    </div>
-                                    <div class="subtask-container" *ngFor="let control of getSubtasks(); index as i">
-                                        <input class="subtask-input" type="text" placeholder="Add new subtask"
-                                            [formControl]="control" #subtaskInput>
-                                        <img *ngIf="subtaskInput" class="subtask-icons"
-                                            src="../../assets/img/icon_check_subtask.svg" (click)="confirmSubtask(i)">
-                                        <div *ngIf="subtaskInput" class="gap-img-subtask"></div>
-                                        <img *ngIf="subtaskInput" class="subtask-icons"
-                                            src="../../assets/img/icon_cancel_subtask.svg" (click)="cancelSubtask()">
-                                    </div>
+                            <label>Subtasks</label>
+                            <div class="subtask-container">
+                                <div class="width flex-center" *ngIf="!subtaskInput">
+                                    <input class="subtask-input" placeholder="Add new subtask">
+                                    <img class="plus-icon" src="assets/img/plus_icon.png" (click)="addSubtask()">
                                 </div>
-
-
-                                <div>
-                                    <ul>
-                                        <li *ngFor="let subtask of createdSubtasks;  index as i">
-                                            {{ subtask }}
-                                            <img class="delete-subtask" src="../../assets/img/icon_cancel_subtask.svg"
-                                                (click)="removeSubtask(i)">
-                                        </li>
-                                    </ul>
+                            </div>
+                            <div formArrayName="subtasks">
+                                <div *ngFor="let subtask of subtasks.controls; let i=index" [formGroupName]="i">
+                                    <input formControlName="title" placeholder="Subtask Title">
+                                    <input type="checkbox" formControlName="check">
+                                    <button type="button" (click)="removeSubtask(i)">Remove Subtask</button>
                                 </div>
                             </div>
                         </div>
+                        <!-- Subtask section -->
                     </div>
+
                     <div class="submit-and-clear">
                         <img class="task-added-img" *ngIf="taskAdded" src="../../assets/img/task_added_info.png"
                             alt="task-added">
@@ -141,7 +140,7 @@
                             <div class="btn-clear" (click)="onClear($event)">Clear<img class="clear-img"
                                     src="assets/img/iconoir_cancel.png">
                             </div>
-                            <div><Button class="btn-createTask" [disabled]="!taskForm.valid"
+                            <div><Button class="btn-createTask" [disabled]="!todoForm.valid"
                                     (click)="onSubmitAndNavigate()">Create Task<img
                                         src="assets/img/icons_check.png"></Button>
                             </div>
@@ -151,4 +150,5 @@
             </div>
         </div>
     </form>
+    <!--  TodoForm-Group ends here  -->
 </div>

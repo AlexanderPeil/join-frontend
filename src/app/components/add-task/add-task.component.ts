@@ -98,6 +98,27 @@ export class AddTaskComponent implements OnInit {
   }
 
 
+  addSubtask() {
+    const subtask = this.todoForm.get('subtask') as FormArray;
+    subtask.push(this.fb.group({
+      title: [''],
+      check: [false]
+    }));
+  }
+
+
+  removeSubtask(index: number) {
+    const subtask = this.todoForm.get('subtask') as FormArray;
+    subtask.removeAt(index);
+  }
+
+
+  get subtasks(): FormArray {
+    return this.todoForm.get('subtasks') as FormArray;
+  }
+
+
+
   async onSubmit() {
     if (this.todoForm.valid) {
       try {
@@ -142,6 +163,11 @@ export class AddTaskComponent implements OnInit {
 
 
   toggleAssignedToMenu() {
+
+  }
+
+
+  onClear($event: MouseEvent) {
 
   }
 
