@@ -93,6 +93,11 @@ export class AddTaskComponent implements OnInit {
   }
 
 
+  setPriority(priority: 'low' | 'medium' | 'urgent') {
+    this.todoForm.get('priority')?.setValue(priority);
+  }
+
+
   async onSubmit() {
     if (this.todoForm.valid) {
       try {
