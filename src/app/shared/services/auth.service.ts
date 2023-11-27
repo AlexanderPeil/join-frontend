@@ -2,8 +2,8 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { SignUpData } from '../user-interface';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { LoginData, SignUpData } from '../user-interface';
 import { jwtDecode } from "jwt-decode";
 
 
@@ -24,7 +24,7 @@ export class AuthService {
   }
 
 
-  public login(formData: SignUpData) {
+  public login(formData: LoginData) {
     const url = environment.baseUrl + '/login/';
     return lastValueFrom(this.http.post(url, formData));
   }
@@ -36,18 +36,13 @@ export class AuthService {
   }
 
 
-  getFirstNameFromToken(): string {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const decoded = jwtDecode<{ firstname: string }>(token);
-        return decoded.firstname || 'Guest';
-      } catch (error) {
-        console.error('Token decoding failed', error);
-        return 'Guest';
-      }
-    }
-    return 'Guest';
+  public getLoggedUserData() {
+    const url = `${environment.baseUrl}/user-info/`;
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.get<SignUpData>(url, { headers: headers }));
   }
+
 
 }

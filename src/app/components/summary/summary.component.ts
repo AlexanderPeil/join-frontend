@@ -49,8 +49,13 @@ export class SummaryComponent implements OnInit {
   }
 
 
-  setUsername() {
-    this.firstname = this.as.getFirstNameFromToken();
+  async setUsername() {
+    try {
+      const userInfo = await this.as.getLoggedUserData();
+      this.firstname = userInfo.first_name;
+    } catch (error) {
+      console.error('Error fetching user info', error);
+    }
   }
 
 

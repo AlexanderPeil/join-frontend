@@ -21,6 +21,7 @@ import { AddTaskComponent } from './components/add-task/add-task.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
     BrowserAnimationsModule,
     DragDropModule,
     CdkDropList,
-    CdkDrag
+    CdkDrag,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -30,13 +30,14 @@ export class BoardComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.initAllTasks();
+    this.initAllTasks();    
   }
 
 
   async initAllTasks() {
     try {
       const allTasks = await this.ts.getAllTodos();
+      console.log(allTasks);
       this.todo = allTasks.filter(task => task.status === 'todo');
       this.inProgress = allTasks.filter(task => task.status === 'in_progress');
       this.awaitingFeedback = allTasks.filter(task => task.status === 'awaiting_feedback');

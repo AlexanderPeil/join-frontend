@@ -1,1 +1,336 @@
 @import '../../shared/variables.scss';
+
+.d-none {
+    display: none;
+}
+
+.content {
+    @include flex_column_center;
+    @include width_height(100%, 100vh);
+}
+
+.join-logo {
+    @include width_height(100px, 120px);
+    position: absolute;
+    top: 67px;
+    left: 77px;
+    object-fit: contain;
+}
+
+.start-bg {
+    z-index: 10;
+    animation: animation-bg 1s ease-in-out;
+    animation-direction: normal;
+
+    @keyframes animation-bg {
+        0% {
+            opacity: 0%;
+        }
+
+        20% {
+            opacity: 0%;
+        }
+
+        100% {
+            opacity: 100%;
+        }
+    }
+}
+
+.logo-animation {
+    animation: start-logo-animation 1s ease-in-out;
+    animation-direction: normal;
+    z-index: 11;
+
+    @keyframes start-logo-animation {
+        0% {
+            width: 274px;
+            height: 334px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        20% {
+            width: 274px;
+            height: 334px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        100% {
+            width: 100px;
+            top: 80px;
+            left: 77px;
+        }
+    }
+}
+
+.sign-up {
+    @include align_items_center;
+    gap: 35px;
+    flex-direction: row;
+    position: absolute;
+    top: 67px;
+    right: 114px;
+
+    span {
+        @include font(21px, 400, 25.2px);
+        text-align: center;
+    }
+
+    button {
+        @include button_styles;
+        @include width_height(91px, 51px);
+        background-color: $main_color_dark;
+        color: white;
+        padding: 4px 16px;
+        border-radius: 8px;
+        border: none;
+        font-size: 16px;
+
+        &:hover {
+            background: $main_color_bright;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            transition: all 125ms ease-in-out;
+        }
+    }
+}
+
+form {
+    @include column_center;
+    gap: 35px;
+    width: 652px;
+    padding-top: 70px;
+    padding-bottom: 35px;
+    background-color: white;
+    box-shadow: 0 0 14px 3px rgba(0, 0, 0, 0.04);
+    border-radius: 30px;
+}
+
+.heading-span {
+    @include font(61px, 700, 73.2px);
+    margin-top: -50px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+::placeholder {
+    @include font(18px, 400, 25.2px);
+    color: #d1d1d1;
+}
+
+.input-email-pw {
+    @include align_items_center;
+    @include width_height(422px, 51px);
+    gap: 10px;
+    border-radius: 10px;
+    border: 1px solid #d1d1d1;
+    padding: 13px 21px;
+    box-sizing: border-box;
+}
+
+.input-email-img {
+    background-image: url(/assets/img/input_email_img.png);
+    background-repeat: no-repeat;
+    background-position: calc(100% - 15px);
+}
+
+.input-password-img {
+    background-image: url(/assets/img/input_pw_img.png);
+    background-repeat: no-repeat;
+    background-position: calc(100% - 15px);
+}
+
+.login-bottom {
+    @include flex_center;
+
+    .mat-mdc-card {
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+    }
+
+    .login-bottom-font {
+        font-weight: 400 !important;
+        font-size: 16px !important;
+        line-height: 19.2px !important;
+    }
+
+    span {
+        @include margin_left_right(20px, 35px);
+    }
+
+    a {
+        text-decoration: none;
+        color: $main_color_bright;
+        margin-left: 25px;
+    }
+}
+
+.login-buttons {
+    @include space_between_center;
+    flex-direction: row;
+    width: 340px;
+
+    button {
+        @include font(21px, 700, 25.2px);
+        border-radius: 8px;
+        padding: 4px 0;
+        cursor: pointer;
+    }
+
+    .guest-login-btn {
+        @include width_height(150px, 51px);
+        background-color: white;
+        color: $main_color_dark;
+        border: 1px solid black;
+
+        &:hover {
+            color: $main_color_bright;
+            border-color: $main_color_bright;
+            transition: all 125ms ease-in-out;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+    }
+}
+
+.login-btn {
+    @include width_height(145px, 51px);
+    background-color: $main_color_dark;
+    border: none;
+    color: white;
+
+    &:not([disabled]):hover {
+        background: $main_color_bright;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        transition: all 125ms ease-in-out;
+    }
+
+    &[disabled] {
+        cursor: not-allowed !important;
+        filter: contrast(0.5);
+    }
+}
+
+.back-img {
+    cursor: pointer;
+    position: absolute;
+    top: 30px;
+    left: 50px;
+}
+
+.msg-box {
+    @include font_size_weight(22px, 700);
+    text-align: center;
+    color: $main_color_bright;
+}
+
+@media (max-width: 700px) {
+    .join-logo {
+        top: 37px;
+        width: 70px;
+    }
+
+    .underline {
+        display: none;
+    }
+
+    .sign-up {
+        top: unset;
+        bottom: 55px;
+        right: unset;
+    }
+
+    .login-bottom {
+        flex-direction: column-reverse;
+        margin-right: 110px;
+    }
+
+    .login-bottom span {
+        margin-left: 0;
+    }
+
+    .login-bottom a {
+        margin-left: -9px;
+        margin-bottom: 30px;
+    }
+
+    .login-buttons {
+        flex-direction: column;
+    }
+
+    .login-btn-mob {
+        width: 180px !important;
+    }
+
+    .login-btn {
+        margin-bottom: 22px;
+    }
+
+    form {
+        width: 320px;
+    }
+
+    .input-email-pw {
+        width: 285px;
+    }
+
+    .heading-span {
+        font-size: 47px;
+    }
+
+    .underline-mobile {
+        display: block;
+        margin-top: -20px;
+    }
+
+    .back-img {
+        display: none;
+    }
+
+    .logo-animation {
+        animation: none;
+    }
+
+    #animation-mobile {
+        @include width_height(100%, 100%);
+        display: block;
+        position: fixed;
+        z-index: 21;
+        object-fit: cover;
+        animation: mobile;
+        animation-duration: 3000ms;
+
+        @keyframes mobile {
+            0% {
+                visibility: visible;
+            }
+
+            50% {
+                visibility: visible;
+            }
+
+            100% {
+                visibility: hidden;
+            }
+        }
+    }
+
+    .animation-stop {
+        display: none !important;
+    }
+
+    @media (max-width: 400px) {
+        .join-logo {
+            @include width_height(40px, 104px);
+            top: 10px;
+            left: 41px;
+        }
+
+        .content {
+            height: 90vh;
+        }
+    }
+}

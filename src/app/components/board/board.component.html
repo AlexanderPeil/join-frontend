@@ -35,10 +35,13 @@
                             <h4>{{ task.title }}</h4>
                             <p>{{ task.description }}</p>
                         </div>
-                        <div>{{ task.subtasks }}</div>
+                        <div *ngFor="let subtask of task.subtasks">
+                            <span>{{ subtask.title }}</span>
+                            <input type="checkbox" [checked]="subtask.check">
+                        </div>
                         <div class="priotity-users">
                             <div class="users">
-                                <div class="circle" *ngFor="let contact of task.assigned_to"
+                                <div class="" *ngFor="let contact of task.assigned_to"
                                     [style.background-color]="contact.color">
                                     {{ contact.firstname }} {{ contact.lastname }}
                                 </div>

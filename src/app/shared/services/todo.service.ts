@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TodoData } from '../todo-interface';
 
 
@@ -33,7 +33,10 @@ export class TodoService {
 
   getAllTodos() {
     const url = environment.baseUrl + '/tasks/';
-    return lastValueFrom(this.http.get<TodoData[]>(url));
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });    
+    return lastValueFrom(this.http.get<TodoData[]>(url, {headers: headers}));
   }
 
 }

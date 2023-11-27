@@ -14,7 +14,7 @@
             <input class="input-name-img input-email-pw" type="text" placeholder="Lastname" formControlName="lastname">
             <input class="input-email-img input-email-pw" type="email" placeholder="Email" formControlName="email">
             <input class="input-password-img input-email-pw" type="password" placeholder="Password" formControlName="password">
-            <input class="input-password-img input-email-pw" type="password" placeholder="Password" formControlName="confirmPasssword">
+            <input class="input-password-img input-email-pw" type="password" placeholder="Password" formControlName="confirmPassword">
             <div *ngIf="signUpForm.errors?.['notSame'] && signUpForm.get('confirmPassword')?.touched">Passwords do not match.</div>
             <button [disabled]="signUpForm.invalid" class="sign-up-btn btn-font">Sign up</button>
         </form>

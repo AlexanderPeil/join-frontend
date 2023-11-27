@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
 
   initFormGroup() {
     this.loginForm = this.fb.group({
-      email: ['', Validators.required],
+      username: ['', Validators.required],
       password: ['', Validators.required],
       rememberMe: [false],
     });
@@ -56,13 +56,13 @@ export class LoginComponent implements OnInit {
 
     try {
       const formData = this.loginForm.value;
-      const email = formData.email;
+      const username = formData.username;
       let resp: any = await this.as.login(formData)
       localStorage.setItem('token', resp['token']);
       if (formData.rememberMe) {
-        localStorage.setItem('email', email);
+        localStorage.setItem('username', username);
       } else {
-        localStorage.removeItem('email');
+        localStorage.removeItem('username');
       }
       this.router.navigateByUrl('/summary');
     } catch (err) {
