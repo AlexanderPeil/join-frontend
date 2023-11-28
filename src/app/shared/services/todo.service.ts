@@ -21,8 +21,12 @@ export class TodoService {
   }
 
 
-  editTodo() {
-
+  updateTodo(todoId: number, updatedData: Partial<TodoData>) {
+    const url = `${environment.baseUrl}/tasks/${todoId}/`;
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.patch<TodoData>(url, updatedData, { headers: headers }));
   }
 
 
@@ -35,8 +39,8 @@ export class TodoService {
     const url = environment.baseUrl + '/tasks/';
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
-    });    
-    return lastValueFrom(this.http.get<TodoData[]>(url, {headers: headers}));
+    });
+    return lastValueFrom(this.http.get<TodoData[]>(url, { headers: headers }));
   }
 
 }

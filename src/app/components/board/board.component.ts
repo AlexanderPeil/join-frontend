@@ -10,7 +10,9 @@ import {
 import { AuthService } from "../../shared/services/auth.service";
 import { TodoService } from 'src/app/shared/services/todo.service';
 import { TodoData } from 'src/app/shared/todo-interface';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+type TodoStatus = 'todo' | 'awaiting_feedback' | 'in_progress' | 'done';
 
 @Component({
   selector: 'app-board',
@@ -24,13 +26,17 @@ export class BoardComponent implements OnInit {
   inProgress: TodoData[] = [];
   awaitingFeedback: TodoData[] = [];
   done: TodoData[] = [];
+  todoForm!: FormGroup;
+  
 
 
-  constructor(private ts: TodoService) { }
+  constructor(
+    private ts: TodoService,
+    private fb: FormBuilder) { }
 
 
   ngOnInit(): void {
-    this.initAllTasks();    
+    this.initAllTasks();
   }
 
 
@@ -43,7 +49,7 @@ export class BoardComponent implements OnInit {
       this.awaitingFeedback = allTasks.filter(task => task.status === 'awaiting_feedback');
       this.done = allTasks.filter(task => task.status === 'done');
     } catch (err) {
-      console.error('Could not load tasks to board.',err);
+      console.error('Could not load tasks to board.', err);
     }
   }
 
@@ -58,7 +64,56 @@ export class BoardComponent implements OnInit {
         event.previousIndex,
         event.currentIndex,
       );
+      const item = event.container.data[event.currentIndex];
+      const newStatus = this.getStatusFromContainerId(event.container.id);
+      this.updateStatus(item.id, newStatus);
     }
+  }
+
+
+  getStatusFromContainerId(containerId: string): TodoStatus {
+    switch (containerId) {
+      case 'todoList':
+        return 'todo';
+      case 'inProgressList':
+        return 'in_progress';
+      case 'awaitingFeedbackList':
+        return 'awaiting_feedback';
+      case 'doneList':
+        return 'done';
+      default:
+        return 'todo';
+    }
+  }
+
+
+  async updateStatus(todoId: number, newStatus: TodoStatus) {
+    try {
+      const updatedData: Partial<TodoData>  = { status: newStatus };
+      await this.ts.updateTodo(todoId, updatedData);
+    } catch (err) {
+      console.error('Could not update task-status:', err);
+    }
+  }
+
+
+  getInitials(firstname: string, lastname: string): string {
+    const initials = `${firstname?.[0] ?? ''}${lastname?.[0] ?? ''}`;
+    return initials.toUpperCase();
+  }
+
+
+  initFormGroup() {
+    this.todoForm = this.fb.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      due_date: ['', Validators.required],
+      category: ['', Validators.required],
+      priority: ('medium'),
+      status: ('todo'),
+      assigned_to: this.fb.array([], Validators.required),
+      subtasks: this.fb.array([])
+    });
   }
 
 

@@ -26,6 +26,7 @@ export class SummaryComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.initAllTasks();
     this.checkWindowWidth();
     this.setUsername();
     this.setGreeting();

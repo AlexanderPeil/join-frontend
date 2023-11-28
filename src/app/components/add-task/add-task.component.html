@@ -13,15 +13,13 @@
             <img class="add-task-btn-mobile" src="../../assets/img/create_task_btn_mobile.png" alt="Create tassk button"
                 (click)="onSubmitAndNavigate()">
             <div class="left-container width-unset">
-                <div formGroupName="profileForm">
-                    <div class="selection-container">
-                        <label>Title</label>
-                        <input type="text" placeholder="Enter a title" formControlName="title">
-                    </div>
-                    <div class="selection-container">
-                        <label>Description</label>
-                        <textarea placeholder="Enter a description" formControlName="description"></textarea>
-                    </div>
+                <div class="selection-container">
+                    <label>Title</label>
+                    <input type="text" placeholder="Enter a title" formControlName="title">
+                </div>
+                <div class="selection-container">
+                    <label>Description</label>
+                    <textarea placeholder="Enter a description" formControlName="description"></textarea>
                 </div>
                 <div>
 
@@ -54,7 +52,7 @@
                 <!--  Category section  -->
 
                 <!--  Assigned To section  -->
-                <div formGroupName="profileForm">
+                <!-- <div formGroupName="profileForm"> -->
                     <div class="selection-container prevent-select">
                         <label>Assigned To</label>
                         <div class="select-wrapper assigned-to-wrapper">
@@ -79,13 +77,13 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
             <!--  Assigned To section  -->
 
             <div class="middle-gap"></div>
             <div class="right-container width-unset">
-                <div formGroupName="profileForm" class="right-container-mobile">
+                <div class="right-container-mobile">
                     <div class="features-container">
                         <label for="date">Due Date</label>
                         <input class="date" type="date" [min]="minDate" formControlName="date">
