@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ContactData } from '../todo-interface';
 
 @Injectable({
@@ -29,7 +29,10 @@ export class ContactService {
 
   loadAllContacts() {
     const url = environment.baseUrl + '/contacts/';
-    return lastValueFrom(this.http.get<ContactData[]>(url))
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.get<ContactData[]>(url, { headers }))
   }
 
 }

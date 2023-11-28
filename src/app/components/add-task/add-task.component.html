@@ -21,19 +21,19 @@
                     <label>Description</label>
                     <textarea placeholder="Enter a description" formControlName="description"></textarea>
                 </div>
-                <div>
-
-                    <!--  Category section  -->
+                <!--  Category section  -->
+                <div formGroupName="category">
                     <div class="selection-container prevent-select">
                         <label>Category</label>
                         <div class="select-wrapper">
-                            <div class="category-inputs" *ngIf="categoryMenu">
-                                <input type="text" placeholder="Category Name" formControlName="category">
+                            <div class="category-inputs" *ngIf="categoryMenu" #menu>
+                                <input type="text" placeholder="Category Name" formControlName="name">
                                 <input class="color-picker" type="color" formControlName="color" value="#ff0000">
                                 <img class="category-accept category-member-selection"
                                     src="../../assets/img/icon_check_subtask.svg" alt="category-accept">
                                 <img class="category-cancel category-member-selection"
-                                    src="../../assets/img/icon_cancel_subtask.svg" alt="close-wrapper">
+                                    src="../../assets/img/icon_cancel_subtask.svg" alt="close-wrapper"
+                                    (click)="closeCategoryMenu($event)">
                                 <div class="member-category-wrapper category-wrapper">
                                     <div class="each-member-category each-category" *ngFor="let category of categories"
                                         (click)="clickOnCategory(category)">
@@ -42,8 +42,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="sector-top" *ngIf="!categoryMenu">
-                                <p>{{ selectedCategory ? selectedCategory.category : 'Select your Category' }}</p>
+                            <div class="sector-top" *ngIf="!categoryMenu" (click)="toggleCategoryMenu()">
+                                <p>{{ selectedCategory ? selectedCategory.name : 'Select your Category' }}</p>
                                 <img src="../../assets/img/arrow_down.png">
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                 <!--  Category section  -->
 
                 <!--  Assigned To section  -->
-                <!-- <div formGroupName="profileForm"> -->
+                <div formGroupName="assigned_to">
                     <div class="selection-container prevent-select">
                         <label>Assigned To</label>
                         <div class="select-wrapper assigned-to-wrapper">
@@ -77,7 +77,7 @@
                             </div>
                         </div>
                     </div>
-                <!-- </div> -->
+                </div>
             </div>
             <!--  Assigned To section  -->
 
@@ -86,7 +86,7 @@
                 <div class="right-container-mobile">
                     <div class="features-container">
                         <label for="date">Due Date</label>
-                        <input class="date" type="date" [min]="minDate" formControlName="date">
+                        <input class="date" type="date" [min]="minDate" formControlName="due_date">
                     </div>
 
                     <!-- Prio section -->

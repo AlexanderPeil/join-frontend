@@ -1,0 +1,517 @@
+@import '../../shared/variables.scss';
+
+
+.main-container {
+    padding: 120px 10px 0 320px;
+}
+
+.add-task-btn-mobile {
+    display: none;
+}
+
+h1 {
+    @include font(61px, 700, 73.2px);
+    width: 315px;
+    margin-top: 0px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.width {
+    width: 100%;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.content-container {
+    display: flex;
+    gap: 50px;
+}
+
+.left-container {
+    @include flex_direction_column;
+    @include width_height(452px, 506px);
+    gap: 10px;
+}
+
+.gap-img-subtask {
+    @include width_height(2px, 24px);
+    background-color: #D1D1D1;
+}
+
+label {
+    @include font_size_weight(21px, 400);
+}
+
+.selection-container {
+    @include flex_direction_column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+input,
+select,
+.select-wrapper {
+    @include font_size_weight(21px, 400);
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    padding: 13px 21px;
+    background-color: white;
+    outline: none;
+}
+
+.category-inputs {
+    position: relative;
+
+    input {
+        position: absolute;
+    }
+
+    .color-picker {
+        @include width_height(40px, 45px);
+        right: 89px;
+        top: 2px;
+        padding: 0px !important;
+        border: none;
+        cursor: pointer;
+        outline: none;
+    }
+}
+
+.category-member-selection {
+    height: 40px;
+    position: absolute;
+    top: 5px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $main_color_bright;
+        border-radius: 10px;
+    }
+}
+
+.category-accept {
+    right: 45px;
+}
+
+.category-cancel {
+    right: 5px;
+}
+
+.sector-top {
+    @include space_between_center;
+    line-height: 0;
+    font-size: 18px;
+    padding: 5px 20px;
+    cursor: pointer;
+
+    img {
+        height: 8px;
+    }
+}
+
+.select-wrapper {
+    @include flex_direction_column;
+    padding: 0;
+}
+
+.postion-relative {
+    position: relative;
+
+    span {
+        position: relative;
+        top: 12px;
+        padding: 9px;
+        color: $main_color_bright;
+    }
+}
+
+.member-category-wrapper {
+    @include flex_direction_column;
+    gap: 10px;
+    padding: 10px;
+    margin-top: 15px;
+
+    p {
+        margin: 0;
+    }
+}
+
+.each-member-category {
+    cursor: pointer;
+
+    &:hover {
+        color: $main_color_bright;
+    }
+}
+
+.category-wrapper {
+    position: relative;
+    margin-top: 50px;
+
+    .each-category {
+        @include align_items_center;
+
+        .category-color {
+            @include width_height(15px, 15px);
+            border-radius: 100%;
+            margin-left: 8%;
+        }
+    }
+}
+
+.selected-contact {
+    background-color: #abcdef;
+    margin-right: 10px;
+}
+
+select {
+    appearance: none;
+    background: url(/assets/img/arrow.png) 96% / 3% no-repeat white;
+    cursor: pointer;
+}
+
+textarea {
+    @include font_size_weight(21px, 400);
+    min-height: 119px;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    padding: 18px 21px;
+    outline: none;
+    resize: vertical;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+.middle-gap {
+    border-left: 1px solid #D1D1D1;
+    height: 506px;
+}
+
+.right-container {
+    @include flex_direction_column;
+    @include width_height(452px, 506px);
+    gap: 10px;
+    position: relative;
+
+    span:first-child {
+        margin-right: auto;
+        padding-top: 30px;
+    }
+}
+
+.features-container {
+    @include flex_direction_column;
+    width: 100%;
+    gap: 10px
+}
+
+.right-container-mobile {
+    width: 100%;
+}
+
+.date {
+    cursor: pointer;
+}
+
+.prio-btn-container {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+.prio-btn {
+    @include flex_center;
+    @include width_height(100%, 51px);
+    @include button_styles;
+    @include font_size_weight(21px, 400);
+    flex-direction: row;
+    gap: 10px;
+    padding: 10px 10px;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+    position: relative;
+
+    &:hover {
+        box-shadow: 0 4px 4px 0 rgb(0 0 0 / 25%);
+        width: 110%;
+    }
+}
+
+.subtask-container {
+    @include align_items_center;
+    @include font_size_weight(21px, 400);
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+    isolation: isolate;
+}
+
+.flex-center {
+    @include align_items_center;
+}
+
+.subtask-input {
+    border: 0px !important;
+    width: 80%;
+    outline: none;
+    cursor: pointer;
+}
+
+.plus-icon {
+    cursor: pointer;
+}
+
+.subtask-img-container {
+    display: flex;
+    gap: 9px;
+    padding-right: 15px;
+}
+
+.subtask-icons {
+    cursor: pointer;
+}
+
+.gap-img-subtask {
+    width: 1px;
+    background-color: #D1D1D1;
+}
+
+.button-container {
+    display: flex
+}
+
+.submit-and-clear {
+    @include justify_content_center;
+    padding-top: 85px;
+
+    button {
+        font-size: 1.5rem;
+        border-radius: 10px;
+        padding: 18px 10px;
+        margin-left: 25px;
+        transition: background 255ms ease-in-out;
+    }
+}
+
+.btn-createTask {
+    background: $main_color_dark;
+    @include flex_center;
+    color: white;
+    border: none;
+    gap: 10px;
+    font-weight: 700;
+    transition: all 100ms ease-in-out;
+
+    &:hover {
+        background-color: $main_color_bright;
+        border: 2px solid $main_color_bright;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+}
+
+.btn-clear {
+    @include button_styles;
+    @include flex_center;
+    gap: 10px;
+    border: solid 1px $main_color_dark;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    padding: 18px 10px;
+    margin-left: 25px;
+    transition: background 255ms ease-in-out;
+    color: $main_color_dark;
+    width: 136px;
+
+    &:hover {
+        color: $main_color_bright;
+        border: 2px solid $main_color_bright;
+        filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    }
+}
+
+.category {
+    @include align_items_center;
+    padding: 7px 20px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: lightgray;
+    }
+}
+
+.assigned-to {
+    @include align_items_center;
+    padding: 7px 20px;
+}
+
+.prevent-select {
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
+.assigned-to-wrapper {
+    margin-bottom: 30px;
+}
+
+.task-added-img {
+    height: 75px;
+    object-fit: contain; 
+}
+
+.error-message {
+    color: white;
+    background-color: $main_color_dark;
+}
+
+.delete-subtask {
+    padding-left: 15px;
+}
+
+li {
+    @include align_items_center;
+}
+
+@media(max-width:1200px) {
+    .right-container {
+        margin-top: -20px;
+    }
+
+    .left-container {
+        height: auto;
+    }
+
+    .title-container {
+        width: 450px;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .main-container {
+        @include column_center;
+    }
+
+    .middle-gap {
+        display: none;
+    }
+
+    .content-container {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .right-container {
+        align-items: center;
+        height: unset;
+        margin-bottom: 100px;
+    }
+
+    .submit-and-clear {
+        position: unset;
+        padding: unset;
+        padding-right: 15px;
+    }
+
+    .select-wrapper {
+        z-index: 3;
+    }
+}
+
+@media(max-width: 1000px) {
+    .add-task-btn-mobile {
+        display: block;
+        position: fixed;
+        top: 14px;
+        right: 15px;
+        z-index: 11;
+        cursor: pointer;
+    }
+
+    .right-container {
+        margin-top: 30px;
+    }
+
+    .left-container {
+        height: auto;
+    }
+
+    h1 {
+        margin-top: 25px;
+    }
+
+    .title-container {
+        flex-direction: column;
+    }
+
+    .main-container {
+        margin-top: 130px;
+        margin-left: 0;
+        padding: unset;
+    }
+
+    .headline-mobile {
+        display: block !important;
+        font-size: 16px;
+    }
+
+    h1 {
+        font-size: 47px;
+    }
+
+    label {
+        font-size: 16px;
+    }
+
+    input {
+        font-size: 16px;
+    }
+
+    ::placeholder {
+        font-size: 16px;
+    }
+
+    textarea {
+        font-size: 16px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    .prio-btn {
+        font-size: 16px;
+    }
+
+    .submit-and-clear {
+        display: none;
+    }
+
+    .left-container {
+        margin-bottom: -50px;
+    }
+}
+
+@media(max-width: 500px) {
+
+    .main-container {
+        margin-right: 0;
+    }
+
+    .width-unset {
+        width: unset;
+    }
+}

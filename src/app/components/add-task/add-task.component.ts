@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { TodoService } from 'src/app/shared/services/todo.service';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ContactService } from 'src/app/shared/services/contact.service';
@@ -17,8 +17,6 @@ export class AddTaskComponent implements OnInit {
   tasks: TodoData[] = [];
   categories: CategoryData[] = [];
   contacts: ContactData[] = [];
-
-
   subtaskInput: boolean = false;
   selectedCategory: any;
   taskAdded: boolean = false;
@@ -39,13 +37,16 @@ export class AddTaskComponent implements OnInit {
     private catService: CategoryService,
     private contService: ContactService,
     private fb: FormBuilder,
-    private router: Router) {
+    private router: Router,
+    private elRef: ElementRef) {
   }
 
 
   ngOnInit() {
     this.initFormGroup();
     this.initAllTasks();
+    this.initAllCategories();
+    this.initAllContacts();
   }
 
 
@@ -54,13 +55,17 @@ export class AddTaskComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', Validators.required],
       due_date: ['', Validators.required],
-      category: ['', Validators.required],
-      priority: ('medium'),
-      status: ('todo'),
+      category: this.fb.group({
+        name: ['', Validators.required],
+        color: ''
+      }),
+      priority: 'medium',
+      status: 'todo',
       assigned_to: this.fb.array([], Validators.required),
       subtasks: this.fb.array([])
     });
   }
+
 
 
   async initAllTasks() {
@@ -137,33 +142,107 @@ export class AddTaskComponent implements OnInit {
   }
 
 
-  clickOnCategory(category: CategoryData) {
+  // @HostListener('document:click', ['$event'])
+  // onClick(event: MouseEvent) {
+  //   if (!this.elRef.nativeElement.contains(event.target) && this.categoryMenu) {
+  //     this.categoryMenu = false;
+  //   }
+  // }
 
+
+  toggleCategoryMenu() {
+    this.categoryMenu = !this.categoryMenu;
+  }
+
+
+  closeCategoryMenu(event: MouseEvent) {
+    event.stopPropagation();
+    this.categoryMenu = false;
+  }
+
+
+  clickOnCategory(cat: CategoryData) {
+    const categoryForm = this.todoForm.get('category') as FormGroup;
+    if (categoryForm) {
+      categoryForm.get('name')!.setValue(cat.name);
+      categoryForm.get('color')!.setValue(cat.color);
+      this.selectedCategory = cat;
+      this.categoryMenu = false;
+    }
+  }
+
+
+  categorySelected() {
+    let categoryValue = this.todoForm.get('category.category')?.value;
+    let colorValue = this.todoForm.get('category.color')?.value;
+
+    if (categoryValue && colorValue) {
+      let newCategory = {
+        name: categoryValue,
+        color: colorValue
+      };
+      // this.saveCategory(newCategory);
+      this.selectedCategory = newCategory;
+      this.toggleCategoryMenu();
+    } else {
+      console.error('Please select a category and a color.');
+    }
   }
 
 
   selectContact(contact: ContactData) {
+    const assignedTo = this.todoForm.get('assigned_to') as FormArray;
 
+    if (this.isSelected(contact)) {
+      const index = assignedTo.controls.findIndex((control) => {
+        const assignedContact = control.value as ContactData;
+        return (
+          assignedContact.firstname === contact.firstname &&
+          assignedContact.lastname === contact.lastname
+        );
+      });
+
+      if (index !== -1) {
+        assignedTo.removeAt(index);
+      }
+    } else {
+      assignedTo.push(this.fb.group(contact));
+    }
+  }
+
+
+
+  isSelected(contact: ContactData): boolean {
+    const assignedTo = this.todoForm.get('assigned_to') as FormArray;
+    return assignedTo.controls.some((control) => {
+      const assignedContact = control.value as ContactData;
+      return (
+        assignedContact.firstname === contact.firstname &&
+        assignedContact.lastname === contact.lastname
+      );
+    });
   }
 
 
   cancelSelection() {
-
+    const assignedTo = this.todoForm.get('assigned_to') as FormArray;
+    assignedTo.clear(); 
+    this.toggleAssignedToMenu(); 
   }
+  
 
 
   membersSelected() {
-
-  }
-
-
-  isSelected(contact: ContactData): any {
-
+    this.toggleAssignedToMenu();
+    this.feedbackMessageMembers = 'Members selected';
+    setTimeout(() => {
+      this.feedbackMessageMembers = 'Select your Members';
+    }, 2000);
   }
 
 
   toggleAssignedToMenu() {
-
+    this.assignedToMenu = !this.assignedToMenu;
   }
 
 
