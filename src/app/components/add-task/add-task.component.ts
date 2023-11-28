@@ -98,13 +98,18 @@ export class AddTaskComponent implements OnInit {
   }
 
 
-  setPriority(priority: 'low' | 'medium' | 'urgent') {
+  setPriority(priority: string) {
     this.todoForm.get('priority')?.setValue(priority);
+
+    this.prioUrgent = priority === 'urgent';
+    this.prioMedium = priority === 'medium';
+    this.prioLow = priority === 'low';
   }
+  
 
 
   addSubtask() {
-    const subtask = this.todoForm.get('subtask') as FormArray;
+    const subtask = this.todoForm.get('subtasks') as FormArray;
     subtask.push(this.fb.group({
       title: [''],
       check: [false]
@@ -113,7 +118,7 @@ export class AddTaskComponent implements OnInit {
 
 
   removeSubtask(index: number) {
-    const subtask = this.todoForm.get('subtask') as FormArray;
+    const subtask = this.todoForm.get('subtasks') as FormArray;
     subtask.removeAt(index);
   }
 
