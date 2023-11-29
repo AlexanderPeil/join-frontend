@@ -30,6 +30,7 @@ export class AddTaskComponent implements OnInit {
   feedbackMessageMembers = 'Select your Members';
   createdSubtasks: string[] = [];
   loading: boolean = false;
+  newSubtaskTitle = ''; 
 
 
   constructor(
@@ -65,7 +66,6 @@ export class AddTaskComponent implements OnInit {
       subtasks: this.fb.array([])
     });
   }
-
 
 
   async initAllTasks() {
@@ -108,10 +108,10 @@ export class AddTaskComponent implements OnInit {
   
 
 
-  addSubtask() {
+  addSubtask(subtaskTitle: string) {
     const subtask = this.todoForm.get('subtasks') as FormArray;
     subtask.push(this.fb.group({
-      title: [''],
+      title: [subtaskTitle],
       check: [false]
     }));
   }

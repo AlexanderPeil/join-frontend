@@ -378,12 +378,17 @@ select::-ms-expand {
     background-color: $main_color_dark;
 }
 
-.delete-subtask {
-    padding-left: 15px;
+.subtaskList {
+    border: none;
 }
 
-li {
-    @include align_items_center;
+.subtaskCheckbox {
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.subtaskRemove {
+    cursor: pointer;
 }
 
 @media(max-width:1200px) {

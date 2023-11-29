@@ -12,7 +12,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { EditTaskComponent } from './components/edit-task/edit-task.component';
 import { HelpPageComponent } from './components/help-page/help-page.component';
 import { LegalNoticeComponent } from './components/legal-notice/legal-notice.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogAddContactComponent } from './components/dialog-add-contact/dialog-add-contact.component';
 import { DialogAddTaskComponent } from './components/dialog-add-task/dialog-add-task.component';
 import { DialogEditTaskComponent } from './components/dialog-edit-task/dialog-edit-task.component';
@@ -51,7 +51,8 @@ import { HttpClientModule } from '@angular/common/http';
     DragDropModule,
     CdkDropList,
     CdkDrag,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
