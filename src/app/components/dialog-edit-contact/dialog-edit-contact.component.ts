@@ -49,7 +49,7 @@ export class DialogEditContactComponent implements OnInit {
       lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: [''],
-      color: ['']
+      color: ['#000000']
     });
   }
 

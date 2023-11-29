@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogEditContactComponent } from '../dialog-edit-contact/dialog-edit-contact.component';
+import { DialogAddContactComponent } from '../dialog-add-contact/dialog-add-contact.component';
 
 @Component({
   selector: 'app-contacts',
@@ -68,6 +69,18 @@ export class ContactsComponent implements OnInit {
     if (index !== -1) {
       this.contacts[index] = updatedContact;
     }
+  }
+
+
+  addContact() {
+    const dialogRef = this.dialog.open(DialogAddContactComponent, {
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.initAllContacts();
+      }
+    });
+
   }
 
 

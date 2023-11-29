@@ -11,15 +11,19 @@ export class ContactService {
   constructor(private http: HttpClient) { }
 
 
-  createContact() {
-
+  createContact(formData: ContactData) {
+    const url = environment.baseUrl + '/contacts/';
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.post<ContactData>(url, formData, { headers: headers }));
   }
 
 
   updateContact(contactId: string, updatedContact: ContactData) {
     const url = `${environment.baseUrl}/contacts/${contactId}/`;
     const headers = new HttpHeaders({
-      'Authorization': `Token ${localStorage.getItem('token')}` 
+      'Authorization': `Token ${localStorage.getItem('token')}`
     });
     return lastValueFrom(this.http.patch<ContactData>(url, updatedContact, { headers: headers }));
   }
@@ -45,6 +49,6 @@ export class ContactService {
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
     return lastValueFrom(this.http.get<ContactData>(url, { headers }));
-  }  
+  }
 
 }
