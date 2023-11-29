@@ -25,8 +25,8 @@
                 <div formGroupName="category">
                     <div class="selection-container prevent-select">
                         <label>Category</label>
-                        <div class="select-wrapper">
-                            <div class="category-inputs" *ngIf="categoryMenu" #menu>
+                        <div class="select-wrapper" #handleCategoryMenu>
+                            <div class="category-inputs" *ngIf="categoryMenu">
                                 <input type="text" placeholder="Category Name" formControlName="name">
                                 <input class="color-picker" type="color" formControlName="color" value="#ff0000">
                                 <img class="category-accept category-member-selection"
@@ -42,7 +42,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="sector-top" *ngIf="!categoryMenu" (click)="toggleCategoryMenu()">
+                            <div class="sector-top" *ngIf="!categoryMenu" (click)="toggleCategoryMenu($event)">
                                 <p>{{ selectedCategory ? selectedCategory.name : 'Select your Category' }}</p>
                                 <img src="../../assets/img/arrow_down.png">
                             </div>
@@ -55,7 +55,7 @@
                 <div formGroupName="assigned_to">
                     <div class="selection-container prevent-select">
                         <label>Assigned To</label>
-                        <div class="select-wrapper assigned-to-wrapper">
+                        <div class="select-wrapper assigned-to-wrapper" #handleASsignedToMenu>
                             <div class="postion-relative" *ngIf="assignedToMenu">
                                 <span>Select your members</span>
                                 <img class="category-accept category-member-selection"
@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="sector-top" *ngIf="!assignedToMenu" (click)="toggleAssignedToMenu()">
+                            <div class="sector-top" *ngIf="!assignedToMenu" (click)="toggleAssignedToMenu($event)">
                                 <p>{{ feedbackMessageMembers }}</p><img src="../../assets/img/arrow_down.png">
                             </div>
                         </div>

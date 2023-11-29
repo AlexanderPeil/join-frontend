@@ -16,8 +16,10 @@ export class TodoService {
 
   createTodo(todoData: TodoData) {
     const url = environment.baseUrl + '/tasks/';
-    const body = { todoData };
-    return lastValueFrom(this.http.post<TodoData>(url, body));
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.post<TodoData>(url, todoData, {headers: headers}));
   }
 
 

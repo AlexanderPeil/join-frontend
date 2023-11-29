@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { TodoService } from 'src/app/shared/services/todo.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
@@ -13,6 +13,8 @@ import { ContactService } from 'src/app/shared/services/contact.service';
   styleUrls: ['./add-task.component.scss']
 })
 export class AddTaskComponent implements OnInit {
+  @ViewChild('handleCategoryMenu') handleCategoryMenu!: ElementRef;
+  @ViewChild('handleASsignedToMenu') handleASsignedToMenu!: ElementRef;
   todoForm!: FormGroup;
   tasks: TodoData[] = [];
   categories: CategoryData[] = [];
@@ -143,19 +145,25 @@ export class AddTaskComponent implements OnInit {
 
 
   onSubmitAndNavigate() {
-
+    this.onSubmit();
+    this.router.navigate(['/board']);
   }
 
 
-  // @HostListener('document:click', ['$event'])
-  // onClick(event: MouseEvent) {
-  //   if (!this.elRef.nativeElement.contains(event.target) && this.categoryMenu) {
-  //     this.categoryMenu = false;
-  //   }
-  // }
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    if (this.categoryMenu && !this.handleCategoryMenu.nativeElement.contains(event.target)) {     
+      this.categoryMenu = false;
+    }
 
+    if (this.assignedToMenu && !this.handleASsignedToMenu.nativeElement.contains(event.target)) {
+      this.assignedToMenu = false;
+    }
+  }
+  
 
-  toggleCategoryMenu() {
+  toggleCategoryMenu(event: Event) {
+    event.stopPropagation();
     this.categoryMenu = !this.categoryMenu;
   }
 
@@ -188,7 +196,6 @@ export class AddTaskComponent implements OnInit {
       };
       // this.saveCategory(newCategory);
       this.selectedCategory = newCategory;
-      this.toggleCategoryMenu();
     } else {
       console.error('Please select a category and a color.');
     }
@@ -232,13 +239,13 @@ export class AddTaskComponent implements OnInit {
   cancelSelection() {
     const assignedTo = this.todoForm.get('assigned_to') as FormArray;
     assignedTo.clear(); 
-    this.toggleAssignedToMenu(); 
+    this.assignedToMenu = false;
   }
   
 
 
   membersSelected() {
-    this.toggleAssignedToMenu();
+    // this.toggleAssignedToMenu();
     this.feedbackMessageMembers = 'Members selected';
     setTimeout(() => {
       this.feedbackMessageMembers = 'Select your Members';
@@ -246,7 +253,8 @@ export class AddTaskComponent implements OnInit {
   }
 
 
-  toggleAssignedToMenu() {
+  toggleAssignedToMenu(event: Event) {
+    event.stopPropagation();
     this.assignedToMenu = !this.assignedToMenu;
   }
 
