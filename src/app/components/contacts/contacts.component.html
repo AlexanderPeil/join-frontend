@@ -62,7 +62,7 @@
                     <h4>Phone</h4>
                     <a class="contact-phone" [href]="'tel:' + selectedContact.phone">{{ selectedContact.phone }}</a>
                 </div>
-                <div class="delete-contact" (click)="deleteContact(selectedContact)">
+                <div class="delete-contact" (click)="deleteContact(selectedContact.id)">
                 </div>
             </div>
         </section>

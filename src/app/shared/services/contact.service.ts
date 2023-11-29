@@ -29,8 +29,12 @@ export class ContactService {
   }
 
 
-  deleteContact() {
-
+  deleteContact(contactId: number) {
+    const url = `${environment.baseUrl}/contacts/${contactId}/`;
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.delete<ContactData>(url, { headers: headers }));
   }
 
 

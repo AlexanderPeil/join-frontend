@@ -85,9 +85,16 @@ export class ContactsComponent implements OnInit {
 
 
 
-  deleteContact(arg0: ContactData) {
-
+  async deleteContact(contactId: number) {
+    if (contactId) {
+      try {
+        await this.contService.deleteContact(contactId);
+        this.initAllContacts();
+        this.selectedContact = null;
+      } catch (err) {
+        console.error(err);
+      }
+    }
   }
-
 
 }
