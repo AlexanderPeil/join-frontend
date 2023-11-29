@@ -6,6 +6,7 @@ import { SummaryComponent } from './components/summary/summary.component';
 import { BoardComponent } from './components/board/board.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { AddTaskComponent } from './components/add-task/add-task.component';
+import { DialogEditContactComponent } from './components/dialog-edit-contact/dialog-edit-contact.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -13,8 +14,9 @@ const routes: Routes = [
   { path: 'signup', component: SignUpComponent },
   { path: 'summary', component: SummaryComponent },
   { path: 'board', component: BoardComponent },
-  { path: 'contact', component: ContactsComponent },
+  { path: 'contacts', component: ContactsComponent },
   { path: 'add-task', component: AddTaskComponent },
+  // { path: 'edit-contact', component: DialogEditContactComponent },
 ];
 
 @NgModule({

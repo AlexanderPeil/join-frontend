@@ -1,0 +1,226 @@
+@import '../../shared/variables.scss';
+
+.add-contact-content {
+    @include flex_center;
+    @include width_height(100vw, 100vh);
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    overflow-y: auto;
+}
+
+.add-contact-menu {
+    @include justify_content_center;
+    width: 1000px; 
+    position: relative;
+    z-index: 999;
+    overflow-y: auto;
+    max-height: 100vh; 
+    overflow-x: hidden;
+}
+
+.contact-input-container {
+    @include flex_direction_column;
+    gap: 52px;
+    padding: 30px;
+    width: 452px;
+}
+
+h1 {
+    @include font_size_weight(36px, 700);
+}
+
+form {
+    @include flex_direction_column;
+    gap: 20px;
+
+    button:not([disabled]):hover {
+        background-color: $main_color_bright;
+        box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px;
+    }
+
+    button[disabled] {
+        cursor: not-allowed;
+        pointer-events: none;
+        filter: contrast(0.5);
+    }
+
+    button {
+        @include align_items_center;
+        @include font_size_weight(14px, 700);
+        @include button_hover;
+        @include width_height(170px, 60px);
+        @include margin_left_right(auto, 20px);
+        justify-content: space-evenly;
+        color: white;
+        background-color: #2A3647;
+        padding: 5px 10px 5px 10px;
+        gap: 8px;
+        border: none;
+        border-radius: 8px;
+        letter-spacing: 0.5px;
+
+        img {
+            width: 18px;
+        }
+    }
+}
+
+input {
+    @include align_items_center;
+    @include width_height(422px, 51px);
+    @include font_size_weight(21px, 400);
+    gap: 10px;
+    border-radius: 10px;
+    border: 1px solid #D1D1D1;
+    padding: 13px 21px;
+    box-sizing: border-box;
+    background-color: white;
+    outline: none;
+}
+
+.close-popup-mobile {
+    display: none;
+}
+
+.contact-form-left {
+    @include colum_justify_center;
+    background-color: $main_color_dark;
+    color: white;
+    padding: 30px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+
+    .contact-form-logo {
+        @include width_height(60px, 60px);
+        padding: 0px 0px 30px 0px;
+    }
+
+    .contact-form-underline {
+        width: 70px;
+    }
+}
+
+.contact-form-right {
+    @include align_items_center;
+    background-color: white;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    .user-icon {
+        @include width_height(90px, 90px);
+        margin-right: -10px;
+        padding-left: 20px
+    }
+}
+
+.icon-top-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.close {
+    @include button_hover;
+    padding: 10px;
+    height: 25px;
+    border-radius: 8px;
+
+    &:hover {
+        background-color: #94d5f0;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+}
+
+.p-none {
+    @include width_height(70px, 45px);
+    padding: 0px !important;
+    border: none;
+    cursor: pointer;
+}
+
+.contact-popup-bottom {
+    @include align_items_center;
+    justify-content: space-around;
+}
+
+.bg-dark {
+    background: darkgray !important;
+}
+
+@media(max-width: 1000px) {
+    .add-contact-menu {
+        flex-direction: column;
+        width: 400px;
+    }
+
+    .contact-form-left {
+        align-items: center;
+    }
+
+    .icon-top-right {
+        cursor: pointer;
+        position: absolute;
+        padding: 20px;
+        top: 0;
+        right: 0;
+        border-top-right-radius: 30px;
+    }
+
+    .close {
+        display: none;
+    }
+
+    input {
+        width: unset;
+    }
+
+    .close-popup-mobile {
+        @include button_hover;
+        padding: 10px;
+        height: 25px;
+        border-radius: 8px;
+        display: block;
+
+        &:hover {
+            background-color: #94d5f0;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+    }
+
+    .contact-form-left {
+        @include column_center;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: unset;
+        padding-bottom: 52px;
+    }
+
+    .contact-form-right {
+        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-top-right-radius: unset;
+        text-align: center;
+        flex-direction: column;
+        padding-top: 40px;
+    }
+
+    .user-icon {
+        margin-top: -80px;
+        margin-right: unset;
+        padding: unset !important;
+        margin-right: unset !important;
+    }
+
+    .contact-input-container {
+        width: unset;
+    }
+}
+
+@media(max-width:450px) {
+
+    .add-contact-menu {
+        width: 98%;
+    }
+}

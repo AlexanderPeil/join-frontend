@@ -22,6 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { HttpClientModule } from '@angular/common/http';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { HttpClientModule } from '@angular/common/http';
     CdkDropList,
     CdkDrag,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatDialogModule 
   ],
   providers: [],
   bootstrap: [AppComponent]

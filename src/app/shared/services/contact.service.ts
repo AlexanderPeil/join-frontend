@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
+import { Observable, lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ContactData } from '../todo-interface';
@@ -8,7 +8,6 @@ import { ContactData } from '../todo-interface';
   providedIn: 'root'
 })
 export class ContactService {
-
   constructor(private http: HttpClient) { }
 
 
@@ -17,8 +16,12 @@ export class ContactService {
   }
 
 
-  editContacts() {
-
+  updateContact(contactId: string, updatedContact: ContactData) {
+    const url = `${environment.baseUrl}/contacts/${contactId}/`;
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}` 
+    });
+    return lastValueFrom(this.http.patch<ContactData>(url, updatedContact, { headers: headers }));
   }
 
 
@@ -32,7 +35,16 @@ export class ContactService {
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
-    return lastValueFrom(this.http.get<ContactData[]>(url, { headers }))
+    return lastValueFrom(this.http.get<ContactData[]>(url, { headers: headers }))
   }
+
+
+  getContactById(id: number): Promise<ContactData> {
+    const url = `${environment.baseUrl}/contacts/${id}/`;
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.get<ContactData>(url, { headers }));
+  }  
 
 }

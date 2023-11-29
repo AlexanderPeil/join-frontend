@@ -1,1 +1,74 @@
-<p>contacts works!</p>
+<app-header></app-header>
+<app-nav-bar></app-nav-bar>
+
+<div class="overflow">
+    <main class="contacts-main-container">
+        <!-- Content - left side -->
+        <section class="contact-list-container">
+            <div>
+                <div class="contact-list">
+                    <!-- <ng-container *ngFor="let letter of uniqueLetters">
+                        <h2 class="contact-index">{{ letter }}</h2>
+                        <div class="contact-underline"></div> -->
+                        <ng-container *ngFor="let contact of contacts">
+                            <div class="contact-list-box" *ngIf="contact.lastname.charAt(0).toUpperCase()"
+                                (click)="selectContact(contact)">
+                                <div class="contact-letters small-letters" [style.background-color]="contact.color">
+                                    {{ contact.lastname.charAt(0).toUpperCase()}}{{
+                                    contact.firstname.charAt(0).toUpperCase() }}
+                                </div>
+                                <div class="contact-details">
+                                    <div class="contact-name">{{ contact.lastname }} {{ contact.firstname }}</div>
+                                    <div class="contact-email">{{ contact.email }}</div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    <!-- </ng-container> -->
+                </div>
+            </div>
+        </section>
+        <!-- Content - right side -->
+
+        <section class="right-section">
+            <div class="contact-header-container">
+                <h1 class="contact-header">Contacts</h1>
+                <div class="contact-header-seperator"></div>
+                <h2 class="contact-header-slogan">Better with a team</h2>
+            </div>
+            <div class="contact-selected" *ngIf="selectedContact"
+                class="contact-selection-container contact-selection-overlay edit-contact">
+                <div class="contact-selection">
+                    <div class="contact-letters big-letters" [style.background-color]="selectedContact.color">
+                        {{ selectedContact.lastname.charAt(0).toUpperCase() }}{{
+                        selectedContact.firstname.charAt(0).toUpperCase()
+                        }}
+                    </div>
+                    <div>
+                        <div class="contact-information-name">{{ selectedContact.lastname }} {{
+                            selectedContact.firstname }}
+                        </div>
+                        <div class="contact-add-task" [routerLink]="['/add-task-menu', '', selectedContact.id]">+ Add Task</div>
+                    </div>
+                </div>
+                <div class="contact-information-title">
+                    <p>Contact Information</p>
+                    <a class="contact-edit" (click)="editContact(selectedContact.id)"></a>
+                </div>
+                <div>
+                    <h4>Email</h4>
+                    <a class="contact-email" [href]="'mailto:' + selectedContact.email ">{{ selectedContact.email }}</a>
+                </div>
+                <div>
+                    <h4>Phone</h4>
+                    <a class="contact-phone" [href]="'tel:' + selectedContact.phone">{{ selectedContact.phone }}</a>
+                </div>
+                <div class="delete-contact" (click)="deleteContact(selectedContact)">
+                </div>
+            </div>
+        </section>
+        <button routerLink="/add-contact" class="contact-add-btn contact-btn-position">
+            <p>New Contact</p>
+            <img class="contact-btn-icon" src="./assets/img/add_contact.png">
+        </button>
+    </main>
+</div>

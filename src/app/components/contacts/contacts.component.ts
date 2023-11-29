@@ -1,10 +1,80 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interface';
+import { ContactService } from 'src/app/shared/services/contact.service';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DialogEditContactComponent } from '../dialog-edit-contact/dialog-edit-contact.component';
 
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss']
 })
-export class ContactsComponent {
+export class ContactsComponent implements OnInit {
+  contacts: ContactData[] = [];
+  selectedContact: ContactData | null = null;
+
+  constructor(
+    private contService: ContactService,
+    private fb: FormBuilder,
+    public dialog: MatDialog,
+    private router: Router,
+  ) { }
+
+
+
+  ngOnInit(): void {
+    this.initAllContacts();
+  }
+
+
+  async initAllContacts() {
+    try {
+      this.contacts = await this.contService.loadAllContacts();
+    } catch (err) {
+      console.error('Could not load contacts in add-task.comp', err);
+    }
+  }
+
+
+  selectContact(contact: ContactData) {
+    this.selectedContact = contact;
+  }
+
+
+  editContact(contactId: number) {
+    const dialogRef = this.dialog.open(DialogEditContactComponent, {
+      data: { contactId: contactId }
+    });
+    dialogRef.afterClosed().subscribe(updatedContact => {
+      if (updatedContact) {
+        this.updateContactInList(updatedContact);
+        this.updateSelectedContact(updatedContact);
+      }
+    });
+  }
+
+
+  updateSelectedContact(updatedContact: ContactData) {
+    if (this.selectedContact && this.selectedContact.id === updatedContact.id) {
+      this.selectedContact = updatedContact;
+    }
+  }
+
+
+  updateContactInList(updatedContact: ContactData) {
+    const index = this.contacts.findIndex(contact => contact.id === updatedContact.id);
+    if (index !== -1) {
+      this.contacts[index] = updatedContact;
+    }
+  }
+
+
+
+  deleteContact(arg0: ContactData) {
+
+  }
+
 
 }

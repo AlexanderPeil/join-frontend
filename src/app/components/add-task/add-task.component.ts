@@ -1,7 +1,7 @@
 import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { TodoService } from 'src/app/shared/services/todo.service';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ContactService } from 'src/app/shared/services/contact.service';
