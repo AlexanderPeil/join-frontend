@@ -1,7 +1,7 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { TodoService } from 'src/app/shared/services/todo.service';
 import { Router } from '@angular/router';
-import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ContactService } from 'src/app/shared/services/contact.service';
@@ -16,6 +16,7 @@ export class AddTaskComponent implements OnInit {
   @ViewChild('handleCategoryMenu') handleCategoryMenu!: ElementRef;
   @ViewChild('handleASsignedToMenu') handleASsignedToMenu!: ElementRef;
   todoForm!: FormGroup;
+  categoryForm!: FormGroup;
   tasks: TodoData[] = [];
   categories: CategoryData[] = [];
   contacts: ContactData[] = [];
@@ -32,7 +33,7 @@ export class AddTaskComponent implements OnInit {
   feedbackMessageMembers = 'Select your Members';
   createdSubtasks: string[] = [];
   loading: boolean = false;
-  newSubtaskTitle = ''; 
+  newSubtaskTitle = '';
 
 
   constructor(
@@ -47,9 +48,17 @@ export class AddTaskComponent implements OnInit {
 
   ngOnInit() {
     this.initFormGroup();
+    this.initCategoryGroup();
     this.initAllTasks();
     this.initAllCategories();
     this.initAllContacts();
+  }
+
+  initCategoryGroup() {
+    this.categoryForm = this.fb.group({
+      name: ['', Validators.required],
+      color: ['', Validators.required]
+    })
   }
 
 
@@ -58,10 +67,7 @@ export class AddTaskComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', Validators.required],
       due_date: ['', Validators.required],
-      category: this.fb.group({
-        name: ['', Validators.required],
-        color: ''
-      }),
+      category: ['', Validators.required],
       priority: 'medium',
       status: 'todo',
       assigned_to: this.fb.array([], Validators.required),
@@ -107,7 +113,7 @@ export class AddTaskComponent implements OnInit {
     this.prioMedium = priority === 'medium';
     this.prioLow = priority === 'low';
   }
-  
+
 
 
   addSubtask(subtaskTitle: string) {
@@ -136,7 +142,6 @@ export class AddTaskComponent implements OnInit {
       try {
         const formData: TodoData = this.todoForm.value;
         await this.ts.createTodo(formData);
-        this.router.navigateByUrl('/summary');
       } catch (err) {
         console.error(err);
       }
@@ -145,14 +150,14 @@ export class AddTaskComponent implements OnInit {
 
 
   onSubmitAndNavigate() {
-    this.onSubmit();
-    this.router.navigate(['/board']);
+    // this.onSubmit();
+    // this.router.navigate(['/board']);
   }
 
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
-    if (this.categoryMenu && !this.handleCategoryMenu.nativeElement.contains(event.target)) {     
+    if (this.categoryMenu && !this.handleCategoryMenu.nativeElement.contains(event.target)) {
       this.categoryMenu = false;
     }
 
@@ -160,7 +165,7 @@ export class AddTaskComponent implements OnInit {
       this.assignedToMenu = false;
     }
   }
-  
+
 
   toggleCategoryMenu(event: Event) {
     event.stopPropagation();
@@ -173,12 +178,16 @@ export class AddTaskComponent implements OnInit {
     this.categoryMenu = false;
   }
 
+  createCategory() {
+    // create category in db
+    // this.scrumCat.create(this.categoryForm.value);
+  }
+
 
   clickOnCategory(cat: CategoryData) {
-    const categoryForm = this.todoForm.get('category') as FormGroup;
+    const categoryForm = this.todoForm.get('category') as FormControl;
     if (categoryForm) {
-      categoryForm.get('name')!.setValue(cat.name);
-      categoryForm.get('color')!.setValue(cat.color);
+      categoryForm.setValue(cat.id);
       this.selectedCategory = cat;
       this.categoryMenu = false;
     }
@@ -186,7 +195,7 @@ export class AddTaskComponent implements OnInit {
 
 
   categorySelected() {
-    let categoryValue = this.todoForm.get('category.category')?.value;
+    let categoryValue = this.todoForm.get('category.name')?.value;
     let colorValue = this.todoForm.get('category.color')?.value;
 
     if (categoryValue && colorValue) {
@@ -194,58 +203,41 @@ export class AddTaskComponent implements OnInit {
         name: categoryValue,
         color: colorValue
       };
-      // this.saveCategory(newCategory);
       this.selectedCategory = newCategory;
     } else {
       console.error('Please select a category and a color.');
     }
   }
 
-
   selectContact(contact: ContactData) {
     const assignedTo = this.todoForm.get('assigned_to') as FormArray;
 
     if (this.isSelected(contact)) {
-      const index = assignedTo.controls.findIndex((control) => {
-        const assignedContact = control.value as ContactData;
-        return (
-          assignedContact.firstname === contact.firstname &&
-          assignedContact.lastname === contact.lastname
-        );
-      });
-
+      const index = assignedTo.controls.findIndex(control => control.value === contact.id);
       if (index !== -1) {
         assignedTo.removeAt(index);
       }
     } else {
-      assignedTo.push(this.fb.group(contact));
+      assignedTo.push(this.fb.control(contact.id));
     }
   }
 
 
-
-  isSelected(contact: ContactData): boolean {
+  isSelected(contact: ContactData) {
     const assignedTo = this.todoForm.get('assigned_to') as FormArray;
-    return assignedTo.controls.some((control) => {
-      const assignedContact = control.value as ContactData;
-      return (
-        assignedContact.firstname === contact.firstname &&
-        assignedContact.lastname === contact.lastname
-      );
-    });
+    return assignedTo.controls.some(control => control.value === contact.id);
   }
 
 
   cancelSelection() {
     const assignedTo = this.todoForm.get('assigned_to') as FormArray;
-    assignedTo.clear(); 
+    assignedTo.clear();
     this.assignedToMenu = false;
   }
-  
 
 
   membersSelected() {
-    // this.toggleAssignedToMenu();
+    this.assignedToMenu = false;
     this.feedbackMessageMembers = 'Members selected';
     setTimeout(() => {
       this.feedbackMessageMembers = 'Select your Members';
