@@ -13,6 +13,7 @@ import { TodoData } from 'src/app/shared/todo-interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskMenuComponent } from '../task-menu/task-menu.component';
+import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.component';
 
 type TodoStatus = 'todo' | 'awaiting_feedback' | 'in_progress' | 'done';
 
@@ -147,6 +148,13 @@ export class BoardComponent implements OnInit {
       if (result) {
         this.initAllTasks();
       }
+    });
+  }
+
+
+  openDialogAddTask() {
+    const dialogRef = this.dialog.open(DialogAddTaskComponent, {
+      // data: { taskId: taskId }
     });
   }
 

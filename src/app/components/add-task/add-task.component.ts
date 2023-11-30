@@ -42,6 +42,7 @@ export class AddTaskComponent implements OnInit {
     private contService: ContactService,
     private fb: FormBuilder,
     private router: Router) {
+    this.minDate = new Date().toISOString().split('T')[0];
   }
 
 
@@ -52,6 +53,7 @@ export class AddTaskComponent implements OnInit {
     this.initAllCategories();
     this.initAllContacts();
   }
+
 
   initCategoryGroup() {
     this.categoryForm = this.fb.group({
