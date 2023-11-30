@@ -28,7 +28,8 @@
                 <div cdkDropList id="todoList" [cdkDropListData]="todo"
                     [cdkDropListConnectedTo]="['inProgressList', 'awaitingFeedbackList', 'doneList']"
                     class="example-list" (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let task of todo" cdkDrag>
+                    <div class="example-box" *ngFor="let task of todo" (mousedown)="onMousedown($event)"
+                    (mouseup)="onMouseup($event, task.id)" cdkDrag>
                         <div class="card-head" [style.background-color]="task.category.color">{{ task.category.name }}
                         </div>
                         <div class="card-body">
@@ -61,7 +62,8 @@
                 <div cdkDropList id="inProgressList" [cdkDropListData]="inProgress"
                     [cdkDropListConnectedTo]="['todoList', 'awaitingFeedbackList', 'doneList']" class="example-list"
                     (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let task of inProgress" cdkDrag>
+                    <div class="example-box" *ngFor="let task of inProgress" (mousedown)="onMousedown($event)"
+                    (mouseup)="onMouseup($event, task.id)" cdkDrag>
                         <div class="card-head" [style.background-color]="task.category.color">{{ task.category.name }}
                         </div>
                         <div class="card-body">
@@ -93,7 +95,8 @@
                 <div cdkDropList id="awaitingFeedbackList" [cdkDropListData]="awaitingFeedback"
                     [cdkDropListConnectedTo]="['todoList', 'inProgressList', 'doneList']" class="example-list"
                     (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let task of awaitingFeedback" cdkDrag>
+                    <div class="example-box" *ngFor="let task of awaitingFeedback" (mousedown)="onMousedown($event)"
+                    (mouseup)="onMouseup($event, task.id)" cdkDrag>
                         <div class="card-head" [style.background-color]="task.category.color">{{ task.category.name }}
                         </div>
                         <div class="card-body">
@@ -125,7 +128,8 @@
                 <div cdkDropList id="doneList" [cdkDropListData]="done"
                     [cdkDropListConnectedTo]="['todoList', 'inProgressList', 'awaitingFeedbackList']"
                     class="example-list" (cdkDropListDropped)="drop($event)">
-                    <div class="example-box" *ngFor="let task of done" cdkDrag>
+                    <div class="example-box" *ngFor="let task of done" (mousedown)="onMousedown($event)"
+                    (mouseup)="onMouseup($event, task.id)" cdkDrag>
                         <div class="card-head" [style.background-color]="task.category.color">{{ task.category.name }}
                         </div>
                         <div class="card-body">

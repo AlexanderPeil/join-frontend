@@ -11,6 +11,8 @@ import { AuthService } from "../../shared/services/auth.service";
 import { TodoService } from 'src/app/shared/services/todo.service';
 import { TodoData } from 'src/app/shared/todo-interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { TaskMenuComponent } from '../task-menu/task-menu.component';
 
 type TodoStatus = 'todo' | 'awaiting_feedback' | 'in_progress' | 'done';
 
@@ -27,12 +29,14 @@ export class BoardComponent implements OnInit {
   awaitingFeedback: TodoData[] = [];
   done: TodoData[] = [];
   todoForm!: FormGroup;
+  mousedownTime: number | undefined;
   
 
 
   constructor(
     private ts: TodoService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    public dialog: MatDialog) { }
 
 
   ngOnInit(): void {
@@ -113,6 +117,36 @@ export class BoardComponent implements OnInit {
       status: ('todo'),
       assigned_to: this.fb.array([], Validators.required),
       subtasks: this.fb.array([])
+    });
+  }
+
+
+  onMousedown(event: MouseEvent) {
+    if (event.button === 0) {
+      this.mousedownTime = event.timeStamp;
+    }
+  }
+
+
+  onMouseup(event: MouseEvent, taskId: number) {    
+    if (event.button === 0) {
+      const elapsed = event.timeStamp - (this.mousedownTime ?? 0);
+      if (elapsed < 200) {        
+        this.navigateToTaskMenu(taskId);
+      }
+      this.mousedownTime = undefined;
+    }
+  }
+
+
+  navigateToTaskMenu(taskId: number) {
+    const dialogRef = this.dialog.open(TaskMenuComponent, {
+      data: { taskId: taskId }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.initAllTasks();
+      }
     });
   }
 

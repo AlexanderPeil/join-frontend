@@ -19,7 +19,7 @@ export class TodoService {
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
-    return lastValueFrom(this.http.post<TodoData>(url, todoData, {headers: headers}));
+    return lastValueFrom(this.http.post<TodoData>(url, todoData, { headers: headers }));
   }
 
 
@@ -32,8 +32,12 @@ export class TodoService {
   }
 
 
-  deleteTodo() {
-
+  deleteTask(taskId: number) {
+    const url = `${environment.baseUrl}/tasks/${taskId}/`;
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.delete<TodoData>(url, { headers: headers }));
   }
 
 
@@ -43,6 +47,15 @@ export class TodoService {
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
     return lastValueFrom(this.http.get<TodoData[]>(url, { headers: headers }));
+  }
+
+
+  getTaskById(id: number): Promise<TodoData> {
+    const url = `${environment.baseUrl}/tasks/${id}/`;
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.get<TodoData>(url, { headers }));
   }
 
 }

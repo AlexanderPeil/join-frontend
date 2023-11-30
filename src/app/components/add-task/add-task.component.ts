@@ -41,8 +41,7 @@ export class AddTaskComponent implements OnInit {
     private catService: CategoryService,
     private contService: ContactService,
     private fb: FormBuilder,
-    private router: Router,
-    private elRef: ElementRef) {
+    private router: Router) {
   }
 
 
@@ -150,8 +149,8 @@ export class AddTaskComponent implements OnInit {
 
 
   onSubmitAndNavigate() {
-    // this.onSubmit();
-    // this.router.navigate(['/board']);
+    this.onSubmit();
+    this.router.navigate(['/board']);
   }
 
 

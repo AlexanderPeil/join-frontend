@@ -23,6 +23,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TaskMenuComponent } from './components/task-menu/task-menu.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     DialogEditTaskComponent,
     DialogEditContactComponent,
     AddTaskComponent,
+    TaskMenuComponent,
   ],
   imports: [
     BrowserModule,

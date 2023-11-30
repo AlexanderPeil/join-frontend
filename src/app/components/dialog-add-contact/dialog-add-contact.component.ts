@@ -45,4 +45,9 @@ export class DialogAddContactComponent implements OnInit {
     }
   }
 
+
+  closeDialogAddContact() {
+    this.dialogRef.close();
+  }
+
 }

@@ -1,0 +1,108 @@
+@import '../../shared/variables.scss';
+
+.card-task-content {
+    @include flex_center;
+    @include width_height(100vw, 100vh);
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    overflow-y: auto;
+}
+
+.card-task-container {
+    width: 423px;
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    padding: 50px;
+    overflow-y: scroll;
+}
+
+.task-column {
+    @include flex_direction_column;
+    gap: 10px;
+}
+
+.card-task-close {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    img {
+        height: 25px;
+        cursor: pointer;
+        padding: 10px;
+
+        &:hover {
+            background-color: #94d5f0;
+            border-radius: 10px;
+        }
+    }
+}
+
+.card-task-category {
+    @include align_items_center;
+    height: 25px;
+    width: fit-content;
+    padding: 5px 30px;
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+}
+
+.users {
+    @include colum_justify_center;
+}
+
+.circle {
+    @include flex_center;
+    @include width_height(40px, 40px);
+    border-radius: 100%;
+    color: white;
+    font-size: 0.8rem;
+    margin: 0;
+    margin-left: -5px;
+}
+
+.assigned-contact {
+    display: flex;
+}
+
+.card-task-bottom {
+    @include space_between_center;
+
+    a {
+        @include width_height(47px, 47px);
+        @include button_styles;
+        border-radius: 10px;
+        object-fit: contain;
+        background-image: url(/assets/img/edit.png);
+        background-repeat: no-repeat;
+        background-position: center;
+
+        &:hover {
+            background-image: url(/assets/img/edit_hover.png);
+        }
+    }
+
+    div {
+        @include button_hover;
+        @include width_height(50px, 60px);
+        object-fit: contain;
+        border-radius: 10px;
+        background-image: url(/assets/img/delete.png);
+        background-repeat: no-repeat;
+        background-position: center;
+    
+        &:hover {
+            background-image: url(/assets/img/delete_hover.png);
+        }
+    }
+}
+
+.prio-img {
+    padding-left: 10px;
+}

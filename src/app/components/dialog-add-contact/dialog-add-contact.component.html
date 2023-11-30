@@ -1,7 +1,4 @@
-<app-header></app-header>
-<app-nav-bar></app-nav-bar>
-
-<div class="add-contact-content" routerLink="/contacts">
+<div class="add-contact-content">
     <div class="add-contact-menu">
         <div class="contact-form-left">
             <img class="contact-form-logo" src="../../assets/img/join_logo_add_contact.png">
@@ -13,8 +10,8 @@
             <img class="user-icon" src="../../assets/img/contact_user_icon.png">
             <div class="contact-input-container">
                 <div class="icon-top-right">
-                    <img class="close-popup-mobile" src="../../assets/img/x_ixon.png" routerLink="/contacts">
-                    <img class="close" src="../../assets/img/xicon.svg" routerLink="/contacts"> 
+                    <img class="close-popup-mobile" src="../../assets/img/x_ixon.png" (click)="closeDialogAddContact()">
+                    <img class="close" src="../../assets/img/xicon.svg" (click)="closeDialogAddContact()"> 
                 </div>
                 <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
                     <!-- <label for="first-name"></label> -->
