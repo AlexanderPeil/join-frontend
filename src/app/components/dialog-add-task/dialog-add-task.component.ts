@@ -35,6 +35,7 @@ export class DialogAddTaskComponent implements OnInit {
   createdSubtasks: string[] = [];
   loading: boolean = false;
   newSubtaskTitle = '';
+  currentStatus!: string;
 
 
   constructor(
@@ -50,10 +51,25 @@ export class DialogAddTaskComponent implements OnInit {
 
 
   ngOnInit() {
+    this.getCurrentStatus();
     this.initFormGroup();
     this.initAllTasks();
     this.initAllCategories();
     this.initAllContacts();
+    this.initCategoryGroup();
+  }
+
+
+  initCategoryGroup() {
+    this.categoryForm = this.fb.group({
+      name: ['', Validators.required],
+      color: ['', Validators.required]
+    })
+  }
+
+
+  getCurrentStatus() {
+    this.currentStatus = this.data['status'];
   }
 
 
@@ -64,7 +80,7 @@ export class DialogAddTaskComponent implements OnInit {
       due_date: ['', Validators.required],
       category: ['', Validators.required],
       priority: 'medium',
-      status: 'todo',
+      status: this.currentStatus,
       assigned_to: this.fb.array([], Validators.required),
       subtasks: this.fb.array([])
     });
@@ -136,16 +152,12 @@ export class DialogAddTaskComponent implements OnInit {
       try {
         const formData: TodoData = this.todoForm.value;
         await this.ts.createTodo(formData);
+        this.dialogRef.close();
+        this.ts.notifyTaskUpdate();
       } catch (err) {
         console.error(err);
       }
     }
-  }
-
-
-  onSubmitAndNavigate() {
-    this.onSubmit();
-    this.router.navigate(['/board']);
   }
 
 

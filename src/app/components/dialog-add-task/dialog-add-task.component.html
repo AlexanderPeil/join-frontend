@@ -13,18 +13,20 @@
                     <input type="text" placeholder="Enter a title" formControlName="title">
                 </div>
 
-                <!--  Category section  -->
                 <div class="selection-container">
                     <label>Description</label>
                     <textarea placeholder="Enter a description" formControlName="description"></textarea>
+
+                    <!--  Category section  -->
                     <div class="selection-container prevent-select">
                         <label>Category</label>
-                        <div class="select-wrapper">
+                        <div class="select-wrapper" #handleCategoryMenu>
                             <div class="category-inputs" *ngIf="categoryMenu">
                                 <div [formGroup]="categoryForm">
                                     <input type="text" placeholder="Category Name" formControlName="name">
                                     <input class="color-picker" type="color" formControlName="color" value="#ff0000">
                                 </div>
+
                                 <img class="category-accept category-member-selection"
                                     src="../../assets/img/icon_check_subtask.svg" alt="category-accept"
                                     (click)="categorySelected()">
@@ -40,17 +42,18 @@
                                 </div>
                             </div>
                             <div class="sector-top" *ngIf="!categoryMenu" (click)="toggleCategoryMenu($event)">
-                                <p>{{ selectedCategory ? selectedCategory.category : 'Select your Category' }}</p>
+                                <p>{{ selectedCategory ? selectedCategory.name : 'Select your Category' }}</p>
                                 <img src="../../assets/img/arrow_down.png">
                             </div>
                         </div>
                     </div>
                     <!--  Category section  -->
 
+
                     <!--  Assigned To section  -->
                     <div class="selection-container prevent-select">
                         <label>Assigned To</label>
-                        <div class="select-wrapper assigned-to-wrapper">
+                        <div class="select-wrapper assigned-to-wrapper" #handleASsignedToMenu>
                             <div class="postion-relative" *ngIf="assignedToMenu">
                                 <span>Select your members</span>
                                 <img class="category-accept category-member-selection"
@@ -127,8 +130,9 @@
                             <div class="btn-clear" (click)="onClear($event)">Clear<img class="clear-img"
                                     src="assets/img/iconoir_cancel.png">
                             </div>
-                            <div><Button class="btn-createTask" (click)="onSubmitAndNavigate()">Create Task<img
-                                        src="assets/img/icons_check.png"></Button>
+                            <div>
+                                <button class="btn-createTask">Create Task<img
+                                        src="assets/img/icons_check.png"></button>
                             </div>
                         </div>
                     </div>

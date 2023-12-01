@@ -1,19 +1,7 @@
 @import '../../shared/variables.scss';
 
-.add-contact-content {
-    @include flex_center;
-    @include width_height(100vw, 100vh);
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    overflow-y: auto;
-}
-
 .add-contact-menu {
     @include justify_content_center;
-    width: 1000px; 
     position: relative;
     z-index: 999;
     overflow-y: auto;

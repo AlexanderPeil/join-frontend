@@ -6,7 +6,7 @@
         <div class="headline-mobile d-none">Kanban Project Management Tool</div>
         <div class="board-add-task width">
             <h2>Board</h2>
-            <button class="add-task-btn-mobile d-none" (click)="openDialogAddTask()">+</button>
+            <button class="add-task-btn-mobile d-none" (click)="openDialogAddTask('todo')">+</button>
         </div>
         <div class="search-container">
             <div class="search-box">
@@ -14,7 +14,7 @@
                 <div class="dividing-line"></div>
                 <div class="search-icon"><img src="assets/img/magnifier.png"></div>
             </div>
-            <button class="add-task hide-add-task" (click)="openDialogAddTask()">Add Task +</button>
+            <button class="add-task hide-add-task" (click)="openDialogAddTask('todo')">Add Task +</button>
         </div>
     </div>
 
@@ -23,7 +23,7 @@
             <div class="example-container">
                 <div class="status">
                     <h2>To do</h2>
-                    <button class="add-task" (click)="openDialogAddTask()">+</button>
+                    <button class="add-task" (click)="openDialogAddTask('todo')">+</button>
                 </div>
                 <div cdkDropList id="todoList" [cdkDropListData]="todo"
                     [cdkDropListConnectedTo]="['inProgressList', 'awaitingFeedbackList', 'doneList']"
@@ -57,7 +57,7 @@
             <div class="example-container">
                 <div class="status">
                     <h2>In Progress</h2>
-                    <button class="add-task" (click)="openDialogAddTask()">+</button>
+                    <button class="add-task" (click)="openDialogAddTask('in_progress')">+</button>
                 </div>
                 <div cdkDropList id="inProgressList" [cdkDropListData]="inProgress"
                     [cdkDropListConnectedTo]="['todoList', 'awaitingFeedbackList', 'doneList']" class="example-list"
@@ -90,7 +90,7 @@
             <div class="example-container">
                 <div class="status">
                     <h2>Awaitng Feedback</h2>
-                    <button class="add-task" (click)="openDialogAddTask()">+</button>
+                    <button class="add-task" (click)="openDialogAddTask('awaiting_feedback')">+</button>
                 </div>
                 <div cdkDropList id="awaitingFeedbackList" [cdkDropListData]="awaitingFeedback"
                     [cdkDropListConnectedTo]="['todoList', 'inProgressList', 'doneList']" class="example-list"
@@ -123,7 +123,7 @@
             <div class="example-container">
                 <div class="status">
                     <h2>Done</h2>
-                    <button class="add-task" (click)="openDialogAddTask()">+</button>
+                    <button class="add-task" (click)="openDialogAddTask('done')">+</button>
                 </div>
                 <div cdkDropList id="doneList" [cdkDropListData]="done"
                     [cdkDropListConnectedTo]="['todoList', 'inProgressList', 'awaitingFeedbackList']"

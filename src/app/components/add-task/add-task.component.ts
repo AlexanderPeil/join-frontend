@@ -143,6 +143,7 @@ export class AddTaskComponent implements OnInit {
       try {
         const formData: TodoData = this.todoForm.value;
         await this.ts.createTodo(formData);
+        this.router.navigate(['/board']);
       } catch (err) {
         console.error(err);
       }
@@ -152,7 +153,6 @@ export class AddTaskComponent implements OnInit {
 
   onSubmitAndNavigate() {
     this.onSubmit();
-    this.router.navigate(['/board']);
   }
 
 

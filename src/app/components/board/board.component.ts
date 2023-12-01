@@ -157,9 +157,9 @@ export class BoardComponent implements OnInit {
   }
 
 
-  openDialogAddTask() {
+  openDialogAddTask(status: string) {
     const dialogRef = this.dialog.open(DialogAddTaskComponent, {
-      // data: { taskId: taskId }
+      data: { status: status }
     });
   }
 
