@@ -23,7 +23,8 @@ type TodoStatus = 'todo' | 'awaiting_feedback' | 'in_progress' | 'done';
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
-  tasks: TodoData[] = [];
+  searchTerm: string = '';
+  allTasks: TodoData[] = [];
   filteredTasks: TodoData[] | null = null;
   todo: TodoData[] = [];
   inProgress: TodoData[] = [];
@@ -31,18 +32,18 @@ export class BoardComponent implements OnInit {
   done: TodoData[] = [];
   todoForm!: FormGroup;
   mousedownTime: number | undefined;
-  
+
 
 
   constructor(
     private ts: TodoService,
     private fb: FormBuilder,
     public dialog: MatDialog) {
-      this.ts.getTaskUpdateListener().subscribe(() => {
-        this.initAllTasks();
-      });
-    
-     }
+    this.ts.getTaskUpdateListener().subscribe(() => {
+      this.initAllTasks();
+    });
+
+  }
 
 
   ngOnInit(): void {
@@ -53,13 +54,30 @@ export class BoardComponent implements OnInit {
   async initAllTasks() {
     try {
       const allTasks = await this.ts.getAllTodos();
-      console.log(allTasks);
-      this.todo = allTasks.filter(task => task.status === 'todo');
-      this.inProgress = allTasks.filter(task => task.status === 'in_progress');
-      this.awaitingFeedback = allTasks.filter(task => task.status === 'awaiting_feedback');
-      this.done = allTasks.filter(task => task.status === 'done');
+      this.allTasks = allTasks;
+      this.filterTasks();
     } catch (err) {
       console.error('Could not load tasks to board.', err);
+    }
+  }
+
+
+  filterTasks() {
+    if (!this.searchTerm) {
+      this.todo = this.allTasks.filter(task => task.status === 'todo');
+      this.inProgress = this.allTasks.filter(task => task.status === 'in_progress');
+      this.awaitingFeedback = this.allTasks.filter(task => task.status === 'awaiting_feedback');
+      this.done = this.allTasks.filter(task => task.status === 'done');
+
+    } else {
+      this.filteredTasks = this.allTasks.filter(task =>
+        task.title.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        task.description.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+      this.todo = this.filteredTasks.filter(task => task.status === 'todo');
+      this.inProgress = this.filteredTasks.filter(task => task.status === 'in_progress');
+      this.awaitingFeedback = this.filteredTasks.filter(task => task.status === 'awaiting_feedback');
+      this.done = this.filteredTasks.filter(task => task.status === 'done');
     }
   }
 
@@ -99,7 +117,7 @@ export class BoardComponent implements OnInit {
 
   async updateStatus(todoId: number, newStatus: TodoStatus) {
     try {
-      const updatedData: Partial<TodoData>  = { status: newStatus };
+      const updatedData: Partial<TodoData> = { status: newStatus };
       await this.ts.updateTodo(todoId, updatedData);
     } catch (err) {
       console.error('Could not update task-status:', err);
@@ -134,10 +152,10 @@ export class BoardComponent implements OnInit {
   }
 
 
-  onMouseup(event: MouseEvent, taskId: number) {    
+  onMouseup(event: MouseEvent, taskId: number) {
     if (event.button === 0) {
       const elapsed = event.timeStamp - (this.mousedownTime ?? 0);
-      if (elapsed < 200) {        
+      if (elapsed < 200) {
         this.navigateToTaskMenu(taskId);
       }
       this.mousedownTime = undefined;
@@ -162,40 +180,5 @@ export class BoardComponent implements OnInit {
       data: { status: status }
     });
   }
-
-
-  // applyFilter(searchTerm: string) {
-  //   if (!searchTerm) {
-  //     this.filteredTasks = null;
-  //     return;
-  //   }
-  //   searchTerm = searchTerm.toLowerCase();
-  //   const allTasks = [...this.todo, ...this.inProgress, ...this.awaitingFeedback, ...this.done];
-  //   this.filteredTasks = allTasks.filter(task =>
-  //     task.title.toLowerCase().includes(searchTerm) ||
-  //     task.description.toLowerCase().includes(searchTerm)
-  //   );
-  // }
-
-
-  // getCurrentTasksForStatus(status: string): TodoData[] {
-  //   if (this.filteredTasks) {
-  //     return this.filteredTasks.filter(task => task.status === status);
-  //   }
-
-  //   switch (status) {
-  //     case 'todo':
-  //       return this.todo;
-  //     case 'in_progress':
-  //       return this.inProgress;
-  //     case 'awaiting_feedback':
-  //       return this.awaitingFeedback;
-  //     case 'done':
-  //       return this.done;
-  //     default:
-  //       return [];
-  //   }
-  // }
-
 
 }

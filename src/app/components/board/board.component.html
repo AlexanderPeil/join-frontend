@@ -10,7 +10,7 @@
         </div>
         <div class="search-container">
             <div class="search-box">
-                <!-- <input #searchInput type="text" placeholder="Find Task" (input)="applyFilter(searchInput.value)"> -->
+                <input #searchInput type="text" placeholder="Find Task"  [(ngModel)]="searchTerm" (keyup)="filterTasks()">
                 <div class="dividing-line"></div>
                 <div class="search-icon"><img src="assets/img/magnifier.png"></div>
             </div>
