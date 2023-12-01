@@ -37,7 +37,12 @@ export class BoardComponent implements OnInit {
   constructor(
     private ts: TodoService,
     private fb: FormBuilder,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog) {
+      this.ts.getTaskUpdateListener().subscribe(() => {
+        this.initAllTasks();
+      });
+    
+     }
 
 
   ngOnInit(): void {

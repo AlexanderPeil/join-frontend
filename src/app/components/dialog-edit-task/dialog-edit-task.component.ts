@@ -47,9 +47,18 @@ export class DialogEditTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.initFormGroup();
+    this.initCategoryGroup();
     this.loadtaskbyId();
     this.initAllCategories();
     this.initAllContacts();
+  }
+
+
+  initCategoryGroup() {
+    this.categoryForm = this.fb.group({
+      name: ['', Validators.required],
+      color: ['', Validators.required]
+    })
   }
 
 
@@ -76,11 +85,16 @@ export class DialogEditTaskComponent implements OnInit {
         title: task.title,
         description: task.description,
         due_date: task.due_date,
-        category: task.category,
+        category: task.category.id,
         priority: task.priority,
         status: task.status,
-        assigned_to: task.assigned_to,
+        // assigned_to: task.assigned_to.map(contact => contact.id),
         subtasks: task.subtasks
+      });
+      const assignedToFormArray = this.todoForm.get('assigned_to') as FormArray;
+      assignedToFormArray.clear();
+      task.assigned_to.forEach((contact) => {
+        assignedToFormArray.push(this.fb.control(contact.id));
       });
     } catch (err) {
       console.error(err);
@@ -143,7 +157,8 @@ export class DialogEditTaskComponent implements OnInit {
     if (this.todoForm.valid) {
       try {
         const formData: TodoData = this.todoForm.value;
-        await this.ts.createTodo(formData);
+        await this.ts.updateTodo(this.data.taskId, formData);
+        this.ts.notifyTaskUpdate();
       } catch (err) {
         console.error(err);
       }
@@ -153,7 +168,9 @@ export class DialogEditTaskComponent implements OnInit {
 
   onSubmitAndNavigate() {
     this.onSubmit();
-    this.dialogRef.close();
+    if (this.todoForm.valid) {
+      this.dialogRef.close();
+    }
   }
 
 

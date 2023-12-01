@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
+import { Subject, lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TodoData } from '../todo-interface';
@@ -10,6 +10,8 @@ import { TodoData } from '../todo-interface';
   providedIn: 'root'
 })
 export class TodoService {
+  taskUpdated = new Subject<void>();
+
 
   constructor(private http: HttpClient) { }
 
@@ -56,6 +58,16 @@ export class TodoService {
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
     return lastValueFrom(this.http.get<TodoData>(url, { headers }));
+  }
+
+
+  notifyTaskUpdate() {
+    this.taskUpdated.next();
+  }
+
+
+  getTaskUpdateListener() {
+    return this.taskUpdated.asObservable();
   }
 
 }
