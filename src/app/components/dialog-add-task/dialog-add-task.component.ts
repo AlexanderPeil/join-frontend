@@ -36,6 +36,7 @@ export class DialogAddTaskComponent implements OnInit {
   loading: boolean = false;
   newSubtaskTitle = '';
   currentStatus!: string;
+  currentContactId!: number; 
 
 
   constructor(
@@ -52,11 +53,13 @@ export class DialogAddTaskComponent implements OnInit {
 
   ngOnInit() {
     this.getCurrentStatus();
+    this.getContactId();
     this.initFormGroup();
     this.initAllTasks();
     this.initAllCategories();
     this.initAllContacts();
     this.initCategoryGroup();
+    this.preselectContact();
   }
 
 
@@ -69,7 +72,18 @@ export class DialogAddTaskComponent implements OnInit {
 
 
   getCurrentStatus() {
-    this.currentStatus = this.data['status'];
+    if (this.data.status) {
+      this.currentStatus = this.data.status;
+    } else {
+      this.currentStatus = 'todo';
+    }
+  }
+
+
+  getContactId() {
+    if (this.data.contactId) {
+      this.currentContactId = this.data.contactId;
+    }
   }
 
 
@@ -146,16 +160,14 @@ export class DialogAddTaskComponent implements OnInit {
   }
 
 
-
-  async onSubmit() {
-    if (this.todoForm.valid) {
-      try {
-        const formData: TodoData = this.todoForm.value;
-        await this.ts.createTodo(formData);
-        this.dialogRef.close();
-        this.ts.notifyTaskUpdate();
-      } catch (err) {
-        console.error(err);
+  preselectContact() {
+    if (this.currentContactId) {
+      const contactToPreselect = this.contacts.find(contact => contact.id === this.currentContactId);
+      if (contactToPreselect) {
+        this.selectContact(contactToPreselect);
+      } else {
+        const assignedTo = this.todoForm.get('assigned_to') as FormArray;
+        assignedTo.push(this.fb.control(this.currentContactId));
       }
     }
   }
@@ -264,6 +276,21 @@ export class DialogAddTaskComponent implements OnInit {
 
   onClear($event: MouseEvent) {
 
+  }
+
+
+  async onSubmit() {
+    if (this.todoForm.valid) {
+      try {
+        const formData: TodoData = this.todoForm.value;
+        await this.ts.createTodo(formData);
+        this.dialogRef.close();
+        this.router.navigate(['/board']);
+        this.ts.notifyTaskUpdate();
+      } catch (err) {
+        console.error(err);
+      }
+    }
   }
 
 }
