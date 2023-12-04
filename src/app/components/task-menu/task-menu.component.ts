@@ -27,7 +27,7 @@ export class TaskMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.initFormGroup();
-    this.loadtaskbyId();    
+    this.loadtaskbyId();
   }
 
 
@@ -49,7 +49,7 @@ export class TaskMenuComponent implements OnInit {
     try {
       const task = await this.ts.getTaskById(this.data.taskId);
       this.task = task;
-      console.log(this.task);      
+      console.log(this.task);
       this.todoForm.patchValue({
         title: task.title,
         description: task.description,
@@ -91,17 +91,16 @@ export class TaskMenuComponent implements OnInit {
   }
 
 
-  updateTaskStatus = (newStatus: 'todo' | 'in_progress' | 'awaiting_feedback' | 'done'): void => {
-    // if (this.task && this.statuses.includes(newStatus)) {
-    //   const updatedTask = { ...this.task, status: newStatus, id: this.task.id };
-    //   if (this.task && this.task.id) {
-    //     this.ts.updateTask(this.task.id, updatedTask).then(() => {
-    //       console.log('Task status updated successfully');
-    //     }).catch(error => {
-    //       console.error('Error updating task status:', error);
-    //     });
-    //   }
-    // }
+  async updateTaskStatus(newStatus: 'todo' | 'in_progress' | 'awaiting_feedback' | 'done') {
+    if (this.task && this.statuses.includes(newStatus)) {
+      try {
+        const updatedTask = { status: newStatus };
+        await this.ts.updateTodo(this.task.id, updatedTask);
+        this.ts.notifyTaskUpdate();
+      } catch (err) {
+        console.error('Error updating task status:', err);
+      }
+    }
   }
 
 

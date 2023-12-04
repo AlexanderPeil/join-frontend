@@ -7,23 +7,35 @@
         </div>
         <h2>{{ task.title }}</h2>
         <p>{{ task.description }}</p>
-        <div><strong>Due Date:</strong> {{ task.due_date }}</div>
-        <div><strong>Priority:</strong><img class="prio-img" [src]="getPriorityImage(task.priority)"></div>
-        <select [(ngModel)]="task.status" (change)="updateTaskStatus(task.status)">
-            <option *ngFor="let status of statuses" [value]="status">{{status}}</option>
-        </select>
-        <div *ngIf="task?.subtasks?.length">
-            <strong>Subtasks:</strong> {{ task.subtasks.join(', ') }}
-        </div>
-        <div class="users">
+        <div class="taskMiddleContent">
+            <div><strong>Due Date:</strong> {{ task.due_date }}</div>
+            <div><strong>Priority:</strong><img class="prio-img" [src]="getPriorityImage(task.priority)"></div>
             <div>
-                <div class="assigned-contact" *ngFor="let contact of task.assigned_to">
-                    <p class="circle" [style.background-color]="contact.color">
-                        {{ getInitials(contact.firstname, contact.lastname) }}
-                    </p>
-                    <p>
-                        {{ contact.firstname }} {{ contact.lastname }}
-                    </p>
+                <strong>Status:</strong>
+                <select class="currentStatus" [(ngModel)]="task.status" (change)="updateTaskStatus(task.status)">
+                    <option *ngFor="let status of statuses" [value]="status">{{status}}</option>
+                </select>
+            </div>
+            <div>
+                <strong>Assigned To:</strong>
+                <div class="users">
+                    <div>
+                        <div class="assigned-contact" *ngFor="let contact of task.assigned_to">
+                            <p class="circle" [style.background-color]="contact.color">
+                                {{ getInitials(contact.firstname, contact.lastname) }}
+                            </p>
+                            <p>
+                                {{ contact.firstname }} {{ contact.lastname }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <strong>Subtask:</strong>
+                <div *ngFor="let subtask of task.subtasks">
+                    <span>{{ subtask.title }}</span>
+                    <input type="checkbox" [checked]="subtask.check">
                 </div>
             </div>
         </div>
