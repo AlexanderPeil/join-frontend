@@ -34,6 +34,16 @@ export class TodoService {
   }
 
 
+  updateSubtaskCheck(tasks: number, subtaskId: number, updatedData: { checked: boolean }) {
+    const url = `${environment.baseUrl}/tasks/${tasks}/subtasks/${subtaskId}/`; 
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.patch(url, updatedData, { headers }));
+  }
+  
+
+
   deleteTask(taskId: number) {
     const url = `${environment.baseUrl}/tasks/${taskId}/`;
     const headers = new HttpHeaders({

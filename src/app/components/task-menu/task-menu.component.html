@@ -35,7 +35,7 @@
                 <strong>Subtask:</strong>
                 <div *ngFor="let subtask of task.subtasks">
                     <span>{{ subtask.title }}</span>
-                    <input type="checkbox" [checked]="subtask.check">
+                    <input type="checkbox" [checked]="subtask.checked" (change)="subtaskChecked(subtask.id, $event)">
                 </div>
             </div>
         </div>

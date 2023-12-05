@@ -24,6 +24,7 @@ import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TaskMenuComponent } from './components/task-menu/task-menu.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import { TaskMenuComponent } from './components/task-menu/task-menu.component';
     CdkDrag,
     HttpClientModule,
     FormsModule,
-    MatDialogModule 
+    MatDialogModule,
+    MatProgressBarModule 
   ],
   providers: [],
   bootstrap: [AppComponent]

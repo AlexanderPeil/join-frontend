@@ -14,6 +14,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskMenuComponent } from '../task-menu/task-menu.component';
 import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 type TodoStatus = 'todo' | 'awaiting_feedback' | 'in_progress' | 'done';
 
@@ -55,6 +56,8 @@ export class BoardComponent implements OnInit {
     try {
       const allTasks = await this.ts.getAllTodos();
       this.allTasks = allTasks;
+      console.log(this.allTasks);
+      
       this.filterTasks();
     } catch (err) {
       console.error('Could not load tasks to board.', err);
@@ -179,6 +182,27 @@ export class BoardComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogAddTaskComponent, {
       data: { status: status }
     });
+  }
+
+
+  getPriorityImage(prio: string) {
+    switch (prio) {
+      case 'low':
+        return '../../assets/img/prio_low_white.png';
+      case 'medium':
+        return '../../assets/img/prio_medium.png';
+      case 'urgent':
+        return '../../assets/img/prio_urgent.png';
+      default: return '';
+    }
+  }
+
+
+  calculateProgress(subtasks: any[]): number {
+    const totalSubtasks = subtasks.length;
+    const checkedSubtasks = subtasks.filter(subtask => subtask.checked).length;
+    const progress = (checkedSubtasks / totalSubtasks) * 100;
+    return progress;
   }
 
 }

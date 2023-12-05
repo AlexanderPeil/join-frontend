@@ -122,4 +122,20 @@ export class TaskMenuComponent implements OnInit {
     this.dialogRef.close();
   }
 
+
+  async subtaskChecked(subtaskId: number, event: Event) {
+    console.log(subtaskId, event);
+    
+    const target = event.target as HTMLInputElement | null;
+    if (target) {
+      try {
+        const updatedData = { checked: target.checked };
+        await this.ts.updateSubtaskCheck(this.data.taskId, subtaskId, updatedData);
+        this.ts.notifyTaskUpdate();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
 }
