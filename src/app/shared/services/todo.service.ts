@@ -16,17 +16,17 @@ export class TodoService {
   constructor(private http: HttpClient) { }
 
 
-  createTodo(todoData: TodoData) {
+  createTodo(taskData: TodoData) {
     const url = environment.baseUrl + '/tasks/';
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
-    return lastValueFrom(this.http.post<TodoData>(url, todoData, { headers: headers }));
+    return lastValueFrom(this.http.post<TodoData>(url, taskData, { headers: headers }));
   }
 
 
-  updateTodo(todoId: number, updatedData: Partial<TodoData>) {
-    const url = `${environment.baseUrl}/tasks/${todoId}/`;
+  updateTodo(taskId: number, updatedData: Partial<TodoData>) {
+    const url = `${environment.baseUrl}/tasks/${taskId}/`;
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
@@ -34,12 +34,40 @@ export class TodoService {
   }
 
 
-  updateSubtaskCheck(tasks: number, subtaskId: number, updatedData: SubtaskData) {
-    const url = `${environment.baseUrl}/tasks/${tasks}/subtasks/${subtaskId}/`; 
+  createSubtask(taskId: number, subtaskData: SubtaskData) {
+    const url = `${environment.baseUrl}/tasks/${taskId}/subtasks/`;
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.post(url, subtaskData, { headers }));
+  }
+
+
+  updateSubtask(taskId: number, subtaskId: number, updatedData: SubtaskData) {
+    const url = `${environment.baseUrl}/tasks/${taskId}/subtasks/${subtaskId}/`;
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
     return lastValueFrom(this.http.patch(url, updatedData, { headers }));
+  }
+
+
+  getSubtaskCountsForTask(task: TodoData): { total: number, checked: number } {
+    const totalSubtasks = task.subtasks.length;
+    const checkedSubtasks = task.subtasks.filter(st => st.checked).length;
+    return {
+      total: totalSubtasks,
+      checked: checkedSubtasks
+    };
+  }
+
+
+  deleteSubtask(taskId: number, subtaskId: number) {
+    const url = `${environment.baseUrl}/tasks/${taskId}/subtasks/${subtaskId}/`;
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.delete<TodoData>(url, { headers: headers }));
   }
 
 
@@ -77,16 +105,6 @@ export class TodoService {
 
   getTaskUpdateListener() {
     return this.taskUpdated.asObservable();
-  }
-
-
-  getSubtaskCountsForTask(task: TodoData): { total: number, checked: number } {
-    const totalSubtasks = task.subtasks.length;
-    const checkedSubtasks = task.subtasks.filter(st => st.checked).length;
-    return {
-      total: totalSubtasks,
-      checked: checkedSubtasks
-    };
   }
 
 }

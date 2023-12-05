@@ -22,7 +22,10 @@ export class TaskMenuComponent implements OnInit {
     private ts: TodoService,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {
+    this.ts.getTaskUpdateListener().subscribe(() => {
+    this.loadtaskbyId();
+  }); }
 
 
   ngOnInit(): void {
@@ -130,7 +133,7 @@ export class TaskMenuComponent implements OnInit {
     if (target) {
       try {
         const updatedData = { checked: target.checked };
-        await this.ts.updateSubtaskCheck(this.data.taskId, subtaskId, updatedData);
+        await this.ts.updateSubtask(this.data.taskId, subtaskId, updatedData);
         this.ts.notifyTaskUpdate();
       } catch (err) {
         console.error(err);
@@ -143,7 +146,19 @@ export class TaskMenuComponent implements OnInit {
     if (subtaskId !== undefined) {
       try {
         const updatedData = { title: title };
-        await this.ts.updateSubtaskCheck(this.data.taskId, subtaskId, updatedData);
+        await this.ts.updateSubtask(this.data.taskId, subtaskId, updatedData);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
+
+  async deleteCurrentSubtask(subtaskId: number) {
+    if (subtaskId) {
+      try {
+        await this.ts.deleteSubtask(this.task.id, subtaskId);
+        this.ts.notifyTaskUpdate();
       } catch (err) {
         console.error(err);
       }

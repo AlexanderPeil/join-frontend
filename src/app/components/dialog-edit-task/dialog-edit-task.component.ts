@@ -51,6 +51,8 @@ export class DialogEditTaskComponent implements OnInit {
     this.loadtaskbyId();
     this.initAllCategories();
     this.initAllContacts();
+    console.log('Current task id is:', this.data.taskId);
+
   }
 
 
@@ -88,7 +90,6 @@ export class DialogEditTaskComponent implements OnInit {
         category: task.category.id,
         priority: task.priority,
         status: task.status,
-        // assigned_to: task.assigned_to.map(contact => contact.id),
         subtasks: task.subtasks
       });
       const assignedToFormArray = this.todoForm.get('assigned_to') as FormArray;
@@ -138,6 +139,7 @@ export class DialogEditTaskComponent implements OnInit {
       title: [subtaskTitle],
       check: [false]
     }));
+    this.addSubtaskToDb();
   }
 
 
@@ -151,6 +153,18 @@ export class DialogEditTaskComponent implements OnInit {
     return this.todoForm.get('subtasks') as FormArray;
   }
 
+
+  async addSubtaskToDb() {
+    const subtaskDataArray = this.todoForm.get('subtasks')?.value;
+    if (!subtaskDataArray) return;
+
+    try {
+      await this.ts.createSubtask(this.data.taskId, subtaskDataArray);
+      this.ts.notifyTaskUpdate();
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
 
   async onSubmit() {

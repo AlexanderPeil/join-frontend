@@ -1,6 +1,8 @@
 <div class="card-task-container">
     <div class="task-column" *ngIf="task">
         <div class="card-task-close">
+
+            <!-- Task main content -->
             <div class="card-task-category" [style.background-color]="task.category.color">{{ task.category.name }}
             </div>
             <img src="../../assets/img/xicon.svg" alt="Close Card-Task" (click)="closeDialogTaskMenu()">
@@ -17,6 +19,8 @@
                 </select>
             </div>
             <div>
+
+                <!-- Assigned To content -->
                 <strong>Assigned To:</strong>
                 <div class="users">
                     <div>
@@ -31,11 +35,17 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Subtask content -->
             <div>
                 <strong>Subtask:</strong>
                 <div class="subtaskInputs" *ngFor="let subtask of task.subtasks">
-                    <input title="Click on subtask to edit" type="text" [(ngModel)]="subtask.title" (blur)="subtask.id !== undefined && subtask.title !== undefined && updateSubtaskTitle(subtask.id, subtask.title)">
-                    <input type="checkbox" [checked]="subtask.checked" (change)="subtask.id !== undefined && subtaskChecked(subtask.id, $event)">
+                    <input title="Click on subtask to edit" type="text" [(ngModel)]="subtask.title"
+                        (blur)="subtask.id !== undefined && subtask.title !== undefined && updateSubtaskTitle(subtask.id, subtask.title)">
+                    <input type="checkbox" [checked]="subtask.checked"
+                        (change)="subtask.id !== undefined && subtaskChecked(subtask.id, $event)">
+                    <img src="/assets/img/xicon.svg" alt="Delete subtask"
+                        (click)="subtask.id !== undefined && deleteCurrentSubtask(subtask.id)">
                 </div>
             </div>
         </div>
