@@ -33,9 +33,9 @@
             </div>
             <div>
                 <strong>Subtask:</strong>
-                <div *ngFor="let subtask of task.subtasks">
-                    <span>{{ subtask.title }}</span>
-                    <input type="checkbox" [checked]="subtask.checked" (change)="subtaskChecked(subtask.id, $event)">
+                <div class="subtaskInputs" *ngFor="let subtask of task.subtasks">
+                    <input title="Click on subtask to edit" type="text" [(ngModel)]="subtask.title" (blur)="subtask.id !== undefined && subtask.title !== undefined && updateSubtaskTitle(subtask.id, subtask.title)">
+                    <input type="checkbox" [checked]="subtask.checked" (change)="subtask.id !== undefined && subtaskChecked(subtask.id, $event)">
                 </div>
             </div>
         </div>

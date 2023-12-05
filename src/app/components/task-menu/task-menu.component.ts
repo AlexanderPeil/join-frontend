@@ -125,13 +125,25 @@ export class TaskMenuComponent implements OnInit {
 
   async subtaskChecked(subtaskId: number, event: Event) {
     console.log(subtaskId, event);
-    
+
     const target = event.target as HTMLInputElement | null;
     if (target) {
       try {
         const updatedData = { checked: target.checked };
         await this.ts.updateSubtaskCheck(this.data.taskId, subtaskId, updatedData);
         this.ts.notifyTaskUpdate();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
+
+  async updateSubtaskTitle(subtaskId: number, title: string) {
+    if (subtaskId !== undefined) {
+      try {
+        const updatedData = { title: title };
+        await this.ts.updateSubtaskCheck(this.data.taskId, subtaskId, updatedData);
       } catch (err) {
         console.error(err);
       }

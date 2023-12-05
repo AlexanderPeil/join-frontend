@@ -26,23 +26,32 @@
                     <h2>To do</h2>
                     <button class="add-task" (click)="openDialogAddTask('todo')">+</button>
                 </div>
+
+                <!-- Current status -->
                 <div cdkDropList id="todoList" [cdkDropListData]="todo"
                     [cdkDropListConnectedTo]="['inProgressList', 'awaitingFeedbackList', 'doneList']"
                     class="example-list" (cdkDropListDropped)="drop($event)">
+
+                    <!-- Loop over all tasks in todo -->
                     <div class="example-box" *ngFor="let task of todo" (mousedown)="onMousedown($event)"
                         (mouseup)="onMouseup($event, task.id)" cdkDrag>
                         <div class="card-head" [style.background-color]="task.category.color">{{ task.category.name }}
                         </div>
+
+                        <!-- Task title and description -->
                         <div class="card-body">
                             <h4>{{ task.title }}</h4>
                             <p>{{ task.description }}</p>
                         </div>
-                        <!-- <div *ngFor="let subtask of task.subtasks">
-                            <span>{{ subtask.title }}</span>
-                            <input type="checkbox" [checked]="subtask.check">
-                        </div> -->
+
+                        <!-- Subtask content -->
                         <mat-progress-bar *ngIf="task.subtasks.length > 0" mode="determinate"
                             [value]="calculateProgress(task.subtasks)"></mat-progress-bar>
+                        <span *ngIf="task.subtasks.length > 0">{{ subtaskCountsMap.get(task.id)?.checked }}/{{
+                            subtaskCountsMap.get(task.id)?.total }}
+                            Subtasks</span>
+
+                        <!-- Assigned To content -->
                         <div class="priotity-users">
                             <div class="users">
                                 <div class="circle" *ngFor="let contact of task.assigned_to"
@@ -50,6 +59,8 @@
                                     {{ getInitials(contact.firstname, contact.lastname) }}
                                 </div>
                             </div>
+
+                            <!-- Priority -->
                             <div class="priority"><img [src]="getPriorityImage(task.priority)" alt="Priority"></div>
                         </div>
                     </div>
@@ -62,23 +73,32 @@
                     <h2>In Progress</h2>
                     <button class="add-task" (click)="openDialogAddTask('in_progress')">+</button>
                 </div>
+
+                <!-- Current status -->
                 <div cdkDropList id="inProgressList" [cdkDropListData]="inProgress"
                     [cdkDropListConnectedTo]="['todoList', 'awaitingFeedbackList', 'doneList']" class="example-list"
                     (cdkDropListDropped)="drop($event)">
+
+                    <!-- Loop over all tasks in todo -->
                     <div class="example-box" *ngFor="let task of inProgress" (mousedown)="onMousedown($event)"
                         (mouseup)="onMouseup($event, task.id)" cdkDrag>
                         <div class="card-head" [style.background-color]="task.category.color">{{ task.category.name }}
                         </div>
+
+                        <!-- Task title and description -->
                         <div class="card-body">
                             <h4>{{ task.title }}</h4>
                             <p>{{ task.description }}</p>
                         </div>
-                        <!-- <div *ngFor="let subtask of task.subtasks">
-                            <span>{{ subtask.title }}</span>
-                            <input type="checkbox" [checked]="subtask.check">
-                        </div> -->
+
+                        <!-- Subtask content -->
                         <mat-progress-bar *ngIf="task.subtasks.length > 0" mode="determinate"
                             [value]="calculateProgress(task.subtasks)"></mat-progress-bar>
+                        <span *ngIf="task.subtasks.length > 0">{{ subtaskCountsMap.get(task.id)?.checked }}/{{
+                            subtaskCountsMap.get(task.id)?.total }}
+                            Subtasks</span>
+
+                        <!-- Assigned To content -->
                         <div class="priotity-users">
                             <div class="users">
                                 <div class="circle" *ngFor="let contact of task.assigned_to"
@@ -86,6 +106,8 @@
                                     {{ getInitials(contact.firstname, contact.lastname) }}
                                 </div>
                             </div>
+
+                            <!-- Priority -->
                             <div class="priority"><img [src]="getPriorityImage(task.priority)" alt="Priority"></div>
                         </div>
                     </div>
@@ -97,23 +119,32 @@
                     <h2>Awaitng Feedback</h2>
                     <button class="add-task" (click)="openDialogAddTask('awaiting_feedback')">+</button>
                 </div>
+
+                <!-- Current status -->
                 <div cdkDropList id="awaitingFeedbackList" [cdkDropListData]="awaitingFeedback"
                     [cdkDropListConnectedTo]="['todoList', 'inProgressList', 'doneList']" class="example-list"
                     (cdkDropListDropped)="drop($event)">
+
+                    <!-- Loop over all tasks in todo -->
                     <div class="example-box" *ngFor="let task of awaitingFeedback" (mousedown)="onMousedown($event)"
                         (mouseup)="onMouseup($event, task.id)" cdkDrag>
                         <div class="card-head" [style.background-color]="task.category.color">{{ task.category.name }}
                         </div>
+
+                        <!-- Task title and description -->
                         <div class="card-body">
                             <h4>{{ task.title }}</h4>
                             <p>{{ task.description }}</p>
                         </div>
-                        <!-- <div *ngFor="let subtask of task.subtasks">
-                            <span>{{ subtask.title }}</span>
-                            <input type="checkbox" [checked]="subtask.check">
-                        </div> -->
+
+                        <!-- Subtask content -->
                         <mat-progress-bar *ngIf="task.subtasks.length > 0" mode="determinate"
                             [value]="calculateProgress(task.subtasks)"></mat-progress-bar>
+                        <span *ngIf="task.subtasks.length > 0">{{ subtaskCountsMap.get(task.id)?.checked }}/{{
+                            subtaskCountsMap.get(task.id)?.total }}
+                            Subtasks</span>
+
+                        <!-- Assigned To content -->
                         <div class="priotity-users">
                             <div class="users">
                                 <div class="circle" *ngFor="let contact of task.assigned_to"
@@ -121,6 +152,8 @@
                                     {{ getInitials(contact.firstname, contact.lastname) }}
                                 </div>
                             </div>
+
+                            <!-- Priority -->
                             <div class="priority"><img [src]="getPriorityImage(task.priority)" alt="Priority"></div>
                         </div>
                     </div>
@@ -132,23 +165,32 @@
                     <h2>Done</h2>
                     <button class="add-task" (click)="openDialogAddTask('done')">+</button>
                 </div>
+
+                <!-- Current status -->
                 <div cdkDropList id="doneList" [cdkDropListData]="done"
                     [cdkDropListConnectedTo]="['todoList', 'inProgressList', 'awaitingFeedbackList']"
                     class="example-list" (cdkDropListDropped)="drop($event)">
+
+                    <!-- Loop over all tasks in todo -->
                     <div class="example-box" *ngFor="let task of done" (mousedown)="onMousedown($event)"
                         (mouseup)="onMouseup($event, task.id)" cdkDrag>
                         <div class="card-head" [style.background-color]="task.category.color">{{ task.category.name }}
                         </div>
+
+                        <!-- Task title and description -->
                         <div class="card-body">
                             <h4>{{ task.title }}</h4>
                             <p>{{ task.description }}</p>
                         </div>
-                        <!-- <div *ngFor="let subtask of task.subtasks">
-                            <span>{{ subtask.title }}</span>
-                            <input type="checkbox" [checked]="subtask.check">
-                        </div> -->
+
+                        <!-- Subtask content -->
                         <mat-progress-bar *ngIf="task.subtasks.length > 0" mode="determinate"
                             [value]="calculateProgress(task.subtasks)"></mat-progress-bar>
+                        <span *ngIf="task.subtasks.length > 0">{{ subtaskCountsMap.get(task.id)?.checked }}/{{
+                            subtaskCountsMap.get(task.id)?.total }}
+                            Subtasks</span>
+
+                        <!-- Assigned To content -->
                         <div class="priotity-users">
                             <div class="users">
                                 <div class="circle" *ngFor="let contact of task.assigned_to"
@@ -156,6 +198,8 @@
                                     {{ getInitials(contact.firstname, contact.lastname) }}
                                 </div>
                             </div>
+
+                            <!-- Priority -->
                             <div class="priority"><img [src]="getPriorityImage(task.priority)" alt="Priority"></div>
                         </div>
                     </div>

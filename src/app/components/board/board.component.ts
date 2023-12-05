@@ -9,7 +9,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { AuthService } from "../../shared/services/auth.service";
 import { TodoService } from 'src/app/shared/services/todo.service';
-import { TodoData } from 'src/app/shared/todo-interface';
+import { SubtaskData, TodoData } from 'src/app/shared/todo-interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskMenuComponent } from '../task-menu/task-menu.component';
@@ -33,7 +33,8 @@ export class BoardComponent implements OnInit {
   done: TodoData[] = [];
   todoForm!: FormGroup;
   mousedownTime: number | undefined;
-
+  task!: TodoData;
+  subtaskCountsMap = new Map<number, { total: number, checked: number }>();
 
 
   constructor(
@@ -43,7 +44,6 @@ export class BoardComponent implements OnInit {
     this.ts.getTaskUpdateListener().subscribe(() => {
       this.initAllTasks();
     });
-
   }
 
 
@@ -56,11 +56,24 @@ export class BoardComponent implements OnInit {
     try {
       const allTasks = await this.ts.getAllTodos();
       this.allTasks = allTasks;
+      for (const task of this.allTasks) {
+        await this.loadTaskDetails(task.id);
+      }
       console.log(this.allTasks);
-      
       this.filterTasks();
     } catch (err) {
       console.error('Could not load tasks to board.', err);
+    }
+  }
+
+
+  async loadTaskDetails(taskId: number) {
+    try {
+      const taskData = await this.ts.getTaskById(taskId);
+      const subtaskCounts = this.ts.getSubtaskCountsForTask(taskData);
+      this.subtaskCountsMap.set(taskId, subtaskCounts);
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -198,7 +211,7 @@ export class BoardComponent implements OnInit {
   }
 
 
-  calculateProgress(subtasks: any[]): number {
+  calculateProgress(subtasks: SubtaskData[]): number {
     const totalSubtasks = subtasks.length;
     const checkedSubtasks = subtasks.filter(subtask => subtask.checked).length;
     const progress = (checkedSubtasks / totalSubtasks) * 100;

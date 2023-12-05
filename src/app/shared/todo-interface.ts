@@ -29,7 +29,7 @@ export interface CategoryData {
 
 
 export interface SubtaskData {
-  id: number;
-  title: string;
-  checked: boolean;
+  id?: number;
+  title?: string;
+  checked?: boolean;
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TodoData } from '../todo-interface';
+import { SubtaskData, TodoData } from '../todo-interface';
 
 
 
@@ -34,14 +34,13 @@ export class TodoService {
   }
 
 
-  updateSubtaskCheck(tasks: number, subtaskId: number, updatedData: { checked: boolean }) {
+  updateSubtaskCheck(tasks: number, subtaskId: number, updatedData: SubtaskData) {
     const url = `${environment.baseUrl}/tasks/${tasks}/subtasks/${subtaskId}/`; 
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
     return lastValueFrom(this.http.patch(url, updatedData, { headers }));
   }
-  
 
 
   deleteTask(taskId: number) {
@@ -78,6 +77,16 @@ export class TodoService {
 
   getTaskUpdateListener() {
     return this.taskUpdated.asObservable();
+  }
+
+
+  getSubtaskCountsForTask(task: TodoData): { total: number, checked: number } {
+    const totalSubtasks = task.subtasks.length;
+    const checkedSubtasks = task.subtasks.filter(st => st.checked).length;
+    return {
+      total: totalSubtasks,
+      checked: checkedSubtasks
+    };
   }
 
 }
