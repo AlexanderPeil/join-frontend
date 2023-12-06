@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+@import "app/shared/variables.scss";
 
 html,
 body {
@@ -45,12 +45,30 @@ body {
     color: green;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .mat-mdc-dialog-container .mdc-dialog__surface {
     border-top-left-radius: 10px !important;
     border-bottom-left-radius: 10px !important;
     border-top-right-radius: 10px !important;
     border-bottom-right-radius: 10px !important;
+}
+
+.mat-mdc-menu-panel {
+    background: $main_color_dark !important;
+}
+
+.mat-mdc-menu-item {
+    color: white !important;
+
+    &:hover {
+     color: $main_color_bright !important;   
+    }
 }

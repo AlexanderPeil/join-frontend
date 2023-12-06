@@ -26,6 +26,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { TaskMenuComponent } from './components/task-menu/task-menu.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import {MatMenuModule} from '@angular/material/menu';
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
     HttpClientModule,
     FormsModule,
     MatDialogModule,
-    MatProgressBarModule 
+    MatProgressBarModule,
+    MatMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
