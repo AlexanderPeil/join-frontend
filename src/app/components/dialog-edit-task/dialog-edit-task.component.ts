@@ -136,7 +136,7 @@ export class DialogEditTaskComponent implements OnInit {
   addSubtask(subtaskTitle: string) {
     const subtask = this.todoForm.get('subtasks') as FormArray;
     subtask.push(this.fb.group({
-      title: [subtaskTitle],
+      subtaskTitle: [subtaskTitle],
       check: [false]
     }));
     this.addSubtaskToDb();

@@ -15,7 +15,7 @@ import { ContactService } from 'src/app/shared/services/contact.service';
 export class AddTaskComponent implements OnInit {
   @ViewChild('handleCategoryMenu') handleCategoryMenu!: ElementRef;
   @ViewChild('handleASsignedToMenu') handleASsignedToMenu!: ElementRef;
-  todoForm!: FormGroup;
+  taskForm!: FormGroup;
   categoryForm!: FormGroup;
   tasks: TodoData[] = [];
   categories: CategoryData[] = [];
@@ -64,7 +64,7 @@ export class AddTaskComponent implements OnInit {
 
 
   initFormGroup() {
-    this.todoForm = this.fb.group({
+    this.taskForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
       due_date: ['', Validators.required],
@@ -108,7 +108,7 @@ export class AddTaskComponent implements OnInit {
 
 
   setPriority(priority: string) {
-    this.todoForm.get('priority')?.setValue(priority);
+    this.taskForm.get('priority')?.setValue(priority);
 
     this.prioUrgent = priority === 'urgent';
     this.prioMedium = priority === 'medium';
@@ -118,7 +118,7 @@ export class AddTaskComponent implements OnInit {
 
 
   addSubtask(subtaskTitle: string) {
-    const subtask = this.todoForm.get('subtasks') as FormArray;
+    const subtask = this.taskForm.get('subtasks') as FormArray;
     subtask.push(this.fb.group({
       title: [subtaskTitle],
       check: [false]
@@ -127,21 +127,21 @@ export class AddTaskComponent implements OnInit {
 
 
   removeSubtask(index: number) {
-    const subtask = this.todoForm.get('subtasks') as FormArray;
+    const subtask = this.taskForm.get('subtasks') as FormArray;
     subtask.removeAt(index);
   }
 
 
   get subtasks(): FormArray {
-    return this.todoForm.get('subtasks') as FormArray;
+    return this.taskForm.get('subtasks') as FormArray;
   }
 
 
 
   async onSubmit() {
-    if (this.todoForm.valid) {
+    if (this.taskForm.valid) {
       try {
-        const formData: TodoData = this.todoForm.value;
+        const formData: TodoData = this.taskForm.value;
         await this.ts.createTodo(formData);
         this.router.navigate(['/board']);
       } catch (err) {
@@ -186,7 +186,7 @@ export class AddTaskComponent implements OnInit {
 
 
   clickOnCategory(cat: CategoryData) {
-    const categoryForm = this.todoForm.get('category') as FormControl;
+    const categoryForm = this.taskForm.get('category') as FormControl;
     if (categoryForm) {
       categoryForm.setValue(cat.id);
       this.selectedCategory = cat;
@@ -196,8 +196,8 @@ export class AddTaskComponent implements OnInit {
 
 
   categorySelected() {
-    let categoryValue = this.todoForm.get('category.name')?.value;
-    let colorValue = this.todoForm.get('category.color')?.value;
+    let categoryValue = this.taskForm.get('category.name')?.value;
+    let colorValue = this.taskForm.get('category.color')?.value;
 
     if (categoryValue && colorValue) {
       let newCategory = {
@@ -211,7 +211,7 @@ export class AddTaskComponent implements OnInit {
   }
 
   selectContact(contact: ContactData) {
-    const assignedTo = this.todoForm.get('assigned_to') as FormArray;
+    const assignedTo = this.taskForm.get('assigned_to') as FormArray;
 
     if (this.isSelected(contact)) {
       const index = assignedTo.controls.findIndex(control => control.value === contact.id);
@@ -225,13 +225,13 @@ export class AddTaskComponent implements OnInit {
 
 
   isSelected(contact: ContactData) {
-    const assignedTo = this.todoForm.get('assigned_to') as FormArray;
+    const assignedTo = this.taskForm.get('assigned_to') as FormArray;
     return assignedTo.controls.some(control => control.value === contact.id);
   }
 
 
   cancelSelection() {
-    const assignedTo = this.todoForm.get('assigned_to') as FormArray;
+    const assignedTo = this.taskForm.get('assigned_to') as FormArray;
     assignedTo.clear();
     this.assignedToMenu = false;
   }
@@ -253,7 +253,18 @@ export class AddTaskComponent implements OnInit {
 
 
   onClear($event: MouseEvent) {
-
+    this.taskForm.reset();
+    this.feedbackMessageMembers = 'Select your Members';
+    this.selectedCategory = null;
+    this.categoryMenu = false;
+    this.assignedToMenu = false;
+    this.createdSubtasks = [];
+    this.prioUrgent = false;
+    this.prioMedium = false;
+    this.prioLow = true;
+    this.subtaskInput = false;
+    const subtask = this.taskForm.get('subtasks') as FormArray;
+    subtask.clear();
   }
 
 }

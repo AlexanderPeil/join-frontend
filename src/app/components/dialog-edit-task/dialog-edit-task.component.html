@@ -104,21 +104,20 @@
                         <!-- Subtask section -->
                         <div class="features-container">
                             <label>Subtasks</label>
-                            <div class="subtask-container">
+                            <div class="subtask-container" formArrayName="subtasks">
                                 <input class="subtask-input" placeholder="Add new subtask" #subtaskTitleInput>
+                                <input formControlName="subtaskTitle" class="subtaskList">
+                                <input type="checkbox" formControlName="check" class="subtaskCheckbox">
                                 <img class="plus-icon" src="assets/img/plus_icon.png"
                                     (click)="addSubtask(subtaskTitleInput.value); subtaskTitleInput.value='';">
                             </div>
-                            <div formArrayName="subtasks">
-                                <ul *ngFor="let subtask of subtasks.controls; let i=index" [formGroupName]="i">
-                                    <li>
-                                        <input formControlName="title" class="subtaskList">
-                                        <input type="checkbox" formControlName="check" class="subtaskCheckbox">
-                                        <img (click)="removeSubtask(i)" src="/assets/img/xicon.svg" alt="Remove Subtask"
-                                            class="subtaskRemove">
-                                    </li>
-                                </ul>
-                            </div>
+                            <ul *ngFor="let subtask of task.subtasks">
+                                <li>
+                                    <span>{{ subtask.title }}</span>
+                                    <img (click)="subtask.id !== undefined && removeSubtask(subtask.id)"
+                                        src="/assets/img/xicon.svg" alt="Remove Subtask" class="subtaskRemove">
+                                </li>
+                            </ul>
                         </div>
                         <!-- Subtask section -->
                     </div>

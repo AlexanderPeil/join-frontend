@@ -7,8 +7,8 @@
         <h1>Add Task</h1>
     </div>
 
-    <!--  TodoForm-Group starts here  -->
-    <form [formGroup]="todoForm" (ngSubmit)="onSubmit()">
+    <!--  taskForm-Group starts here  -->
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
         <div class="content-container">
             <img class="add-task-btn-mobile" src="../../assets/img/create_task_btn_mobile.png" alt="Create tassk button"
                 (click)="onSubmitAndNavigate()">
@@ -141,7 +141,7 @@
                                     src="assets/img/iconoir_cancel.png">
                             </div>
                             <div>
-                                <button class="btn-createTask" [disabled]="!todoForm.valid">Create Task<img
+                                <button class="btn-createTask" [disabled]="!taskForm.valid">Create Task<img
                                         src="assets/img/icons_check.png"></button>
                             </div>
                         </div>
@@ -150,5 +150,5 @@
             </div>
         </div>
     </form>
-    <!--  TodoForm-Group ends here  -->
+    <!--  taskForm-Group ends here  -->
 </div>

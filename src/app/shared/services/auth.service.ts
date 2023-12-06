@@ -30,9 +30,10 @@ export class AuthService {
   }
 
 
-  async signout() {
+  signout() {
     const url = environment.baseUrl + '/logout/';
-    await lastValueFrom(this.http.post(url, {}));
+    const headers = new HttpHeaders().set('Authorization', `Token ${localStorage.getItem('token')}`);
+    return lastValueFrom(this.http.post(url, {}, { headers: headers }));
   }
 
 

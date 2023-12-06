@@ -6,7 +6,9 @@ import { SummaryComponent } from './components/summary/summary.component';
 import { BoardComponent } from './components/board/board.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { AddTaskComponent } from './components/add-task/add-task.component';
-import { DialogEditContactComponent } from './components/dialog-edit-contact/dialog-edit-contact.component';
+import { LegalNoticeComponent } from './components/legal-notice/legal-notice.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { HelpPageComponent } from './components/help-page/help-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -16,7 +18,9 @@ const routes: Routes = [
   { path: 'board', component: BoardComponent },
   { path: 'contacts', component: ContactsComponent },
   { path: 'add-task', component: AddTaskComponent },
-  // { path: 'edit-contact', component: DialogEditContactComponent },
+  { path: 'legal-notice', component: LegalNoticeComponent },
+  { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  { path: 'help-page', component: HelpPageComponent },
 ];
 
 @NgModule({

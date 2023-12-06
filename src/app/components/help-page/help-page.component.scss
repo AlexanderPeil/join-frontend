@@ -37,17 +37,29 @@
     margin: -30px 0;
 }
 
-.third-headline {
-    margin: 0;
+.howToUserHeadline {
+    margin: unset;
+}
+
+.explainMainContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 span {
     @include font(16px, 400, 19.2px);
+    color: #29ABE2;
 }
 
 .explain-container {
     @include align_items_center;
     gap: 35px;
+
+    p {
+        margin-top: 0;
+        margin-bottom: auto;
+    }
 }
 
 .number {

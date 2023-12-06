@@ -25,6 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TaskMenuComponent } from './components/task-menu/task-menu.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     DialogEditContactComponent,
     AddTaskComponent,
     TaskMenuComponent,
+    PrivacyPolicyComponent,
   ],
   imports: [
     BrowserModule,

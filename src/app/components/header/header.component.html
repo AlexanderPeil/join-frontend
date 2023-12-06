@@ -9,6 +9,7 @@
         <img class="header-user-img" src="assets/img/user_guest.png" (click)="showLogout();stopPropagation($event)">
         <ul class="logout-menu" [hidden]="!isDropdownOpen">
             <li class="hide-content" routerLink="/help-page"><span>Help</span></li>
+            <li class="hide-content" routerLink="/privacy-policy"><span>Legal notice</span></li>
             <li class="hide-content" routerLink="/legal-notice"><span>Legal notice</span></li>
             <li (click)="onLogout()"><span>Log out</span></li>
         </ul>
