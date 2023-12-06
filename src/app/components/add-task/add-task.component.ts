@@ -5,6 +5,16 @@ import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@ang
 import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ContactService } from 'src/app/shared/services/contact.service';
+import {
+  MatDialog,
+  MatDialogRef,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogTitle,
+  MatDialogContent,
+} from '@angular/material/dialog';
+import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dialog-handle-categories.component';
+
 
 
 @Component({
@@ -41,7 +51,8 @@ export class AddTaskComponent implements OnInit {
     private catService: CategoryService,
     private contService: ContactService,
     private fb: FormBuilder,
-    private router: Router) {
+    private router: Router,
+    public dialog: MatDialog) {
     this.minDate = new Date().toISOString().split('T')[0];
   }
 
@@ -58,7 +69,7 @@ export class AddTaskComponent implements OnInit {
   initCategoryGroup() {
     this.categoryForm = this.fb.group({
       name: ['', Validators.required],
-      color: ['', Validators.required]
+      color: ['#000000', Validators.required]
     })
   }
 
@@ -137,25 +148,6 @@ export class AddTaskComponent implements OnInit {
   }
 
 
-
-  async onSubmit() {
-    if (this.taskForm.valid) {
-      try {
-        const formData: TodoData = this.taskForm.value;
-        await this.ts.createTodo(formData);
-        this.router.navigate(['/board']);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  }
-
-
-  onSubmitAndNavigate() {
-    this.onSubmit();
-  }
-
-
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
     if (this.categoryMenu && !this.handleCategoryMenu.nativeElement.contains(event.target)) {
@@ -179,36 +171,38 @@ export class AddTaskComponent implements OnInit {
     this.categoryMenu = false;
   }
 
-  createCategory() {
-    // create category in db
-    // this.scrumCat.create(this.categoryForm.value);
-  }
 
-
-  clickOnCategory(cat: CategoryData) {
+  clickOnCategory(category: CategoryData) {
     const categoryForm = this.taskForm.get('category') as FormControl;
     if (categoryForm) {
-      categoryForm.setValue(cat.id);
-      this.selectedCategory = cat;
+      categoryForm.setValue(category.id);
+      this.selectedCategory = category;
       this.categoryMenu = false;
     }
   }
 
 
-  categorySelected() {
-    let categoryValue = this.taskForm.get('category.name')?.value;
-    let colorValue = this.taskForm.get('category.color')?.value;
-
-    if (categoryValue && colorValue) {
-      let newCategory = {
-        name: categoryValue,
-        color: colorValue
-      };
-      this.selectedCategory = newCategory;
-    } else {
-      console.error('Please select a category and a color.');
+  async createNewCategory() {
+    console.log(this.categoryForm.valid)
+    if (this.categoryForm.valid) {
+      console.log('CategoryForm is Valid!');
+      try {
+        const categoryData: CategoryData = this.categoryForm.value;
+        await this.catService.createCategory(categoryData)
+        this.selectedCategory = categoryData;
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
+
+
+  openDialogHandleCategories(categoryId: number): void {
+    this.dialog.open(DialogHandleCategoriesComponent, {
+      data: { categoryId }
+    });
+  }
+
 
   selectContact(contact: ContactData) {
     const assignedTo = this.taskForm.get('assigned_to') as FormArray;
@@ -249,6 +243,24 @@ export class AddTaskComponent implements OnInit {
   toggleAssignedToMenu(event: Event) {
     event.stopPropagation();
     this.assignedToMenu = !this.assignedToMenu;
+  }
+
+
+  async onSubmit() {
+    if (this.taskForm.valid) {
+      try {
+        const formData: TodoData = this.taskForm.value;
+        await this.ts.createTodo(formData);
+        this.router.navigate(['/board']);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
+
+  onSubmitAndNavigate() {
+    this.onSubmit();
   }
 
 

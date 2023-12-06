@@ -22,7 +22,7 @@ export interface ContactData {
 
 
 export interface CategoryData {
-  id: number;
+  id?: number;
   name: string;
   color: string;
 }

@@ -27,6 +27,8 @@ import { TaskMenuComponent } from './components/task-menu/task-menu.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import {MatMenuModule} from '@angular/material/menu';
+import { DialogCreateCategoryComponent } from './components/dialog-create-category/dialog-create-category.component';
+import { DialogHandleCategoriesComponent } from './components/dialog-handle-categories/dialog-handle-categories.component';
 
 
 @NgModule({
@@ -49,6 +51,8 @@ import {MatMenuModule} from '@angular/material/menu';
     AddTaskComponent,
     TaskMenuComponent,
     PrivacyPolicyComponent,
+    DialogCreateCategoryComponent,
+    DialogHandleCategoriesComponent,
   ],
   imports: [
     BrowserModule,

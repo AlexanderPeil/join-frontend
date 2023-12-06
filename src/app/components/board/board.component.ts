@@ -7,14 +7,12 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { AuthService } from "../../shared/services/auth.service";
 import { TodoService } from 'src/app/shared/services/todo.service';
 import { SubtaskData, TodoData } from 'src/app/shared/todo-interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskMenuComponent } from '../task-menu/task-menu.component';
 import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.component';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 type TodoStatus = 'todo' | 'awaiting_feedback' | 'in_progress' | 'done';
 

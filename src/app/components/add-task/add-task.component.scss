@@ -1,5 +1,4 @@
-@import '../../shared/variables.scss';
-
+@import "../../shared/variables.scss";
 
 .main-container {
     padding: 120px 10px 0 320px;
@@ -40,7 +39,7 @@ button {
 
 .gap-img-subtask {
     @include width_height(2px, 24px);
-    background-color: #D1D1D1;
+    background-color: #d1d1d1;
 }
 
 label {
@@ -57,7 +56,7 @@ input,
 select,
 .select-wrapper {
     @include font_size_weight(21px, 400);
-    border: 1px solid #D1D1D1;
+    border: 1px solid #d1d1d1;
     border-radius: 10px;
     padding: 13px 21px;
     background-color: white;
@@ -91,6 +90,20 @@ select,
     &:hover {
         background-color: $main_color_bright;
         border-radius: 10px;
+    }
+}
+
+.editCategory {
+    @include width_height(47px, 47px);
+    @include button_styles;
+    border-radius: 10px;
+    object-fit: contain;
+    background-image: url(/assets/img/edit.png);
+    background-repeat: no-repeat;
+    background-position: center;
+
+    &:hover {
+        background-image: url(/assets/img/edit_hover.png);
     }
 }
 
@@ -178,7 +191,7 @@ select {
 textarea {
     @include font_size_weight(21px, 400);
     min-height: 119px;
-    border: 1px solid #D1D1D1;
+    border: 1px solid #d1d1d1;
     border-radius: 10px;
     padding: 18px 21px;
     outline: none;
@@ -190,7 +203,7 @@ select::-ms-expand {
 }
 
 .middle-gap {
-    border-left: 1px solid #D1D1D1;
+    border-left: 1px solid #d1d1d1;
     height: 506px;
 }
 
@@ -209,7 +222,7 @@ select::-ms-expand {
 .features-container {
     @include flex_direction_column;
     width: 100%;
-    gap: 10px
+    gap: 10px;
 }
 
 .right-container-mobile {
@@ -234,7 +247,7 @@ select::-ms-expand {
     flex-direction: row;
     gap: 10px;
     padding: 10px 10px;
-    border: 1px solid #D1D1D1;
+    border: 1px solid #d1d1d1;
     border-radius: 10px;
     background-color: rgb(255, 255, 255);
     position: relative;
@@ -252,7 +265,7 @@ select::-ms-expand {
     gap: 10px;
     width: 100%;
     background-color: white;
-    border: 1px solid #D1D1D1;
+    border: 1px solid #d1d1d1;
     border-radius: 10px;
     isolation: isolate;
 }
@@ -284,11 +297,11 @@ select::-ms-expand {
 
 .gap-img-subtask {
     width: 1px;
-    background-color: #D1D1D1;
+    background-color: #d1d1d1;
 }
 
 .button-container {
-    display: flex
+    display: flex;
 }
 
 .submit-and-clear {
@@ -370,7 +383,7 @@ select::-ms-expand {
 
 .task-added-img {
     height: 75px;
-    object-fit: contain; 
+    object-fit: contain;
 }
 
 .error-message {
@@ -391,7 +404,7 @@ select::-ms-expand {
     cursor: pointer;
 }
 
-@media(max-width:1200px) {
+@media (max-width: 1200px) {
     .right-container {
         margin-top: -20px;
     }
@@ -436,7 +449,7 @@ select::-ms-expand {
     }
 }
 
-@media(max-width: 1000px) {
+@media (max-width: 1000px) {
     .add-task-btn-mobile {
         display: block;
         position: fixed;
@@ -510,8 +523,7 @@ select::-ms-expand {
     }
 }
 
-@media(max-width: 500px) {
-
+@media (max-width: 500px) {
     .main-container {
         margin-right: 0;
     }

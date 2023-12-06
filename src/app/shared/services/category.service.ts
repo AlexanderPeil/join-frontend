@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CategoryData } from '../todo-interface';
+import { CategoryData, TodoData } from '../todo-interface';
 
 
 @Injectable({
@@ -13,18 +13,12 @@ export class CategoryService {
   constructor(private http: HttpClient) { }
 
 
-  createCategory() {
-
-  }
-
-
-  editCategory() {
-
-  }
-
-
-  deleteCategory() {
-
+  createCategory(newCategory: CategoryData) {
+    const url = environment.baseUrl + '/categories/';
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.post<CategoryData[]>(url, newCategory, { headers }));
   }
 
 
@@ -33,6 +27,32 @@ export class CategoryService {
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
-    return lastValueFrom(this.http.get<CategoryData[]>(url, {headers}));
+    return lastValueFrom(this.http.get<CategoryData[]>(url, { headers }));
   }
+
+
+  getCategoryById(categoryId: number) {
+    const url = `${environment.baseUrl}/categories/${categoryId}/`;
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.get<CategoryData>(url, { headers }));
+  }
+
+
+  editCategory(categoryId: number, updatedData: CategoryData) {
+    const url = `${environment.baseUrl}/categories/${categoryId}/`;
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${localStorage.getItem('token')}`
+    });
+    return lastValueFrom(this.http.post<CategoryData[]>(url, updatedData, { headers }));
+  }
+
+
+  deleteCategory() {
+
+  }
+
+
+
 }

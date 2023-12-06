@@ -27,13 +27,12 @@
                     <div class="select-wrapper" #handleCategoryMenu>
                         <div class="category-inputs" *ngIf="categoryMenu">
                             <div [formGroup]="categoryForm">
-                                <input type="text" placeholder="Category Name" formControlName="name">
-                                <input class="color-picker" type="color" formControlName="color" value="#ff0000">
+                                <input type="text" placeholder="Create new category" formControlName="name">
+                                <input class="color-picker" type="color" formControlName="color" value="#000000">
                             </div>
-
                             <img class="category-accept category-member-selection"
                                 src="../../assets/img/icon_check_subtask.svg" alt="category-accept"
-                                (click)="categorySelected()">
+                                (click)="createNewCategory()">
                             <img class="category-cancel category-member-selection"
                                 src="../../assets/img/icon_cancel_subtask.svg" alt="close-wrapper"
                                 (click)="closeCategoryMenu($event)">
@@ -42,6 +41,8 @@
                                     (click)="clickOnCategory(category)">
                                     <p>{{ category.name }}</p>
                                     <div class="category-color" [style.background]="category.color"></div>
+                                    <img src="/assets/img/edit_category.png" alt="Delete category" title="Delete category"
+                                        (click)="category.id !== undefined && openDialogHandleCategories(category.id)">
                                 </div>
                             </div>
                         </div>
