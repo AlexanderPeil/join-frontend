@@ -28,8 +28,8 @@
 
             <div class="login-buttons">
                 <button [disabled]="!loginForm.valid" type="submit" class="login-btn login-btn-mob">Login</button>
-                <!-- <button routerLink="/summary" type="button" class="guest-login-btn login-btn-mob"
-                    (click)="onGuestLogin()">Guest Login</button> -->
+                <button type="button" class="guest-login-btn login-btn-mob"
+                    (click)="onGuestLogin($event)">Guest Login</button>
             </div>
         </form>
     </div>

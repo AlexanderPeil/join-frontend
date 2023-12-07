@@ -119,13 +119,35 @@ export class SummaryComponent implements OnInit {
     return this.tasks.filter(task => task.status === 'done').length;
   }
 
-
-  formatNearestUrgentTaskDate(): string | undefined {
-    if (this.nearestUrgentTaskDate) {
-      const datePipe = new DatePipe(this.locale);
-      return datePipe.transform(this.nearestUrgentTaskDate, 'MMMM d, y')!;
-    }
-    return undefined;
+  getTasksUrgent(): number {
+    return this.tasks.filter(task => task.priority === 'urgent').length;
   }
+
+
+  formatNearestUrgentTaskDate(): string {
+    const urgentTasksWithDueDate = this.tasks
+      .filter(task => task.priority === 'urgent' && task.due_date);
+
+    urgentTasksWithDueDate.sort((a, b) => {
+      const dateA = new Date(a.due_date);
+      const dateB = new Date(b.due_date);
+      return dateA.getTime() - dateB.getTime();
+    });
+
+    const nextUrgentTask = urgentTasksWithDueDate[0];
+    if (nextUrgentTask) {
+      return this.formatDate(nextUrgentTask.due_date);
+    } else {
+      return 'No urgent tasks';
+    }
+  }
+
+
+  formatDate(date: Date | string): string {
+    const d = new Date(date);
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+    return d.toLocaleDateString(undefined, options);
+  }
+
 
 }

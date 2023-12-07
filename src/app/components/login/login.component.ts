@@ -74,4 +74,17 @@ export class LoginComponent implements OnInit {
     }
   }
 
+
+  async onGuestLogin(event: MouseEvent) {
+    event.stopPropagation();
+    try {
+      const resp: any = await this.as.guestLogin();
+      localStorage.setItem('token', resp['token']);
+      this.router.navigateByUrl('/summary');
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+
 }

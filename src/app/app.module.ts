@@ -21,7 +21,7 @@ import { AddTaskComponent } from './components/add-task/add-task.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TaskMenuComponent } from './components/task-menu/task-menu.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -29,6 +29,9 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
 import {MatMenuModule} from '@angular/material/menu';
 import { DialogCreateCategoryComponent } from './components/dialog-create-category/dialog-create-category.component';
 import { DialogHandleCategoriesComponent } from './components/dialog-handle-categories/dialog-handle-categories.component';
+import { DialogErrorComponent } from './components/dialog-error/dialog-error.component';
+import { HttpErrorInterceptor } from './shared/http-error.interceptor';
+
 
 
 @NgModule({
@@ -53,6 +56,7 @@ import { DialogHandleCategoriesComponent } from './components/dialog-handle-cate
     PrivacyPolicyComponent,
     DialogCreateCategoryComponent,
     DialogHandleCategoriesComponent,
+    DialogErrorComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,7 +72,13 @@ import { DialogHandleCategoriesComponent } from './components/dialog-handle-cate
     MatProgressBarModule,
     MatMenuModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

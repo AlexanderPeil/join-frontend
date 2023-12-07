@@ -18,13 +18,13 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
 
-  public signup(formData: SignUpData) {
+  signup(formData: SignUpData) {
     const url = environment.baseUrl + '/signup/';
     return lastValueFrom(this.http.post(url, formData));
   }
 
 
-  public login(formData: LoginData) {
+  login(formData: LoginData) {
     const url = environment.baseUrl + '/login/';
     return lastValueFrom(this.http.post(url, formData));
   }
@@ -37,7 +37,7 @@ export class AuthService {
   }
 
 
-  public getLoggedUserData() {
+  getLoggedUserData() {
     const url = `${environment.baseUrl}/user-info/`;
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
@@ -45,5 +45,10 @@ export class AuthService {
     return lastValueFrom(this.http.get<SignUpData>(url, { headers: headers }));
   }
 
+
+  guestLogin() {
+    const url = environment.baseUrl + '/guest-login/'; 
+    return lastValueFrom(this.http.post(url, {}));
+  }
 
 }
