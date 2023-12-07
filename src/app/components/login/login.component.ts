@@ -36,10 +36,12 @@ export class LoginComponent implements OnInit {
 
 
   initFormGroup() {
+    const savedUsername = localStorage.getItem('username');
+
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
+      username: [savedUsername || '', Validators.required],
       password: ['', Validators.required],
-      rememberMe: [false],
+      rememberMe: [!!savedUsername],
     });
   }
 
@@ -57,13 +59,15 @@ export class LoginComponent implements OnInit {
     try {
       const formData = this.loginForm.value;
       const username = formData.username;
-      let resp: any = await this.as.login(formData)
+      let resp: any = await this.as.login(formData);
       localStorage.setItem('token', resp['token']);
+
       if (formData.rememberMe) {
         localStorage.setItem('username', username);
       } else {
         localStorage.removeItem('username');
       }
+
       this.router.navigateByUrl('/summary');
     } catch (err) {
       console.error(err);
