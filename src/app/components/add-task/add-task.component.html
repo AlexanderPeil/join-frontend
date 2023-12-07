@@ -42,7 +42,7 @@
                                     <p>{{ category.name }}</p>
                                     <div class="category-color" [style.background]="category.color"></div>
                                     <img src="/assets/img/edit_category.png" alt="Delete category" title="Delete category"
-                                        (click)="category.id !== undefined && openDialogHandleCategories(category.id)">
+                                        (click)="category.id !== undefined && openDialogHandleCategories(category.id, $event)">
                                 </div>
                             </div>
                         </div>

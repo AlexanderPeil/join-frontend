@@ -1,10 +1,11 @@
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { TodoService } from 'src/app/shared/services/todo.service';
 import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ContactService } from 'src/app/shared/services/contact.service';
+import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dialog-handle-categories.component';
 
 @Component({
   selector: 'app-dialog-edit-task',
@@ -39,6 +40,7 @@ export class DialogEditTaskComponent implements OnInit {
     private ts: TodoService,
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialog: MatDialog,
     private dialogRef: MatDialogRef<DialogEditTaskComponent>,
     private catService: CategoryService,
     private contService: ContactService
@@ -165,27 +167,6 @@ export class DialogEditTaskComponent implements OnInit {
   }
 
 
-  async onSubmit() {
-    if (this.todoForm.valid) {
-      try {
-        const formData: TodoData = this.todoForm.value;
-        await this.ts.updateTodo(this.data.taskId, formData);
-        this.ts.notifyTaskUpdate();
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  }
-
-
-  onSubmitAndNavigate() {
-    this.onSubmit();
-    if (this.todoForm.valid) {
-      this.dialogRef.close();
-    }
-  }
-
-
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
     if (this.categoryMenu && !this.handleCategoryMenu.nativeElement.contains(event.target)) {
@@ -234,6 +215,29 @@ export class DialogEditTaskComponent implements OnInit {
       console.error('Please select a category and a color.');
     }
   }
+
+
+  async createNewCategory() {
+    if (this.categoryForm.valid) {
+      console.log('CategoryForm is Valid!');
+      try {
+        const categoryData: CategoryData = this.categoryForm.value;
+        await this.catService.createCategory(categoryData)
+        this.selectedCategory = categoryData;
+        this.initAllCategories();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
+
+  openDialogHandleCategories(categoryId: number, event: MouseEvent): void {
+    event.stopPropagation();
+    this.dialog.open(DialogHandleCategoriesComponent, {
+      data: { categoryId }
+    });
+  }
   
 
   selectContact(contact: ContactData) {
@@ -280,6 +284,27 @@ export class DialogEditTaskComponent implements OnInit {
 
   closeDialogEditTask() {
     this.dialogRef.close();
+  }
+
+
+  async onSubmit() {
+    if (this.todoForm.valid) {
+      try {
+        const formData: TodoData = this.todoForm.value;
+        await this.ts.updateTodo(this.data.taskId, formData);
+        this.ts.notifyTaskUpdate();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
+
+  onSubmitAndNavigate() {
+    this.onSubmit();
+    if (this.todoForm.valid) {
+      this.dialogRef.close();
+    }
   }
 
 

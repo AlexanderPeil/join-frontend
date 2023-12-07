@@ -188,7 +188,6 @@ export class AddTaskComponent implements OnInit {
 
 
   async createNewCategory() {
-    console.log(this.categoryForm.valid)
     if (this.categoryForm.valid) {
       console.log('CategoryForm is Valid!');
       try {
@@ -203,7 +202,8 @@ export class AddTaskComponent implements OnInit {
   }
 
 
-  openDialogHandleCategories(categoryId: number): void {
+  openDialogHandleCategories(categoryId: number, event: MouseEvent): void {
+    event.stopPropagation();
     this.dialog.open(DialogHandleCategoriesComponent, {
       data: { categoryId }
     });
