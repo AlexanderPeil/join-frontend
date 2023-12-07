@@ -14,6 +14,7 @@ import {
   MatDialogContent,
 } from '@angular/material/dialog';
 import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dialog-handle-categories.component';
+import { AnimationStaggerMetadata } from '@angular/animations';
 
 
 
@@ -63,6 +64,10 @@ export class AddTaskComponent implements OnInit {
     this.initAllTasks();
     this.initAllCategories();
     this.initAllContacts();
+    this.catService.getCategoriesUpdateListener().subscribe(() => {
+      this.initAllCategories();
+      this.selectedCategory = null;
+    });
   }
 
 
@@ -190,6 +195,7 @@ export class AddTaskComponent implements OnInit {
         const categoryData: CategoryData = this.categoryForm.value;
         await this.catService.createCategory(categoryData)
         this.selectedCategory = categoryData;
+        this.initAllCategories();
       } catch (err) {
         console.error(err);
       }

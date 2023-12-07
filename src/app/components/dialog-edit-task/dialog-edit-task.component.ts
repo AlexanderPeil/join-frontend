@@ -51,8 +51,6 @@ export class DialogEditTaskComponent implements OnInit {
     this.loadtaskbyId();
     this.initAllCategories();
     this.initAllContacts();
-    console.log('Current task id is:', this.data.taskId);
-
   }
 
 
@@ -211,11 +209,6 @@ export class DialogEditTaskComponent implements OnInit {
     this.categoryMenu = false;
   }
 
-  createCategory() {
-    // create category in db
-    // this.scrumCat.create(this.categoryForm.value);
-  }
-
 
   clickOnCategory(cat: CategoryData) {
     const categoryForm = this.todoForm.get('category') as FormControl;
@@ -241,6 +234,7 @@ export class DialogEditTaskComponent implements OnInit {
       console.error('Please select a category and a color.');
     }
   }
+  
 
   selectContact(contact: ContactData) {
     const assignedTo = this.todoForm.get('assigned_to') as FormArray;
@@ -289,8 +283,8 @@ export class DialogEditTaskComponent implements OnInit {
   }
 
 
-  onClear($event: MouseEvent) {
-
+  onClear() {
+    this.dialogRef.close();
   }
 
 }

@@ -1,0 +1,41 @@
+@import "../../shared/variables.scss";
+
+.mainContent {
+    padding: 40px;
+}
+
+h1 {
+    margin-top: unset;
+}
+
+.inputContent {
+    display: flex;
+    align-items: center;
+
+    .catName {
+        padding: 10px 21px;
+    }
+
+    .catColor {
+        @include width_height(40px, 45px);
+        cursor: pointer;
+    }
+
+    input {
+        @include font_size_weight(21px, 400);
+        border: 1px solid #d1d1d1;
+        border-radius: 10px;
+        background-color: white;
+        outline: none;
+    }
+
+    img {
+        height: 40px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $main_color_bright;
+            border-radius: 10px;
+        }
+    }
+}

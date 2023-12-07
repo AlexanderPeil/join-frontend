@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CategoryService } from 'src/app/shared/services/category.service';
+import { TodoService } from 'src/app/shared/services/todo.service';
 import { CategoryData } from 'src/app/shared/todo-interface';
 
 @Component({
@@ -14,7 +15,9 @@ export class DialogHandleCategoriesComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private catService: CategoryService
+    private dialogRef: MatDialogRef<DialogHandleCategoriesComponent>,
+    private catService: CategoryService,
+    private ts: TodoService
   ) { }
 
 
@@ -25,10 +28,29 @@ export class DialogHandleCategoriesComponent implements OnInit {
 
   async loadCategoryById() {
     try {
-      this.category = await this.catService.getCategoryById(this.data.categoryId)
+      const category = await this.catService.getCategoryById(this.data.categoryId);
+      this.category = category;
     } catch (err) {
       console.error(err);
     }
+  }
+
+
+  async updateCategoryName(categoryId: number) {
+    if (categoryId !== undefined) {
+      try {
+        await this.catService.updateCategory(categoryId, this.category);
+        this.catService.notifyCategoriesUpdate();
+        this.dialogRef.close();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
+
+  closeMenu() {
+    this.dialogRef.close();
   }
 
 }
