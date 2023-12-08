@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 export class SignUpComponent implements OnInit {
   userAlreadyExists = false;
   signUpForm!: FormGroup;
+  submitted = false;
 
 
   constructor(
@@ -35,6 +36,7 @@ export class SignUpComponent implements OnInit {
       lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      privacyPolicy: [false, Validators.requiredTrue],
       confirmPassword: ['']
     }, { validators: this.checkPasswords } as AbstractControlOptions);
   }
@@ -52,6 +54,8 @@ export class SignUpComponent implements OnInit {
 
 
   async onSubmit() {
+    this.submitted = true;
+
     if (this.signUpForm.invalid) {
       return;
     }

@@ -9,18 +9,19 @@ import { AddTaskComponent } from './components/add-task/add-task.component';
 import { LegalNoticeComponent } from './components/legal-notice/legal-notice.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { HelpPageComponent } from './components/help-page/help-page.component';
+import { AuthGuard } from './shared/auth-guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignUpComponent },
-  { path: 'summary', component: SummaryComponent },
-  { path: 'board', component: BoardComponent },
-  { path: 'contacts', component: ContactsComponent },
-  { path: 'add-task', component: AddTaskComponent },
-  { path: 'legal-notice', component: LegalNoticeComponent },
+  { path: 'summary', component: SummaryComponent, canActivate: [AuthGuard] },
+  { path: 'board', component: BoardComponent, canActivate: [AuthGuard] },
+  { path: 'contacts', component: ContactsComponent, canActivate: [AuthGuard] },
+  { path: 'add-task', component: AddTaskComponent, canActivate: [AuthGuard] },
+  { path: 'legal-notice', component: LegalNoticeComponent, canActivate: [AuthGuard] },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
-  { path: 'help-page', component: HelpPageComponent },
+  { path: 'help-page', component: HelpPageComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

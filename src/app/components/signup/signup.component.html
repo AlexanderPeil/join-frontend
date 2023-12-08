@@ -1,22 +1,60 @@
 <img class="join-logo logo-animation" src="assets/img/join_logo.png" alt="joing-logo">
 <div class="start-bg">
     <div class="content">
+
+        <!-- Sign up form -->
         <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
-            <img routerLink="/login" class="back-img back-img-web" src="assets/img/arrow_left.png" alt="back-img">
+            <img routerLink="/login" class="back-img back-img-web" src="assets/img/arrow_left.png" alt="back-img" title="Return to login">
             <img routerLink="/login" class="back-img d-none back-img-sign-up-mobile"
-                src="assets/img/arrow_left_mobile.png" alt="back-img_mob">
+                src="assets/img/arrow_left_mobile.png" alt="back-img_mob" title="Return to login">
+
             <span class="heading-span">Sign up</span>
             <img src="assets/img/underline.png" alt="underline" class="underline" id="hide-underline">
             <img src="assets/img/log_in_underline_mob.png" alt="underline" class="underline-mobile d-none">
             <span class="d-none msg-box" [class.d-none]="!userAlreadyExists">This user already exists</span>
+
             <input class="input-name-img input-email-pw" type="text" placeholder="Username" formControlName="username">
-            <input class="input-name-img input-email-pw" type="text" placeholder="Firstname" formControlName="firstname">
+            <div *ngIf="submitted && signUpForm.get('username')?.errors?.['required']" class="warning">
+                Please enter a username.
+            </div>
+
+            <input class="input-name-img input-email-pw" type="text" placeholder="Firstname"
+                formControlName="firstname">
+                <div *ngIf="submitted && signUpForm.get('firstname')?.errors?.['required']" class="warning">
+                Please enter your firstname.
+            </div>
+
             <input class="input-name-img input-email-pw" type="text" placeholder="Lastname" formControlName="lastname">
+            <div *ngIf="submitted && signUpForm.get('lastname')?.errors?.['required']" class="warning">
+                Please enter your lastname.
+            </div>
+
             <input class="input-email-img input-email-pw" type="email" placeholder="Email" formControlName="email">
-            <input class="input-password-img input-email-pw" type="password" placeholder="Password" formControlName="password">
-            <input class="input-password-img input-email-pw" type="password" placeholder="Password" formControlName="confirmPassword">
-            <div *ngIf="signUpForm.errors?.['notSame'] && signUpForm.get('confirmPassword')?.touched">Passwords do not match.</div>
-            <button [disabled]="signUpForm.invalid" class="sign-up-btn btn-font">Sign up</button>
+            <div *ngIf="submitted && signUpForm.get('email')?.errors?.['required']" class="warning">
+                Please enter your email.
+            </div>
+
+            <input class="input-password-img input-email-pw" type="password" placeholder="Password"
+                formControlName="password">
+                <div *ngIf="submitted && signUpForm.get('password')?.errors?.['required']" class="warning">
+                Please enter a password.
+            </div>
+
+            <input class="input-password-img input-email-pw" type="password" placeholder="Password"
+                formControlName="confirmPassword">
+
+            <!-- Privacy Policy section -->
+            <div class="privacyPolicySection">
+                <input type="checkbox" formControlName="privacyPolicy">
+                <span>I accept the <a routerLink="/privacy-policy">Privacy policy</a></span>
+            </div>
+            <div *ngIf="submitted && signUpForm.get('privacyPolicy')?.errors?.['required']" class="warning">
+                You must accept the Privacy Policy to continue.
+            </div>
+
+            <div *ngIf="signUpForm.errors?.['notSame'] && signUpForm.get('confirmPassword')?.touched">Passwords do not
+                match.</div>
+            <button class="sign-up-btn btn-font">Sign up</button>
         </form>
     </div>
 </div>

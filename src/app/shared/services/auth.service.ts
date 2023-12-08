@@ -14,7 +14,6 @@ import { jwtDecode } from "jwt-decode";
 
 export class AuthService {
 
-
   constructor(private http: HttpClient) { }
 
 
@@ -43,6 +42,12 @@ export class AuthService {
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
     return lastValueFrom(this.http.get<SignUpData>(url, { headers: headers }));
+  }
+
+
+  isLoggedIn(): boolean {
+    const token = localStorage.getItem('token');
+    return !!token; 
   }
 
 

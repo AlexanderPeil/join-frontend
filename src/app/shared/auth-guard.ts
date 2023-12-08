@@ -8,16 +8,18 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthGuard {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private as: AuthService,
+    private router: Router) { }
 
-  // canActivate(): (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-  //   return (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-  //     if (this.authService.isLoggedIn()) {
-  //       return true;
-  //     } else {
-  //       this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-  //       return false;
-  //     }
-  //   };
-  // }
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    const isLoggedIn = this.as.isLoggedIn();
+
+    if (isLoggedIn) {
+      return true;
+    } else {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+      return false;
+    }
+  }
 }
