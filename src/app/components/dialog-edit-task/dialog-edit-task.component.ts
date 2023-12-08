@@ -2,7 +2,7 @@ import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '
 import { TodoService } from 'src/app/shared/services/todo.service';
 import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interface';
+import { CategoryData, ContactData, SubtaskData, TodoData } from 'src/app/shared/todo-interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ContactService } from 'src/app/shared/services/contact.service';
 import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dialog-handle-categories.component';
@@ -53,6 +53,9 @@ export class DialogEditTaskComponent implements OnInit {
     this.loadtaskbyId();
     this.initAllCategories();
     this.initAllContacts();
+    this.ts.getTaskUpdateListener().subscribe(() => {
+      this.loadtaskbyId();
+    });
   }
 
 
@@ -132,20 +135,25 @@ export class DialogEditTaskComponent implements OnInit {
   }
 
 
-
   addSubtask(subtaskTitle: string) {
-    const subtask = this.todoForm.get('subtasks') as FormArray;
-    subtask.push(this.fb.group({
-      subtaskTitle: [subtaskTitle],
-      check: [false]
-    }));
-    this.addSubtaskToDb();
+    const newSubtaskData = { title: subtaskTitle, check: false };
+    this.addSubtaskToDb(newSubtaskData);
+
+    const subtasks = this.todoForm.get('subtasks') as FormArray;
+    subtasks.push(this.fb.group(newSubtaskData));
+    this.ts.notifyTaskUpdate();
   }
 
 
-  removeSubtask(index: number) {
-    const subtask = this.todoForm.get('subtasks') as FormArray;
-    subtask.removeAt(index);
+  async deleteCurrentSubtask(subtaskId: number) {
+    if (subtaskId) {
+      try {
+        await this.ts.deleteSubtask(this.task.id, subtaskId);
+        this.ts.notifyTaskUpdate();
+      } catch (err) {
+        console.error(err);
+      }
+    }
   }
 
 
@@ -154,12 +162,9 @@ export class DialogEditTaskComponent implements OnInit {
   }
 
 
-  async addSubtaskToDb() {
-    const subtaskDataArray = this.todoForm.get('subtasks')?.value;
-    if (!subtaskDataArray) return;
-
+  async addSubtaskToDb(subtaskData: SubtaskData) {
     try {
-      await this.ts.createSubtask(this.data.taskId, subtaskDataArray);
+      await this.ts.createSubtask(this.data.taskId, subtaskData);
       this.ts.notifyTaskUpdate();
     } catch (err) {
       console.error(err);
@@ -238,7 +243,7 @@ export class DialogEditTaskComponent implements OnInit {
       data: { categoryId }
     });
   }
-  
+
 
   selectContact(contact: ContactData) {
     const assignedTo = this.todoForm.get('assigned_to') as FormArray;

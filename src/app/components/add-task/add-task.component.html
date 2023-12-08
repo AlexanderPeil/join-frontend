@@ -121,7 +121,7 @@
                                 <ul *ngFor="let subtask of subtasks.controls; let i=index" [formGroupName]="i">
                                     <li>
                                         <input formControlName="title" class="subtaskList">
-                                        <input type="checkbox" formControlName="check" class="subtaskCheckbox">
+                                        <input hidden type="checkbox" formControlName="check" class="subtaskCheckbox">
                                         <img (click)="removeSubtask(i)" src="/assets/img/xicon.svg" alt="Remove Subtask"
                                             class="subtaskRemove">
                                     </li>
