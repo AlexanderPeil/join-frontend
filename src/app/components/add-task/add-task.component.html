@@ -115,7 +115,7 @@
                             <div class="subtask-container">
                                 <input class="subtask-input" placeholder="Add new subtask" #subtaskTitleInput>
                                 <img class="plus-icon" src="assets/img/plus_icon.png"
-                                    (click)="addSubtask(subtaskTitleInput.value); subtaskTitleInput.value='';">
+                                    (click)="addSubtask(subtaskTitleInput.value); subtaskTitleInput.value='';" title="Create subtask">
                             </div>
                             <div formArrayName="subtasks">
                                 <ul *ngFor="let subtask of subtasks.controls; let i=index" [formGroupName]="i">

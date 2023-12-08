@@ -4,8 +4,8 @@
         <img src="assets/img/join_logo.png" alt="Join-logo">
     </div>
     <div class="header-nav">
-        <a class="help-icon" routerLink="/help-page"><img class="header-help-icon" src="assets/img/help_icon.png"></a>
-        <img class="header-user-img" src="assets/img/user_guest.png" mat-button [matMenuTriggerFor]="menu">
+        <a class="help-icon" routerLink="/help-page"><img class="header-help-icon" src="assets/img/help_icon.png" title="Go to Help-Page"></a>
+        <img class="header-user-img" src="assets/img/user_guest.png" mat-button [matMenuTriggerFor]="menu" title="Open menu">
         <mat-menu class="logout-menu" #menu="matMenu">
             <button class="hide-content" mat-menu-item routerLink="/help-page"><span>Help</span></button>
             <button mat-menu-item routerLink="/privacy-policy"><span>Privacy policy</span></button>

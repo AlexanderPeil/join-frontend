@@ -5,7 +5,7 @@
             <!-- Task main content -->
             <div class="card-task-category" [style.background-color]="task.category.color">{{ task.category.name }}
             </div>
-            <img src="../../assets/img/xicon.svg" alt="Close Card-Task" (click)="closeDialogTaskMenu()">
+            <img src="../../assets/img/xicon.svg" alt="Close Card-Task" (click)="closeDialogTaskMenu()" title="Close menu"> 
         </div>
         <h2>{{ task.title }}</h2>
         <p>{{ task.description }}</p>
@@ -44,14 +44,14 @@
                         (blur)="subtask.id !== undefined && subtask.title !== undefined && updateSubtaskTitle(subtask.id, subtask.title)">
                     <input type="checkbox" [checked]="subtask.checked"
                         (change)="subtask.id !== undefined && subtaskChecked(subtask.id, $event)">
-                    <img src="/assets/img/xicon.svg" alt="Delete subtask"
-                        (click)="subtask.id !== undefined && deleteCurrentSubtask(subtask.id)">
+                    <img class="deleteSubtask"  src="/assets/img/xicon.svg" alt="Delete subtask"
+                        (click)="subtask.id !== undefined && deleteCurrentSubtask(subtask.id)" title="Delete subtask">
                 </div>
             </div>
         </div>
         <div class="card-task-bottom">
-            <a class="edit-task" (click)="editTask(task.id)"></a>
-            <div class="delete-task" (click)="deleteTask(task.id)"></div>
+            <a class="edit-task" (click)="editTask(task.id)" title="Edit task"></a>
+            <div class="delete-task" (click)="deleteTask(task.id)" title="Delete task"></div>
         </div>
     </div>
 </div>

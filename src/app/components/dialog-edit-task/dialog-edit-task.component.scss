@@ -260,6 +260,11 @@ select::-ms-expand {
     isolation: isolate;
 }
 
+.subtaskRemove {
+    cursor: pointer;
+    margin-left: 10px
+}
+
 .flex-center {
     @include align_items_center;
 }
