@@ -18,6 +18,7 @@ import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dia
 export class AddTaskComponent implements OnInit {
   @ViewChild('handleCategoryMenu') handleCategoryMenu!: ElementRef;
   @ViewChild('handleASsignedToMenu') handleASsignedToMenu!: ElementRef;
+
   taskForm!: FormGroup;
   categoryForm!: FormGroup;
   tasks: TodoData[] = [];
@@ -35,8 +36,10 @@ export class AddTaskComponent implements OnInit {
   assignedToMenu = false;
   feedbackMessageMembers = 'Select your Members';
   createdSubtasks: string[] = [];
-  loading: boolean = false;
+  // loading: boolean = false;
   newSubtaskTitle = '';
+  taskAddedInfo!: boolean;
+
 
 
   constructor(
@@ -249,7 +252,10 @@ export class AddTaskComponent implements OnInit {
       try {
         const formData: TodoData = this.taskForm.value;
         await this.ts.createTodo(formData);
-        this.router.navigate(['/board']);
+        this.taskAddedInfo = true;
+        setTimeout(() => {
+          this.router.navigate(['/board']);
+        }, 3000);
       } catch (err) {
         console.error(err);
       }

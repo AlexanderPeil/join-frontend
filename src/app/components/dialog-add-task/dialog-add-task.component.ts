@@ -33,7 +33,7 @@ export class DialogAddTaskComponent implements OnInit {
   assignedToMenu = false;
   feedbackMessageMembers = 'Select your Members';
   createdSubtasks: string[] = [];
-  loading: boolean = false;
+  // loading: boolean = false;
   newSubtaskTitle = '';
   currentStatus!: string;
   currentContactId!: number; 

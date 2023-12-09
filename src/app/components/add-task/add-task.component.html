@@ -4,7 +4,10 @@
 <div class="main-container">
     <div class="title-container width-unset">
         <div class="headline-mobile d-none">Kanban Project Management Tool</div>
-        <h1>Add Task</h1>
+        <div>
+            <h1>Add Task</h1>
+            <img *ngIf="taskAddedInfo" src="assets/img/task_added_to_board.png" alt="Task added to board">
+        </div>
     </div>
 
     <!--  taskForm-Group starts here  -->

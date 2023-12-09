@@ -32,7 +32,7 @@ export class DialogEditTaskComponent implements OnInit {
   assignedToMenu = false;
   feedbackMessageMembers = 'Select your Members';
   createdSubtasks: string[] = [];
-  loading: boolean = false;
+  // loading: boolean = false;
   newSubtaskTitle = '';
 
 
