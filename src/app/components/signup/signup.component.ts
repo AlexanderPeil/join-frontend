@@ -15,6 +15,8 @@ export class SignUpComponent implements OnInit {
   userAlreadyExists = false;
   signUpForm!: FormGroup;
   submitted = false;
+  signedUpInfo!: boolean;
+  isButtonDisabled = false;
 
 
   constructor(
@@ -64,7 +66,11 @@ export class SignUpComponent implements OnInit {
       const formData = this.signUpForm.value;
       let resp: any = await this.as.signup(formData);
       localStorage.setItem('token', resp['token']);
-      this.router.navigateByUrl('/summary');
+      this.signedUpInfo = true;
+      this.isButtonDisabled = true;
+      setTimeout(() => {
+        this.router.navigateByUrl('/summary');
+      }, 3000);
     } catch (err) {
       console.error(err);
       this.userAlreadyExists = true;

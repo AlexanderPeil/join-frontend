@@ -54,7 +54,8 @@
 
             <div *ngIf="signUpForm.errors?.['notSame'] && signUpForm.get('confirmPassword')?.touched">Passwords do not
                 match.</div>
-            <button class="sign-up-btn btn-font">Sign up</button>
+            <button class="sign-up-btn btn-font" [disabled]="isButtonDisabled">Sign up</button>
+            <img *ngIf="signedUpInfo" src="assets/img/signed_up_info.png" alt="Signed up succesfully">
         </form>
     </div>
 </div>
