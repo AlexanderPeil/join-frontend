@@ -4,10 +4,7 @@
 <div class="main-container">
     <div class="title-container width-unset">
         <div class="headline-mobile d-none">Kanban Project Management Tool</div>
-        <div>
-            <h1>Add Task</h1>
-            <img *ngIf="taskAddedInfo" src="assets/img/task_added_to_board.png" alt="Task added to board">
-        </div>
+        <h1>Add Task</h1>
     </div>
 
     <!--  taskForm-Group starts here  -->
@@ -15,6 +12,10 @@
         <div class="content-container">
             <img class="add-task-btn-mobile" src="../../assets/img/create_task_btn_mobile.png" alt="Create tassk button"
                 (click)="onSubmitAndNavigate()">
+                <div class="taskAddedInfoMobile">
+                    <img *ngIf="taskAddedInfo && windowWidth  <= 1001" src="assets/img/task_added_to_board.png"
+                        alt="Task added to board">
+                </div>
             <div class="left-container width-unset">
                 <div class="selection-container">
                     <label>Title</label>
@@ -44,7 +45,8 @@
                                     (click)="clickOnCategory(category)">
                                     <p>{{ category.name }}</p>
                                     <div class="category-color" [style.background]="category.color"></div>
-                                    <img src="/assets/img/edit_category.png" alt="Delete category" title="Delete category"
+                                    <img src="/assets/img/edit_category.png" alt="Delete category"
+                                        title="Delete category"
                                         (click)="category.id !== undefined && openDialogHandleCategories(category.id, $event)">
                                 </div>
                             </div>
@@ -118,7 +120,8 @@
                             <div class="subtask-container">
                                 <input class="subtask-input" placeholder="Add new subtask" #subtaskTitleInput>
                                 <img class="plus-icon" src="assets/img/plus_icon.png"
-                                    (click)="addSubtask(subtaskTitleInput.value); subtaskTitleInput.value='';" title="Create subtask">
+                                    (click)="addSubtask(subtaskTitleInput.value); subtaskTitleInput.value='';"
+                                    title="Create subtask">
                             </div>
                             <div formArrayName="subtasks">
                                 <ul *ngFor="let subtask of subtasks.controls; let i=index" [formGroupName]="i">
@@ -132,6 +135,11 @@
                             </div>
                         </div>
                         <!-- Subtask section -->
+                    </div>
+
+                    <div class="taskAddedInfo">
+                        <img *ngIf="taskAddedInfo && windowWidth  >= 1001" src="assets/img/task_added_to_board.png"
+                            alt="Task added to board">
                     </div>
 
                     <div class="submit-and-clear">

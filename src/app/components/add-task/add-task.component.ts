@@ -36,10 +36,9 @@ export class AddTaskComponent implements OnInit {
   assignedToMenu = false;
   feedbackMessageMembers = 'Select your Members';
   createdSubtasks: string[] = [];
-  // loading: boolean = false;
+  windowWidth!: number;
   newSubtaskTitle = '';
   taskAddedInfo!: boolean;
-
 
 
   constructor(
@@ -63,6 +62,13 @@ export class AddTaskComponent implements OnInit {
       this.initAllCategories();
       this.selectedCategory = null;
     });
+    this.windowWidth = window.innerWidth
+  }
+
+
+  @HostListener('window:resize')
+  onResize() {
+    this.windowWidth = window.innerWidth;
   }
 
 
@@ -129,11 +135,13 @@ export class AddTaskComponent implements OnInit {
 
 
   addSubtask(subtaskTitle: string) {
-    const subtask = this.taskForm.get('subtasks') as FormArray;
-    subtask.push(this.fb.group({
-      title: [subtaskTitle],
-      check: [false]
-    }));
+    if (subtaskTitle != '') {
+      const subtask = this.taskForm.get('subtasks') as FormArray;
+      subtask.push(this.fb.group({
+        title: [subtaskTitle],
+        check: [false]
+      }));
+    }
   }
 
 

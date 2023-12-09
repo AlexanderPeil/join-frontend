@@ -210,7 +210,7 @@ select::-ms-expand {
 
 .right-container {
     @include flex_direction_column;
-    @include width_height(452px, 506px);
+    width: 452px;
     gap: 10px;
     position: relative;
 
@@ -227,6 +227,11 @@ select::-ms-expand {
 }
 
 .right-container-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
     width: 100%;
 }
 
@@ -307,7 +312,7 @@ select::-ms-expand {
 
 .submit-and-clear {
     @include justify_content_center;
-    padding-top: 85px;
+    // padding-top: 85px;
 
     button {
         font-size: 1.5rem;
@@ -351,6 +356,22 @@ select::-ms-expand {
         color: $main_color_bright;
         border: 2px solid $main_color_bright;
         filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    }
+}
+
+.taskAddedInfo {
+    display: flex;
+    justify-content: center
+}
+
+.taskAddedInfoMobile {
+    position: fixed;
+    z-index: 21;
+    top: 11px;
+    right: 5px;
+
+    img {
+        width: 235px;
     }
 }
 
