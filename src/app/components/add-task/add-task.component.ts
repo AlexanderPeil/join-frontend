@@ -39,6 +39,7 @@ export class AddTaskComponent implements OnInit {
   windowWidth!: number;
   newSubtaskTitle = '';
   taskAddedInfo!: boolean;
+  isButtonDisabled = false;
 
 
   constructor(
@@ -260,6 +261,7 @@ export class AddTaskComponent implements OnInit {
       try {
         const formData: TodoData = this.taskForm.value;
         await this.ts.createTodo(formData);
+        this.isButtonDisabled = true;
         this.taskAddedInfo = true;
         setTimeout(() => {
           this.router.navigate(['/board']);

@@ -139,9 +139,12 @@ form {
         transition: all 125ms ease-in-out;
     }
 
-    &[disabled] {
-        cursor: not-allowed !important;
-        filter: contrast(0.5);
+    &:disabled {
+        background-color: #ccc; 
+        color: #666;          
+        border: none;
+        box-shadow: none;
+        cursor: not-allowed;
     }
 }
 
