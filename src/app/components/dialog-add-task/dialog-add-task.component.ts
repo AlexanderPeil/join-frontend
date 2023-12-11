@@ -13,11 +13,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./dialog-add-task.component.scss']
 })
 export class DialogAddTaskComponent implements OnInit {
-
   @ViewChild('handleCategoryMenu') handleCategoryMenu!: ElementRef;
   @ViewChild('handleASsignedToMenu') handleASsignedToMenu!: ElementRef;
-  todoForm!: FormGroup;
+
+  taskForm!: FormGroup;
   categoryForm!: FormGroup;
+  submitted = false;
   tasks: TodoData[] = [];
   categories: CategoryData[] = [];
   contacts: ContactData[] = [];
@@ -33,10 +34,11 @@ export class DialogAddTaskComponent implements OnInit {
   assignedToMenu = false;
   feedbackMessageMembers = 'Select your Members';
   createdSubtasks: string[] = [];
-  // loading: boolean = false;
+  isButtonDisabled!: boolean;
+  taskAddedInfo!: boolean;
   newSubtaskTitle = '';
   currentStatus!: string;
-  currentContactId!: number; 
+  currentContactId!: number;
 
 
   constructor(
@@ -88,7 +90,7 @@ export class DialogAddTaskComponent implements OnInit {
 
 
   initFormGroup() {
-    this.todoForm = this.fb.group({
+    this.taskForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
       due_date: ['', Validators.required],
@@ -132,7 +134,7 @@ export class DialogAddTaskComponent implements OnInit {
 
 
   setPriority(priority: string) {
-    this.todoForm.get('priority')?.setValue(priority);
+    this.taskForm.get('priority')?.setValue(priority);
 
     this.prioUrgent = priority === 'urgent';
     this.prioMedium = priority === 'medium';
@@ -141,7 +143,7 @@ export class DialogAddTaskComponent implements OnInit {
 
 
   addSubtask(subtaskTitle: string) {
-    const subtask = this.todoForm.get('subtasks') as FormArray;
+    const subtask = this.taskForm.get('subtasks') as FormArray;
     subtask.push(this.fb.group({
       title: [subtaskTitle],
       check: [false]
@@ -150,13 +152,13 @@ export class DialogAddTaskComponent implements OnInit {
 
 
   removeSubtask(index: number) {
-    const subtask = this.todoForm.get('subtasks') as FormArray;
+    const subtask = this.taskForm.get('subtasks') as FormArray;
     subtask.removeAt(index);
   }
 
 
   get subtasks(): FormArray {
-    return this.todoForm.get('subtasks') as FormArray;
+    return this.taskForm.get('subtasks') as FormArray;
   }
 
 
@@ -166,7 +168,7 @@ export class DialogAddTaskComponent implements OnInit {
       if (contactToPreselect) {
         this.selectContact(contactToPreselect);
       } else {
-        const assignedTo = this.todoForm.get('assigned_to') as FormArray;
+        const assignedTo = this.taskForm.get('assigned_to') as FormArray;
         assignedTo.push(this.fb.control(this.currentContactId));
       }
     }
@@ -203,7 +205,7 @@ export class DialogAddTaskComponent implements OnInit {
 
 
   clickOnCategory(cat: CategoryData) {
-    const categoryForm = this.todoForm.get('category') as FormControl;
+    const categoryForm = this.taskForm.get('category') as FormControl;
     if (categoryForm) {
       categoryForm.setValue(cat.id);
       this.selectedCategory = cat;
@@ -213,8 +215,8 @@ export class DialogAddTaskComponent implements OnInit {
 
 
   categorySelected() {
-    let categoryValue = this.todoForm.get('category.name')?.value;
-    let colorValue = this.todoForm.get('category.color')?.value;
+    let categoryValue = this.taskForm.get('category.name')?.value;
+    let colorValue = this.taskForm.get('category.color')?.value;
 
     if (categoryValue && colorValue) {
       let newCategory = {
@@ -228,7 +230,7 @@ export class DialogAddTaskComponent implements OnInit {
   }
 
   selectContact(contact: ContactData) {
-    const assignedTo = this.todoForm.get('assigned_to') as FormArray;
+    const assignedTo = this.taskForm.get('assigned_to') as FormArray;
 
     if (this.isSelected(contact)) {
       const index = assignedTo.controls.findIndex(control => control.value === contact.id);
@@ -242,13 +244,13 @@ export class DialogAddTaskComponent implements OnInit {
 
 
   isSelected(contact: ContactData) {
-    const assignedTo = this.todoForm.get('assigned_to') as FormArray;
+    const assignedTo = this.taskForm.get('assigned_to') as FormArray;
     return assignedTo.controls.some(control => control.value === contact.id);
   }
 
 
   cancelSelection() {
-    const assignedTo = this.todoForm.get('assigned_to') as FormArray;
+    const assignedTo = this.taskForm.get('assigned_to') as FormArray;
     assignedTo.clear();
     this.assignedToMenu = false;
   }
@@ -274,23 +276,42 @@ export class DialogAddTaskComponent implements OnInit {
   }
 
 
-  onClear($event: MouseEvent) {
-
-  }
-
-
   async onSubmit() {
-    if (this.todoForm.valid) {
-      try {
-        const formData: TodoData = this.todoForm.value;
-        await this.ts.createTodo(formData);
+    this.submitted = true;
+
+    if (this.taskForm.invalid && !this.selectedCategory) {
+      return;
+    }
+
+    try {
+      const formData: TodoData = this.taskForm.value;
+      await this.ts.createTodo(formData);
+      this.isButtonDisabled = true;
+      this.taskAddedInfo = true;
+      setTimeout(() => {
         this.dialogRef.close();
         this.router.navigate(['/board']);
         this.ts.notifyTaskUpdate();
-      } catch (err) {
-        console.error(err);
-      }
+      }, 3000);
+    } catch (err) {
+      console.error(err);
     }
+  }
+
+
+  onClear($event: MouseEvent) {
+    this.taskForm.reset();
+    this.feedbackMessageMembers = 'Select your Members';
+    this.selectedCategory = null;
+    this.categoryMenu = false;
+    this.assignedToMenu = false;
+    this.createdSubtasks = [];
+    this.prioUrgent = false;
+    this.prioMedium = false;
+    this.prioLow = true;
+    this.subtaskInput = false;
+    const subtask = this.taskForm.get('subtasks') as FormArray;
+    subtask.clear();
   }
 
 }

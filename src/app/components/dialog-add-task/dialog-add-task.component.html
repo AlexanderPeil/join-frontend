@@ -5,21 +5,33 @@
     </div>
 
     <!--  Add-task form  -->
-    <form [formGroup]="todoForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
         <div class="content-container">
             <div class="left-container width-unset">
+
+                <!-- Title section -->
                 <div class="selection-container">
                     <label>Title</label>
+                    <div *ngIf="submitted && taskForm.get('title')?.errors?.['required']" class="warning">
+                        Please enter a title.
+                    </div>
                     <input type="text" placeholder="Enter a title" formControlName="title">
                 </div>
 
+                <!-- Description section -->
                 <div class="selection-container">
                     <label>Description</label>
+                    <div *ngIf="submitted && taskForm.get('description')?.errors?.['required']" class="warning">
+                        Please enter a description.
+                    </div>
                     <textarea placeholder="Enter a description" formControlName="description"></textarea>
 
                     <!--  Category section  -->
                     <div class="selection-container prevent-select">
                         <label>Category</label>
+                        <div *ngIf="submitted && !selectedCategory" class="warning">
+                            Please select a category.
+                        </div>
                         <div class="select-wrapper" #handleCategoryMenu>
                             <div class="category-inputs" *ngIf="categoryMenu">
                                 <div [formGroup]="categoryForm">
@@ -53,6 +65,9 @@
                     <!--  Assigned To section  -->
                     <div class="selection-container prevent-select">
                         <label>Assigned To</label>
+                        <div *ngIf="submitted && taskForm.get('assigned_to')?.errors?.['required']" class="warning">
+                            Please select members.
+                        </div>
                         <div class="select-wrapper assigned-to-wrapper" #handleASsignedToMenu>
                             <div class="postion-relative" *ngIf="assignedToMenu">
                                 <span>Select your members</span>
@@ -81,8 +96,13 @@
                 <div class="middle-gap"></div>
                 <div class="right-container width-unset">
                     <div class="right-container-mobile">
+
+                        <!-- Due date section -->
                         <div class="features-container">
                             <label for="date">Due Date</label>
+                            <div *ngIf="submitted && taskForm.get('due_date')?.errors?.['required']" class="warning">
+                                Please select a date.
+                            </div>
                             <input class="date" type="date" [min]="minDate" formControlName="due_date">
                         </div>
 
@@ -126,12 +146,16 @@
                             </div>
                             <!-- Subtask section -->
                         </div>
+                        <div class="taskAddedInfoMobile">
+                            <img *ngIf="taskAddedInfo" src="assets/img/task_added_to_board.png"
+                                alt="Task added to board">
+                        </div>
                         <div class="submit-and-clear">
                             <div class="btn-clear" (click)="onClear($event)">Clear<img class="clear-img"
                                     src="assets/img/iconoir_cancel.png">
                             </div>
                             <div>
-                                <button class="btn-createTask">Create Task<img
+                                <button class="btn-createTask" [disabled]="isButtonDisabled">Create Task<img
                                         src="assets/img/icons_check.png"></button>
                             </div>
                         </div>

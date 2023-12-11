@@ -4,7 +4,8 @@
 
         <!-- Sign up form -->
         <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
-            <img routerLink="/login" class="back-img back-img-web" src="assets/img/arrow_left.png" alt="back-img" title="Return to login">
+            <img routerLink="/login" class="back-img back-img-web" src="assets/img/arrow_left.png" alt="back-img"
+                title="Return to login">
             <img routerLink="/login" class="back-img d-none back-img-sign-up-mobile"
                 src="assets/img/arrow_left_mobile.png" alt="back-img_mob" title="Return to login">
 
@@ -13,33 +14,42 @@
             <img src="assets/img/log_in_underline_mob.png" alt="underline" class="underline-mobile d-none">
             <span class="d-none msg-box" [class.d-none]="!userAlreadyExists">This user already exists</span>
 
+            <!-- Username section -->
             <input class="input-name-img input-email-pw" type="text" placeholder="Username" formControlName="username">
             <div *ngIf="submitted && signUpForm.get('username')?.errors?.['required']" class="warning">
                 Please enter a username.
             </div>
 
+            <!-- Firstname section -->
             <input class="input-name-img input-email-pw" type="text" placeholder="Firstname"
                 formControlName="firstname">
-                <div *ngIf="submitted && signUpForm.get('firstname')?.errors?.['required']" class="warning">
+            <div *ngIf="submitted && signUpForm.get('firstname')?.errors?.['required']" class="warning">
                 Please enter your firstname.
             </div>
 
+            <!-- Lastname section -->
             <input class="input-name-img input-email-pw" type="text" placeholder="Lastname" formControlName="lastname">
             <div *ngIf="submitted && signUpForm.get('lastname')?.errors?.['required']" class="warning">
                 Please enter your lastname.
             </div>
 
+            <!-- Email section -->
             <input class="input-email-img input-email-pw" type="email" placeholder="Email" formControlName="email">
             <div *ngIf="submitted && signUpForm.get('email')?.errors?.['required']" class="warning">
                 Please enter your email.
             </div>
+            <div *ngIf="submitted && signUpForm.get('email')?.errors?.['email']" class="warning">
+                Please enter a valid email address with an '@' character.
+            </div>
 
+            <!-- Password section -->
             <input class="input-password-img input-email-pw" type="password" placeholder="Password"
                 formControlName="password">
-                <div *ngIf="submitted && signUpForm.get('password')?.errors?.['required']" class="warning">
+            <div *ngIf="submitted && signUpForm.get('password')?.errors?.['required']" class="warning">
                 Please enter a password.
             </div>
 
+            <!-- Confirm passsword section -->
             <input class="input-password-img input-email-pw" type="password" placeholder="Password"
                 formControlName="confirmPassword">
 

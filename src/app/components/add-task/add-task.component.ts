@@ -21,6 +21,7 @@ export class AddTaskComponent implements OnInit {
 
   taskForm!: FormGroup;
   categoryForm!: FormGroup;
+  submitted = false;
   tasks: TodoData[] = [];
   categories: CategoryData[] = [];
   contacts: ContactData[] = [];
@@ -87,7 +88,7 @@ export class AddTaskComponent implements OnInit {
       description: ['', Validators.required],
       due_date: ['', Validators.required],
       category: ['', Validators.required],
-      priority: 'medium',
+      priority: 'low',
       status: 'todo',
       assigned_to: this.fb.array([], Validators.required),
       subtasks: this.fb.array([])
@@ -257,18 +258,22 @@ export class AddTaskComponent implements OnInit {
 
 
   async onSubmit() {
-    if (this.taskForm.valid) {
-      try {
-        const formData: TodoData = this.taskForm.value;
-        await this.ts.createTodo(formData);
-        this.isButtonDisabled = true;
-        this.taskAddedInfo = true;
-        setTimeout(() => {
-          this.router.navigate(['/board']);
-        }, 3000);
-      } catch (err) {
-        console.error(err);
-      }
+    this.submitted = true;
+
+    if (this.taskForm.invalid && !this.selectedCategory) {
+      return;
+    }    
+
+    try {
+      const formData: TodoData = this.taskForm.value;
+      await this.ts.createTodo(formData);
+      this.isButtonDisabled = true;
+      this.taskAddedInfo = true;
+      setTimeout(() => {
+        this.router.navigate(['/board']);
+      }, 3000);
+    } catch (err) {
+      console.error(err);
     }
   }
 

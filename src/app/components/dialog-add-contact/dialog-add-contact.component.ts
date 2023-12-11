@@ -11,6 +11,9 @@ import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interfa
 })
 export class DialogAddContactComponent implements OnInit {
   contactForm!: FormGroup;
+  submitted = false;
+
+
   constructor(
     private fb: FormBuilder,
     private contService: ContactService,
@@ -34,14 +37,18 @@ export class DialogAddContactComponent implements OnInit {
 
 
   async onSubmit() {
-    if (this.contactForm.valid) {
-      try {
-        const formData: ContactData = this.contactForm.value;
-        await this.contService.createContact(formData);
-        this.dialogRef.close(true);
-      } catch (err) {
-        console.error(err);
-      }
+    this.submitted = true;
+
+    if (this.contactForm.invalid) {
+      return;
+    }
+
+    try {
+      const formData: ContactData = this.contactForm.value;
+      await this.contService.createContact(formData);
+      this.dialogRef.close(true);
+    } catch (err) {
+      console.error(err);
     }
   }
 
