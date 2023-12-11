@@ -7,21 +7,22 @@
         <section class="contact-list-container">
             <div>
                 <div class="contact-list">
-                    <!-- <ng-container *ngFor="let letter of uniqueLetters">
+                    <ng-container *ngFor="let letter of uniqueLetters">
                         <h2 class="contact-index">{{ letter }}</h2>
-                        <div class="contact-underline"></div> -->
-                    <ng-container *ngFor="let contact of contacts">
-                        <div class="contact-list-box" *ngIf="contact.lastname.charAt(0).toUpperCase()"
-                            (click)="selectContact(contact)">
-                            <div class="contact-letters small-letters" [style.background-color]="contact.color">
-                                {{ contact.lastname.charAt(0).toUpperCase()}}{{
-                                contact.firstname.charAt(0).toUpperCase() }}
+                        <div class="contact-underline"></div>
+                        <ng-container *ngFor="let contact of sortedContacts[letter]">
+                            <div class="contact-list-box" *ngIf="contact.lastname.charAt(0).toUpperCase()"
+                                (click)="selectContact(contact)">
+                                <div class="contact-letters small-letters" [style.background-color]="contact.color">
+                                    {{ contact.lastname.charAt(0).toUpperCase()}}{{
+                                    contact.firstname.charAt(0).toUpperCase() }}
+                                </div>
+                                <div class="contact-details">
+                                    <div class="contact-name">{{ contact.lastname }} {{ contact.firstname }}</div>
+                                    <div class="contact-email">{{ contact.email }}</div>
+                                </div>
                             </div>
-                            <div class="contact-details">
-                                <div class="contact-name">{{ contact.lastname }} {{ contact.firstname }}</div>
-                                <div class="contact-email">{{ contact.email }}</div>
-                            </div>
-                        </div>
+                        </ng-container>
                     </ng-container>
                     <!-- </ng-container> -->
                 </div>

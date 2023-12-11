@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interface';
+import { ContactData } from 'src/app/shared/todo-interface';
 import { ContactService } from 'src/app/shared/services/contact.service';
-import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogEditContactComponent } from '../dialog-edit-contact/dialog-edit-contact.component';
 import { DialogAddContactComponent } from '../dialog-add-contact/dialog-add-contact.component';
 import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.component';
@@ -15,7 +15,9 @@ import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.compo
 })
 export class ContactsComponent implements OnInit {
   contacts: ContactData[] = [];
+  sortedContacts: { [key: string]: ContactData[] } = {};
   selectedContact: ContactData | null = null;
+  uniqueLetters: string[] = [];
 
   constructor(
     private contService: ContactService,
@@ -34,10 +36,28 @@ export class ContactsComponent implements OnInit {
   async initAllContacts() {
     try {
       this.contacts = await this.contService.loadAllContacts();
+      this.sortAndGroupContacts(this.contacts);
     } catch (err) {
       console.error('Could not load contacts in add-task.comp', err);
     }
   }
+
+
+  sortAndGroupContacts(contacts: ContactData[]) {
+    const groups: { [key: string]: ContactData[] } = {};
+
+    contacts.forEach(contact => {
+      const letter = contact.lastname.charAt(0).toUpperCase();
+      if (!groups[letter]) {
+        groups[letter] = [];
+      }
+      groups[letter].push(contact);
+    });
+
+    this.sortedContacts = groups;
+    this.uniqueLetters = Object.keys(groups).sort(); // Sortieren der Buchstaben
+  }
+
 
 
   selectContact(contact: ContactData) {
