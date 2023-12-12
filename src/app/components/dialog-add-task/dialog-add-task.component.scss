@@ -302,6 +302,7 @@ select::-ms-expand {
 .submit-and-clear {
     @include justify_content_center;
     padding-top: 85px;
+    margin-top: 10px;
 
     button {
         border-radius: 10px;
@@ -388,7 +389,6 @@ li {
 .taskAddedInfoMobile {
     display: flex;
     justify-content: center;
-    margin-bottom: 10px;
 }
 
 @media (max-width: 1200px) {

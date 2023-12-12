@@ -1,4 +1,4 @@
-@import '../../shared/variables.scss';
+@import "../../shared/variables.scss";
 
 .d-none {
     display: none;
@@ -13,7 +13,7 @@
     @include width_height(100px, 120px);
     position: absolute;
     top: 67px;
-    left: 77px;    
+    left: 77px;
     object-fit: contain;
 }
 
@@ -74,7 +74,7 @@
 
 ::placeholder {
     @include font(18px, 400, 25.2px);
-    color: #D1D1D1;
+    color: #d1d1d1;
 }
 
 .input-email-pw {
@@ -82,7 +82,7 @@
     @include width_height(422px, 51px);
     gap: 10px;
     border-radius: 10px;
-    border: 1px solid #D1D1D1;
+    border: 1px solid #d1d1d1;
     padding: 13px 21px;
     box-sizing: border-box;
 }
@@ -108,8 +108,8 @@
 .back-img {
     cursor: pointer;
     position: absolute;
-    top: 30px;
-    left: 50px;
+    top: 50px;
+    left: 130px;
 }
 
 form {
@@ -129,19 +129,19 @@ form {
     border-radius: 8px;
     padding: 4px 0;
     gap: 10px;
-    background-color: #2A3647;
+    background-color: #2a3647;
     color: white;
     border: none;
 
     &:not([disabled]):hover {
-        background: #29ABE2;
+        background: #29abe2;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         transition: all 125ms ease-in-out;
     }
 
     &:disabled {
-        background-color: #ccc; 
-        color: #666;          
+        background-color: #ccc;
+        color: #666;
         border: none;
         box-shadow: none;
         cursor: not-allowed;
@@ -155,7 +155,6 @@ form {
 }
 
 .privacyPolicySection {
-
     input {
         cursor: pointer;
     }
@@ -172,7 +171,11 @@ form {
     width: 250px;
 }
 
-@media(max-width:700px) {
+@media (max-width: 700px) {
+    .content {
+        margin-top: 15%;
+    }
+
     .join-logo {
         top: 37px;
         width: 70px;
@@ -200,14 +203,14 @@ form {
     }
 
     form {
-        width: 320px;
+        width: 100%;
     }
 
     .back-img-sign-up-mobile {
         display: block !important;
         position: absolute;
-        top: 30px;
-        left: 25px;
+        top: 52px;
+        left: 15%;
     }
 
     .back-img {
@@ -245,17 +248,24 @@ form {
     .animation-stop {
         display: none !important;
     }
+}
 
+@media (max-width: 500px) {
+    .join-logo {
+        @include width_height(40px, 104px);
+        top: 10px;
+        left: 15%;
+    }
+}
 
-    @media(max-width: 400px) {
-        .join-logo {
-            @include width_height(40px, 104px);
-            top: 10px;
-            left: 41px;
-        }
+@media (max-width: 400px) {
+    .content {
+        justify-content: unset;
+    }
+}
 
-        .content {
-            height: 90vh;
-        }
+@media (max-height: 600px) {
+    .content {
+        height: unset;
     }
 }

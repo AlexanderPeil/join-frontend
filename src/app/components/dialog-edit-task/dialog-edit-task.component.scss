@@ -1,4 +1,4 @@
-@import '../../shared/variables.scss';
+@import "../../shared/variables.scss";
 
 .add-task-content {
     @include flex_center;
@@ -73,7 +73,7 @@ input,
 select,
 .select-wrapper {
     @include font_size_weight(21px, 400);
-    border: 1px solid #D1D1D1;
+    border: 1px solid #d1d1d1;
     border-radius: 10px;
     padding: 13px 21px;
     background-color: white;
@@ -177,7 +177,7 @@ select {
 textarea {
     @include font_size_weight(21px, 400);
     min-height: 119px;
-    border: 1px solid #D1D1D1;
+    border: 1px solid #d1d1d1;
     border-radius: 10px;
     padding: 18px 21px;
     outline: none;
@@ -189,7 +189,7 @@ select::-ms-expand {
 }
 
 .middle-gap {
-    border-left: 1px solid #D1D1D1;
+    border-left: 1px solid #d1d1d1;
     height: 506px;
 }
 
@@ -207,7 +207,7 @@ select::-ms-expand {
 .features-container {
     @include flex_direction_column;
     width: 100%;
-    gap: 10px
+    gap: 10px;
 }
 
 .prio-btn-container {
@@ -223,7 +223,7 @@ select::-ms-expand {
     flex-direction: row;
     gap: 10px;
     padding: 10px 10px;
-    border: 1px solid #D1D1D1;
+    border: 1px solid #d1d1d1;
     border-radius: 10px;
     font-size: 21px;
     font-weight: 400;
@@ -255,14 +255,14 @@ select::-ms-expand {
     gap: 10px;
     width: 100%;
     background-color: white;
-    border: 1px solid #D1D1D1;
+    border: 1px solid #d1d1d1;
     border-radius: 10px;
     isolation: isolate;
 }
 
 .subtaskRemove {
     cursor: pointer;
-    margin-left: 10px
+    margin-left: 10px;
 }
 
 .flex-center {
@@ -290,12 +290,13 @@ select::-ms-expand {
 
 .gap-img-subtask {
     @include width_height(2px, 24px);
-    background-color: #D1D1D1;
+    background-color: #d1d1d1;
 }
 
 .submit-and-clear {
     @include justify_content_center;
     padding-top: 85px;
+    margin-top: 10px;
 
     button {
         font-size: 1.5rem;
@@ -321,7 +322,6 @@ select::-ms-expand {
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     }
 }
-
 
 .btn-clear {
     @include button_styles;
@@ -381,11 +381,13 @@ li {
     @include align_items_center;
 }
 
-@media(max-width:1200px) {
-    .add-task-menu {
-        height: 77%;
-    }
+.taskAddedInfoMobile {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
 
+@media (max-width: 1200px) {
     .btn-clear {
         margin-left: unset;
     }
@@ -436,7 +438,7 @@ li {
     }
 }
 
-@media(max-width: 1000px) {
+@media (max-width: 1000px) {
     .add-task-mobile {
         z-index: 11;
         display: block !important;
@@ -469,16 +471,38 @@ li {
     }
 }
 
-@media(max-width:600px) {
+@media (max-width: 600px) {
+    .prio-btn-container {
+        gap: 5px;
+    }
+
+    .prio-btn {
+        padding: 5px;
+        height: 38px;
+        object-fit: contain;
+        font-size: 14px;
+    }
+
+    .prioHoverImage {
+        width: 100px;
+        object-fit: contain;
+    }
 
     .submit-and-clear {
         width: 100%;
     }
+
+    .btn-clear {
+        padding: 15px 5px;
+    }
+
+    .btn-createTask {
+        padding: 15px 5px !important;
+    }
 }
 
-@media(max-width: 500px) {
+@media (max-width: 500px) {
     .add-task-menu {
-        width: 100vw;
         padding: 15px 24px;
     }
 
@@ -495,8 +519,7 @@ li {
     }
 }
 
-@media(max-width: 400px) {
-
+@media (max-width: 400px) {
     .submit-and-clear button {
         margin-left: 10px;
     }

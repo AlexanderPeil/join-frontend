@@ -82,7 +82,10 @@
 
         </div>
         <div class="greet-container" *ngIf="!isMobile">
-            <span class="greet">{{ greeting }},</span>
+            <div class="greet">
+                <span>{{ greeting }}</span>
+                <span *ngIf="firstname != '' ">,</span>
+            </div>
             <span class="username">{{ firstname }}</span>
         </div>
         <div class="greet-container-mobile" *ngIf="showMobileGreet">

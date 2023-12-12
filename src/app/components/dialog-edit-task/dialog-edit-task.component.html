@@ -92,15 +92,15 @@
                         <div class="prio-btn-container">
                             <button class="prio-btn" *ngIf="!prioUrgent" (click)="setPriority('urgent')">Urgent <img
                                     src="../../assets/img/prio_urgent.png"></button>
-                            <img class="prio-urgent urgentSection" *ngIf="prioUrgent"
+                            <img class="prioHoverImage" *ngIf="prioUrgent"
                                 src="../../assets/img/prio_urgent_btn.png">
                             <button class="prio-btn" *ngIf="!prioMedium" (click)="setPriority('medium')">Medium <img
                                     src="../../assets/img/prio_medium.png"></button>
-                            <img class="prio-urgent urgentSection" *ngIf="prioMedium"
+                            <img class="prioHoverImage" *ngIf="prioMedium"
                                 src="../../assets/img/prio_medium_btn.png">
                             <button class="prio-btn" *ngIf="!prioLow" (click)="setPriority('low')">Low <img
                                     src="../../assets/img/prio_low_white.png"></button>
-                            <img class="prio-urgent urgentSection" *ngIf="prioLow"
+                            <img class="prioHoverImage" *ngIf="prioLow"
                                 src="../../assets/img/prio_low_btn.png">
                         </div>
                         <!-- Prio section -->

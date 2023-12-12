@@ -147,8 +147,8 @@
                             <!-- Subtask section -->
                         </div>
                         <div class="taskAddedInfoMobile">
-                            <img  src="assets/img/task_added_to_board.png"
-                                alt="Task added to board">
+                            <img *ngIf="taskAddedInfo" src="assets/img/task_added_to_board.png"
+                            alt="Task added to board">
                         </div>
                         <div class="submit-and-clear">
                             <div class="btn-clear" (click)="onClear($event)">Clear<img class="clear-img"

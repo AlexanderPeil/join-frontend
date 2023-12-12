@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ContactService } from 'src/app/shared/services/contact.service';
-import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interface';
+import { ContactData } from 'src/app/shared/todo-interface';
 
 @Component({
   selector: 'app-dialog-add-contact',

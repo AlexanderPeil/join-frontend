@@ -334,3 +334,24 @@ form {
         }
     }
 }
+
+@media(max-height: 600px) {
+    .content {
+        height: unset;
+    }
+
+    .join-logo {
+        top: 10px;
+        left: 41px;
+    }
+
+    .sign-up {
+        top: 38px;
+        right: 41px;
+        bottom: unset;
+
+        span {
+            display: none;
+        }
+    }
+}

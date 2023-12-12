@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ContactService } from 'src/app/shared/services/contact.service';
-import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interface';
+import { ContactData } from 'src/app/shared/todo-interface';
 
 @Component({
   selector: 'app-dialog-edit-contact',
@@ -12,6 +12,7 @@ import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interfa
 export class DialogEditContactComponent implements OnInit {
   contact!: ContactData;
   editForm!: FormGroup;
+  submitted = false;
 
   constructor(
     private dialogRef: MatDialogRef<DialogEditContactComponent>,
@@ -55,14 +56,18 @@ export class DialogEditContactComponent implements OnInit {
 
 
   async onSubmit() {
-    if (this.editForm.valid) {
-      try {
-        const formData: ContactData = this.editForm.value;
-        const updatedContact = await this.contService.updateContact(this.data.contactId, formData);
-        this.dialogRef.close(updatedContact);
-      } catch (err) {
-        console.error(err);
-      }
+    this.submitted = true;
+
+    if (this.editForm.invalid) {
+      return;
+    }
+
+    try {
+      const formData: ContactData = this.editForm.value;
+      const updatedContact = await this.contService.updateContact(this.data.contactId, formData);
+      this.dialogRef.close(updatedContact);
+    } catch (err) {
+      console.error(err);
     }
   }
 
