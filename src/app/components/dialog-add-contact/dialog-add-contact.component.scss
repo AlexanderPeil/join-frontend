@@ -1,7 +1,6 @@
 @import '../../shared/variables.scss';
 
 .add-contact-menu {
-    @include justify_content_center;
     position: relative;
     z-index: 999;
     overflow-y: auto;
@@ -138,10 +137,6 @@ input {
 }
 
 @media(max-width: 1000px) {
-    .add-contact-menu {
-        flex-direction: column;
-        width: 400px;
-    }
 
     .contact-form-left {
         align-items: center;
@@ -162,6 +157,7 @@ input {
 
     input {
         width: unset;
+        padding: 13px 5px;
     }
 
     .close-popup-mobile {
@@ -205,9 +201,8 @@ input {
     }
 }
 
-@media(max-width:450px) {
-
-    .add-contact-menu {
-        width: 98%;
+@media(max-width: 500px) {
+    .contact-form-left {
+        padding: 30px;
     }
 }

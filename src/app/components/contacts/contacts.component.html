@@ -4,7 +4,7 @@
 <div class="overflow">
     <main class="contacts-main-container">
         <!-- Content - left side -->
-        <section class="contact-list-container">
+        <section class="contact-list-container" [class.selected]="selectedContact">
             <div>
                 <div class="contact-list">
                     <ng-container *ngFor="let letter of uniqueLetters">
@@ -30,7 +30,7 @@
         </section>
         <!-- Content - right side -->
 
-        <section class="right-section">
+        <section class="right-section" [class.selected]="selectedContact">
             <div class="contact-header-container">
                 <h1 class="contact-header">Contacts</h1>
                 <div class="contact-header-seperator"></div>
@@ -66,9 +66,11 @@
                 </div>
                 <div class="delete-contact" (click)="deleteContact(selectedContact.id)" title="Delete contact">
                 </div>
+                <img class="backToContactList" src="assets/img/arrow_left.png" alt="Back to all contact-list"
+                    title="Back to all contact-list" (click)="deselectContact()">
             </div>
         </section>
-        <button class="contact-add-btn contact-btn-position" (click)="addContact()">
+        <button class="contact-add-btn contact-btn-position" [class.selected]="selectedContact" (click)="addContact()">
             <p>New Contact</p>
             <img class="contact-btn-icon" src="./assets/img/add_contact.png">
         </button>

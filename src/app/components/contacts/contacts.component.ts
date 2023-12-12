@@ -125,4 +125,9 @@ export class ContactsComponent implements OnInit {
     });
   }
 
+
+  deselectContact(): void {
+    this.selectedContact = null;
+  }
+
 }

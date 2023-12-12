@@ -14,8 +14,6 @@ a {
 .main-content {
     @include flex_direction_column;
     align-items: flex-start;
-    gap: 35px;
-    height: 411px;
     padding: 25px 20px 25px 270px;
 }
 
@@ -82,14 +80,14 @@ p {
         right: 30px;
         cursor: pointer;
     }
-
-    .arrow-left-mobile img {
-        height: 25px;
-    }
 }
 
 @media(max-width:600px) {
     .text-container {
         width: 320px;
+    }
+
+    .text-container {
+        margin-bottom: 60px;
     }
 }

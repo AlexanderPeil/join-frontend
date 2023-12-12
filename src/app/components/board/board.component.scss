@@ -1,6 +1,6 @@
 @import '../../shared/variables.scss';
 
-.example-container {
+.statusContainer {
     width: 330px;
     max-width: 100%;
     margin: 0 25px 25px 0;
@@ -8,14 +8,18 @@
     vertical-align: top;
 }
 
-.example-list {
+.statusList {
     min-height: 200px;
     border-radius: 4px;
     overflow: hidden;
     display: block;
 }
 
-.example-box {
+.marginBottom {
+    margin-bottom: 100px !important;
+}
+
+.satusBox {
     @include space_between_column;
     background-color: white;
     border-radius: 20px;
@@ -44,11 +48,11 @@
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.example-box:last-child {
+.satusBox:last-child {
     border: none;
 }
 
-.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+.statusList.cdk-drop-list-dragging .satusBox:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
@@ -285,7 +289,7 @@ a {
         margin: 0;
     }
 
-    .example-container {
+    .statusContainer {
         margin: unset;
     }
 

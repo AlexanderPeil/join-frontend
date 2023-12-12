@@ -12,7 +12,6 @@
 }
 
 .card-task-container {
-    width: 423px;
     background: white;
     border-radius: 30px;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
@@ -139,4 +138,10 @@ select {
 .deleteSubtask {
     cursor: pointer;
     margin-left: 10px;
+}
+
+@media(max-width: 600px) {
+    .card-task-container {
+        padding: 30px;
+    }
 }

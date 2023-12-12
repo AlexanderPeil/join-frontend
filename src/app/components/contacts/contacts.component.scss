@@ -1,4 +1,4 @@
-@import '../../shared/variables.scss';
+@import "../../shared/variables.scss";
 
 .d-none {
     display: none !important;
@@ -48,7 +48,7 @@ h1 {
 
 .contact-underline {
     @include width_height(100%, 0.1px);
-    background-color: #D1D1D1;
+    background-color: #d1d1d1;
     margin-top: 20px;
 }
 
@@ -59,7 +59,7 @@ h1 {
 
 .separator-line {
     @include width_height(1.5px, 450px);
-    background-color: #D1D1D1;
+    background-color: #d1d1d1;
 }
 
 .contact-list-box {
@@ -70,13 +70,13 @@ h1 {
     gap: 20px;
 
     &:hover {
-        background-color: #F5F5F5;
+        background-color: #f5f5f5;
         border-radius: 20px;
     }
 }
 
 .selected-contact-box {
-    background-color: #2A3647;
+    background-color: #2a3647;
     color: white;
     border-radius: 20px;
 }
@@ -103,7 +103,7 @@ h1 {
 
 .contact-email {
     font-size: 18px;
-    color: #007CEE;
+    color: #007cee;
     cursor: pointer;
     text-decoration: none;
 
@@ -154,7 +154,7 @@ h1 {
     transform: translate(-50%, -50%);
     padding: 5px 10px;
     color: white;
-    background-color: #2A3647;
+    background-color: #2a3647;
     border: none;
     border-radius: 10px;
 }
@@ -206,10 +206,10 @@ h1 {
 .contact-add-task {
     @include button_hover;
     font-size: 14px;
-    color: #007CEE;
+    color: #007cee;
 
     &:hover {
-        color: #2A3647;
+        color: #2a3647;
     }
 }
 
@@ -285,7 +285,6 @@ h1 {
     display: none;
 }
 
-
 /* Title and subtitle */
 
 .contact-header-container {
@@ -341,7 +340,7 @@ h1 {
 }
 
 .contact-cancel-btn:hover .contact-create-icon {
-    content: url('/assets/img/iconoir_cancel_hover.png');
+    content: url("/assets/img/iconoir_cancel_hover.png");
 }
 
 .contact-add-btn {
@@ -364,20 +363,13 @@ h1 {
     }
 }
 
-@media(max-width: 1000px) and (max-height: 1000px) {
+.backToContactList {
+    display: none;
+}
 
+@media (max-width: 1000px) and (max-height: 1000px) {
     #formTaskContainer {
         top: 81px !important;
-    }
-
-    /* Input Form Overlay */
-
-    .contact-form-overlay {
-        display: unset;
-        overflow: auto;
-        position: absolute;
-        top: 120px;
-        max-height: calc(100vh - 150px);
     }
 
     .contact-form-left-neutral {
@@ -409,12 +401,13 @@ h1 {
     }
 }
 
-@media(max-width:1000px) {
+@media (max-width: 1000px) {
+    .contact-information-name {
+        @include font_size_weight(36px, 400);
+    }
 
-    .contact-form-overlay {
-        display: unset;
-        overflow: auto;
-        max-height: calc(100vh - 150px);
+    .contact-header {
+        display: none;
     }
 
     .contact-form-user-icon {
@@ -427,9 +420,8 @@ h1 {
         top: -80px;
     }
 
-    .contact-list-container {
-        padding-bottom: 80px;
-        overflow: hidden;
+    .contact-list-box:last-child {
+        padding-bottom: 110px;
     }
 
     .overflow {
@@ -459,13 +451,10 @@ h1 {
     .contact-selection-overlay {
         @include flex_direction_column;
         @include width_height(100%, 100%);
-        background-color: #F5F5F5;
-        position: absolute;
-        right: 0;
-        z-index: 1;
-        transform: translateX(100%);
+        background-color: #f5f5f5;
         transition: all 250ms ease-in-out;
-        margin-top: 80px;
+        margin-top: 100px;
+        padding-left: 30px;
     }
 
     .close-btn-overlay {
@@ -480,7 +469,6 @@ h1 {
     }
 
     .show-contact-selection-overlay {
-        transform: translateX(0px);
         position: fixed;
     }
 
@@ -517,7 +505,7 @@ h1 {
         gap: 8px;
         border: none;
         border-radius: 50%;
-        color: #2A3647;
+        color: #2a3647;
 
         &:hover {
             border-color: $main_color_bright;
@@ -601,5 +589,50 @@ h1 {
 
     .contact-input-field {
         width: 330px;
+    }
+
+    .backToContactList {
+        display: block;
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+}
+
+// Setup for contact overlay menu
+
+@media (min-width: 1001px) {
+    .contact-list-container {
+        display: flex;
+    }
+
+    .right-section {
+        display: block;
+    }
+}
+
+@media (max-width: 1000px) {
+    .contact-list-container {
+        display: flex;
+    }
+
+    .right-section {
+        display: none;
+    }
+}
+
+@media (max-width: 1000px) {
+    .contact-list-container.selected {
+        display: none;
+    }
+
+    .right-section.selected {
+        display: block;
+    }
+
+    .contact-add-btn.selected {
+        display: none;
     }
 }

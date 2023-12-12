@@ -112,15 +112,15 @@
                             <div class="prio-btn-container">
                                 <button class="prio-btn" *ngIf="!prioUrgent" (click)="setPriority('urgent')">Urgent <img
                                         src="../../assets/img/prio_urgent.png"></button>
-                                <img class="prio-urgent urgentSection" *ngIf="prioUrgent"
+                                <img class="prioHoverImage" *ngIf="prioUrgent"
                                     src="../../assets/img/prio_urgent_btn.png">
                                 <button class="prio-btn" *ngIf="!prioMedium" (click)="setPriority('medium')">Medium <img
                                         src="../../assets/img/prio_medium.png"></button>
-                                <img class="prio-urgent urgentSection" *ngIf="prioMedium"
+                                <img class="prioHoverImage" *ngIf="prioMedium"
                                     src="../../assets/img/prio_medium_btn.png">
                                 <button class="prio-btn" *ngIf="!prioLow" (click)="setPriority('low')">Low <img
                                         src="../../assets/img/prio_low_white.png"></button>
-                                <img class="prio-urgent urgentSection" *ngIf="prioLow"
+                                <img class="prioHoverImage" *ngIf="prioLow"
                                     src="../../assets/img/prio_low_btn.png">
                             </div>
                             <!-- Prio section -->
@@ -134,10 +134,10 @@
                                         (click)="addSubtask(subtaskTitleInput.value); subtaskTitleInput.value='';">
                                 </div>
                                 <div formArrayName="subtasks">
-                                    <ul *ngFor="let subtask of subtasks.controls; let i=index" [formGroupName]="i">
+                                    <ul class="subtaskList" *ngFor="let subtask of subtasks.controls; let i=index" [formGroupName]="i">
                                         <li>
-                                            <input formControlName="title" class="subtaskList">
-                                            <input type="checkbox" formControlName="check" class="subtaskCheckbox">
+                                            <input class="subtaskTitle" formControlName="title">
+                                            <input type="checkbox" formControlName="check" class="subtaskCheckbox" hidden>
                                             <img (click)="removeSubtask(i)" src="/assets/img/xicon.svg"
                                                 alt="Remove Subtask" class="subtaskRemove">
                                         </li>
@@ -147,7 +147,7 @@
                             <!-- Subtask section -->
                         </div>
                         <div class="taskAddedInfoMobile">
-                            <img *ngIf="taskAddedInfo" src="assets/img/task_added_to_board.png"
+                            <img  src="assets/img/task_added_to_board.png"
                                 alt="Task added to board">
                         </div>
                         <div class="submit-and-clear">
