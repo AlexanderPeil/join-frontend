@@ -22,8 +22,6 @@ export class DialogEditTaskComponent implements OnInit {
   contacts: ContactData[] = [];
   subtaskInput: boolean = false;
   selectedCategory: any;
-  taskAdded: boolean = false;
-  taskCreationError: boolean = false;
   prioUrgent: boolean = false;
   prioMedium: boolean = false;
   prioLow: boolean = true;
@@ -32,7 +30,6 @@ export class DialogEditTaskComponent implements OnInit {
   assignedToMenu = false;
   feedbackMessageMembers = 'Select your Members';
   createdSubtasks: string[] = [];
-  // loading: boolean = false;
   newSubtaskTitle = '';
 
 

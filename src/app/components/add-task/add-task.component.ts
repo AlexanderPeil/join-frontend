@@ -27,8 +27,6 @@ export class AddTaskComponent implements OnInit {
   contacts: ContactData[] = [];
   subtaskInput: boolean = false;
   selectedCategory: any;
-  taskAdded: boolean = false;
-  taskCreationError: boolean = false;
   prioUrgent: boolean = false;
   prioMedium: boolean = false;
   prioLow: boolean = true;
@@ -140,7 +138,7 @@ export class AddTaskComponent implements OnInit {
     if (subtaskTitle != '') {
       const subtask = this.taskForm.get('subtasks') as FormArray;
       subtask.push(this.fb.group({
-        title: [subtaskTitle],
+        subtaskTitle: [subtaskTitle],
         check: [false]
       }));
     }

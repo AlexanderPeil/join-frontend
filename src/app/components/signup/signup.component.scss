@@ -10,7 +10,7 @@
 }
 
 .join-logo {
-    @include width_height(100px, 120px);
+    width: 100px;
     position: absolute;
     top: 67px;
     left: 77px;
@@ -265,6 +265,11 @@ form {
 }
 
 @media (max-height: 600px) {
+    .join-logo {
+        top: 10px;
+        width: 70px;
+    }
+
     .content {
         height: unset;
     }
