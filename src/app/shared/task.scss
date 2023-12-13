@@ -483,6 +483,14 @@ li {
 }
 
 @media (max-width: 600px) {
+    .category-member-selection {
+        top: -42px;
+    }
+
+    .color-picker {
+        right: 5px !important;
+    }
+
     .submit-and-clear {
         width: 100%;
     }
