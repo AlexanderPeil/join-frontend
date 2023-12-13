@@ -5,7 +5,8 @@ import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interfa
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ContactService } from 'src/app/shared/services/contact.service';
 import { Router } from '@angular/router';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dialog-handle-categories.component';
 
 @Component({
   selector: 'app-dialog-add-task',
@@ -46,6 +47,7 @@ export class DialogAddTaskComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialog: MatDialog,
     private dialogRef: MatDialogRef<DialogAddTaskComponent>,) {
     this.minDate = new Date().toISOString().split('T')[0];
   }
@@ -196,9 +198,12 @@ export class DialogAddTaskComponent implements OnInit {
     this.categoryMenu = false;
   }
 
-  createCategory() {
-    // create category in db
-    // this.scrumCat.create(this.categoryForm.value);
+
+  openDialogHandleCategories(categoryId: number, event: MouseEvent): void {
+    event.stopPropagation();
+    this.dialog.open(DialogHandleCategoriesComponent, {
+      data: { categoryId }
+    });
   }
 
 

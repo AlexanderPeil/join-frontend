@@ -634,6 +634,12 @@ h1 {
     }
 }
 
+@media(max-height: 600px) {
+    .contact-selection-overlay {
+        height: unset;
+    }
+}
+
 // Setup for contact overlay menu
 
 @media (min-width: 1001px) {

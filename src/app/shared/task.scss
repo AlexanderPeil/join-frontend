@@ -1,5 +1,3 @@
-
-
 .add-task-menu {
     background: white;
     border-radius: 10px;
@@ -371,7 +369,7 @@ li {
 
 .taskAddedInfo {
     display: flex;
-    justify-content: center
+    justify-content: center;
 }
 
 .taskAddedInfoMobile {
@@ -381,6 +379,10 @@ li {
 }
 
 @media (max-width: 1200px) {
+    .add-task-menu {
+        height: 100vh;
+    }
+
     .btn-clear {
         margin-left: unset;
     }
@@ -394,6 +396,7 @@ li {
     }
 
     .left-container {
+        width: unset;
         height: unset;
     }
 
@@ -408,6 +411,7 @@ li {
 
     .right-container {
         align-items: center;
+        width: unset;
         height: unset;
         margin-bottom: 30px;
     }

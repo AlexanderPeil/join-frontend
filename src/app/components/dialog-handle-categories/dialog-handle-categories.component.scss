@@ -39,3 +39,19 @@ h1 {
         }
     }
 }
+
+@media(max-width: 800px) {
+    .catName {
+        width: 100%;
+    }
+
+    .bottomContent {
+        display: flex;
+        margin-left: auto;
+    }
+
+    .inputContent {
+        flex-direction: column;
+        margin-top: 10px;
+    }
+}
