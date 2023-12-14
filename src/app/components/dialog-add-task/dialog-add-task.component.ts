@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dialog-handle-categories.component';
 
+
 @Component({
   selector: 'app-dialog-add-task',
   templateUrl: './dialog-add-task.component.html',
@@ -62,13 +63,17 @@ export class DialogAddTaskComponent implements OnInit {
     this.initAllContacts();
     this.initCategoryGroup();
     this.preselectContact();
+    this.catService.getCategoriesUpdateListener().subscribe(() => {
+      this.initAllCategories();
+      this.selectedCategory = null;
+    });
   }
 
 
   initCategoryGroup() {
     this.categoryForm = this.fb.group({
       name: ['', Validators.required],
-      color: ['', Validators.required]
+      color: ['#000000', Validators.required]
     })
   }
 
@@ -95,8 +100,8 @@ export class DialogAddTaskComponent implements OnInit {
       description: ['', Validators.required],
       due_date: ['', Validators.required],
       category: ['', Validators.required],
-      priority: 'medium',
-      status: this.currentStatus,
+      priority: 'low',
+      status: 'todo',
       assigned_to: this.fb.array([], Validators.required),
       subtasks: this.fb.array([])
     });
@@ -106,7 +111,6 @@ export class DialogAddTaskComponent implements OnInit {
   async initAllTasks() {
     try {
       this.tasks = await this.ts.getAllTodos();
-      console.log(this.tasks);
     } catch (err) {
       console.error('Could not load tasks to add-task.comp!', err);
     }
@@ -116,7 +120,6 @@ export class DialogAddTaskComponent implements OnInit {
   async initAllCategories() {
     try {
       this.categories = await this.catService.loadAllCategories();
-      console.log(this.categories);
     } catch (err) {
       console.error('Could not load catgeories in add-task.comnp', err);
     }
@@ -126,7 +129,6 @@ export class DialogAddTaskComponent implements OnInit {
   async initAllContacts() {
     try {
       this.contacts = await this.contService.loadAllContacts();
-      console.log(this.contacts);
     } catch (err) {
       console.error('Could not load contacts in add-task.comp', err);
     }
@@ -143,11 +145,13 @@ export class DialogAddTaskComponent implements OnInit {
 
 
   addSubtask(subtaskTitle: string) {
-    const subtask = this.taskForm.get('subtasks') as FormArray;
-    subtask.push(this.fb.group({
-      title: [subtaskTitle],
-      check: [false]
-    }));
+    if (subtaskTitle != '') {
+      const subtask = this.taskForm.get('subtasks') as FormArray;
+      subtask.push(this.fb.group({
+        title: [subtaskTitle],
+        check: [false]
+      }));
+    }
   }
 
 
@@ -314,6 +318,7 @@ export class DialogAddTaskComponent implements OnInit {
     this.prioLow = true;
     this.subtaskInput = false;
     const subtask = this.taskForm.get('subtasks') as FormArray;
+    this.submitted = false;
     subtask.clear();
   }
 

@@ -52,7 +52,6 @@ export class TaskMenuComponent implements OnInit {
     try {
       const task = await this.ts.getTaskById(this.data.taskId);
       this.task = task;
-      console.log(this.task);
       this.todoForm.patchValue({
         title: task.title,
         description: task.description,
@@ -127,8 +126,6 @@ export class TaskMenuComponent implements OnInit {
 
 
   async subtaskChecked(subtaskId: number, event: Event) {
-    console.log(subtaskId, event);
-
     const target = event.target as HTMLInputElement | null;
     if (target) {
       try {

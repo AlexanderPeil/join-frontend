@@ -14,17 +14,27 @@ import { DialogErrorComponent } from '../components/dialog-error/dialog-error.co
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'An unexpectedd error has occured.';
+        
         if (error.status === 403) {
-          this.dialog.open(DialogErrorComponent, {
-            data: { message: 'Please sign up to enjoy all the functionalities of this app.' }
-          });
+          errorMessage = 'Please sign up to enjoy all the functionalities of this app.';
+        } else if (error.status === 400) {
+          errorMessage = 'A bad request was detected.';
+        } else if (error.status === 401) {
+          errorMessage = 'You are not authorized. Please log in.';
         }
-        return throwError(error);
+
+        this.dialog.open(DialogErrorComponent, {
+          data: { message: errorMessage }
+        });
+
+        return throwError(() => error);
+
       })
     );
   }

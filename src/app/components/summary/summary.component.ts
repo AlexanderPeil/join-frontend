@@ -38,7 +38,6 @@ export class SummaryComponent implements OnInit {
   async initAllTasks() {
     try {
       this.tasks = await this.ts.getAllTodos();
-      console.log(this.tasks);
     } catch (err) {
       console.error('Could not load tasks to add-task.comp!', err);
     }

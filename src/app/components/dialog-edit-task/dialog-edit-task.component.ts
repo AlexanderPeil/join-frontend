@@ -82,7 +82,6 @@ export class DialogEditTaskComponent implements OnInit {
     try {
       const task = await this.ts.getTaskById(this.data.taskId);
       this.task = task;
-      console.log(this.task);
       this.todoForm.patchValue({
         title: task.title,
         description: task.description,
@@ -106,7 +105,6 @@ export class DialogEditTaskComponent implements OnInit {
   async initAllCategories() {
     try {
       this.categories = await this.catService.loadAllCategories();
-      console.log(this.categories);
     } catch (err) {
       console.error('Could not load catgeories in add-task.comnp', err);
     }
@@ -116,7 +114,6 @@ export class DialogEditTaskComponent implements OnInit {
   async initAllContacts() {
     try {
       this.contacts = await this.contService.loadAllContacts();
-      console.log(this.contacts);
     } catch (err) {
       console.error('Could not load contacts in add-task.comp', err);
     }
@@ -221,7 +218,6 @@ export class DialogEditTaskComponent implements OnInit {
 
   async createNewCategory() {
     if (this.categoryForm.valid) {
-      console.log('CategoryForm is Valid!');
       try {
         const categoryData: CategoryData = this.categoryForm.value;
         await this.catService.createCategory(categoryData)

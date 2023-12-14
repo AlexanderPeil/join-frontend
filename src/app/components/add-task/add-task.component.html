@@ -146,9 +146,9 @@
                                     title="Create subtask">
                             </div>
                             <div formArrayName="subtasks">
-                                <ul *ngFor="let subtask of subtasks.controls; let i=index" [formGroupName]="i">
+                                <ul class="subtaskList" *ngFor="let subtask of subtasks.controls; let i=index" [formGroupName]="i">
                                     <li>
-                                        <input formControlName="subtaskTitle" class="subtaskList">
+                                        <input formControlName="title" class="subtaskList">
                                         <input hidden type="checkbox" formControlName="check" class="subtaskCheckbox">
                                         <img (click)="removeSubtask(i)" src="/assets/img/xicon.svg" alt="Remove Subtask"
                                             class="subtaskRemove">

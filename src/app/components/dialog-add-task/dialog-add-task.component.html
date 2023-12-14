@@ -4,7 +4,7 @@
         <img class="close-header-popup" src="../../assets/img/xicon.svg" (click)="closeDialogAddTask()">
     </div>
 
-    <!--  Add-task form  -->
+    <!--  taskForm form  -->
     <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
         <div class="content-container">
             <div class="left-container width-unset">
@@ -51,8 +51,8 @@
                                         <p>{{ category.name }}</p>
                                         <div class="category-color" [style.background]="category.color"></div>
                                         <img src="/assets/img/edit_category.png" alt="Delete category"
-                                        title="Delete category"
-                                        (click)="category.id !== undefined && openDialogHandleCategories(category.id, $event)">
+                                            title="Delete category"
+                                            (click)="category.id !== undefined && openDialogHandleCategories(category.id, $event)">
                                     </div>
                                 </div>
                             </div>
@@ -123,8 +123,7 @@
                                     src="../../assets/img/prio_medium_btn.png">
                                 <button class="prio-btn" *ngIf="!prioLow" (click)="setPriority('low')">Low <img
                                         src="../../assets/img/prio_low_white.png"></button>
-                                <img class="prioHoverImage" *ngIf="prioLow"
-                                    src="../../assets/img/prio_low_btn.png">
+                                <img class="prioHoverImage" *ngIf="prioLow" src="../../assets/img/prio_low_btn.png">
                             </div>
                             <!-- Prio section -->
 
@@ -134,13 +133,16 @@
                                 <div class="subtask-container">
                                     <input class="subtask-input" placeholder="Add new subtask" #subtaskTitleInput>
                                     <img class="plus-icon" src="assets/img/plus_icon.png"
-                                        (click)="addSubtask(subtaskTitleInput.value); subtaskTitleInput.value='';">
+                                        (click)="addSubtask(subtaskTitleInput.value); subtaskTitleInput.value='';"
+                                        title="Create subtask">
                                 </div>
                                 <div formArrayName="subtasks">
-                                    <ul class="subtaskList" *ngFor="let subtask of subtasks.controls; let i=index" [formGroupName]="i">
+                                    <ul class="subtaskList" *ngFor="let subtask of subtasks.controls; let i=index"
+                                        [formGroupName]="i">
                                         <li>
-                                            <input class="subtaskTitle" formControlName="title">
-                                            <input type="checkbox" formControlName="check" class="subtaskCheckbox" hidden>
+                                            <input formControlName="title" class="subtaskList">
+                                            <input hidden type="checkbox" formControlName="check"
+                                                class="subtaskCheckbox">
                                             <img (click)="removeSubtask(i)" src="/assets/img/xicon.svg"
                                                 alt="Remove Subtask" class="subtaskRemove">
                                         </li>
@@ -149,9 +151,10 @@
                             </div>
                             <!-- Subtask section -->
                         </div>
+
                         <div class="taskAddedInfoMobile">
                             <img *ngIf="taskAddedInfo" src="assets/img/task_added_to_board.png"
-                            alt="Task added to board">
+                                alt="Task added to board">
                         </div>
                         <div class="submit-and-clear">
                             <div class="btn-clear" (click)="onClear($event)">Clear<img class="clear-img"
