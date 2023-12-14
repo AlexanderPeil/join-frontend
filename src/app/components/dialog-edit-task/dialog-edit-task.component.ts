@@ -17,16 +17,17 @@ export class DialogEditTaskComponent implements OnInit {
   @ViewChild('handleASsignedToMenu') handleASsignedToMenu!: ElementRef;
   todoForm!: FormGroup;
   categoryForm!: FormGroup;
-  task!: TodoData;
   categories: CategoryData[] = [];
+  selectedCategory: any;
+  categoryMenu = false;
+  categoryAlreadyExist!: boolean;
+  task!: TodoData;
   contacts: ContactData[] = [];
   subtaskInput: boolean = false;
-  selectedCategory: any;
   prioUrgent: boolean = false;
   prioMedium: boolean = false;
   prioLow: boolean = true;
   minDate!: string;
-  categoryMenu = false;
   assignedToMenu = false;
   feedbackMessageMembers = 'Select your Members';
   createdSubtasks: string[] = [];
@@ -216,15 +217,28 @@ export class DialogEditTaskComponent implements OnInit {
   }
 
 
+
+  categoryExists(name: string): boolean {
+    return this.categories.some(category => category.name.toLowerCase() === name.toLowerCase());
+  }
+
+
   async createNewCategory() {
     if (this.categoryForm.valid) {
-      try {
-        const categoryData: CategoryData = this.categoryForm.value;
-        await this.catService.createCategory(categoryData)
-        this.selectedCategory = categoryData;
-        this.initAllCategories();
-      } catch (err) {
-        console.error(err);
+      const categoryData: CategoryData = this.categoryForm.value;
+
+      if (!this.categoryExists(categoryData.name)) {
+        try {
+          await this.catService.createCategory(categoryData);
+          this.selectedCategory = categoryData;
+          await this.initAllCategories();
+        } catch (err) {
+        }
+      } else {
+        this.categoryAlreadyExist = true;
+        setTimeout(() => {
+          this.categoryAlreadyExist = false;
+        }, 2500);
       }
     }
   }

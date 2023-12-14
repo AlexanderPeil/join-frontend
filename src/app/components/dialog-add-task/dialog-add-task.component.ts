@@ -20,9 +20,11 @@ export class DialogAddTaskComponent implements OnInit {
 
   taskForm!: FormGroup;
   categoryForm!: FormGroup;
+  categories: CategoryData[] = [];
+  categoryMenu = false;
+  categoryAlreadyExist!: boolean;
   submitted = false;
   tasks: TodoData[] = [];
-  categories: CategoryData[] = [];
   contacts: ContactData[] = [];
   subtaskInput: boolean = false;
   selectedCategory: any;
@@ -30,7 +32,6 @@ export class DialogAddTaskComponent implements OnInit {
   prioMedium: boolean = false;
   prioLow: boolean = true;
   minDate!: string;
-  categoryMenu = false;
   assignedToMenu = false;
   feedbackMessageMembers = 'Select your Members';
   createdSubtasks: string[] = [];
@@ -217,6 +218,32 @@ export class DialogAddTaskComponent implements OnInit {
       categoryForm.setValue(cat.id);
       this.selectedCategory = cat;
       this.categoryMenu = false;
+    }
+  }
+
+
+  categoryExists(name: string): boolean {
+    return this.categories.some(category => category.name.toLowerCase() === name.toLowerCase());
+  }
+
+
+  async createNewCategory() {
+    if (this.categoryForm.valid) {
+      const categoryData: CategoryData = this.categoryForm.value;
+
+      if (!this.categoryExists(categoryData.name)) {
+        try {
+          await this.catService.createCategory(categoryData);
+          this.selectedCategory = categoryData;
+          await this.initAllCategories();
+        } catch (err) {
+        }
+      } else {
+        this.categoryAlreadyExist = true;
+        setTimeout(() => {
+          this.categoryAlreadyExist = false;
+        }, 2500);
+      }
     }
   }
 

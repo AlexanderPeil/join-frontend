@@ -19,10 +19,12 @@ export class AddTaskComponent implements OnInit {
   @ViewChild('handleASsignedToMenu') handleASsignedToMenu!: ElementRef;
 
   taskForm!: FormGroup;
-  categoryForm!: FormGroup;
-  submitted = false;
   tasks: TodoData[] = [];
+  categoryForm!: FormGroup;
+  categoryMenu = false;
   categories: CategoryData[] = [];
+  categoryAlreadyExist!: boolean;
+  submitted = false;
   contacts: ContactData[] = [];
   subtaskInput: boolean = false;
   selectedCategory: any;
@@ -30,7 +32,6 @@ export class AddTaskComponent implements OnInit {
   prioMedium: boolean = false;
   prioLow: boolean = true;
   minDate!: string;
-  categoryMenu = false;
   assignedToMenu = false;
   feedbackMessageMembers = 'Select your Members';
   createdSubtasks: string[] = [];
@@ -271,20 +272,40 @@ export class AddTaskComponent implements OnInit {
 
 
   /**
-   * Asynchronously creates a new category.
-   * If the categoryForm is valid, it sends the form data to the category service
-   * to create a new category. Upon successful creation, it updates the selectedCategory
-   * with the new category data and reinitializes all categories.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
+   * Checks if a category with the given name already exists in the categories list.
+   * Compares the provided name with existing category names in a case-insensitive manner.
+   *
+   * @param name - The name of the category to check for existence.
+   * @returns boolean - True if the category exists, false otherwise.
+   */
+  categoryExists(name: string): boolean {
+    return this.categories.some(category => category.name.toLowerCase() === name.toLowerCase());
+  }
+
+
+  /**
+   * Asynchronously creates a new category based on the categoryForm data.
+   * First checks if the form is valid and if the category name does not already exist.
+   * If valid and unique, it attempts to create the category using the category service.
+   * Updates the selectedCategory and re-initializes all categories upon successful creation.
+   * If the category already exists, sets a flag to indicate this and resets the flag after a delay.
    */
   async createNewCategory() {
     if (this.categoryForm.valid) {
-      try {
-        const categoryData: CategoryData = this.categoryForm.value;
-        await this.catService.createCategory(categoryData)
-        this.selectedCategory = categoryData;
-        this.initAllCategories();
-      } catch (err) {
+      const categoryData: CategoryData = this.categoryForm.value;
+
+      if (!this.categoryExists(categoryData.name)) {
+        try {
+          await this.catService.createCategory(categoryData);
+          this.selectedCategory = categoryData;
+          await this.initAllCategories();
+        } catch (err) {
+        }
+      } else {
+        this.categoryAlreadyExist = true;
+        setTimeout(() => {
+          this.categoryAlreadyExist = false;
+        }, 2500);
       }
     }
   }

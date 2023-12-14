@@ -19,6 +19,9 @@
                 <!--  Category section  -->
                 <div class="selection-container prevent-select">
                     <label>Category</label>
+                    <span class="warning" *ngIf="categoryAlreadyExist">
+                        Category already exists!
+                    </span>
                     <div class="select-wrapper" #handleCategoryMenu>
                         <div class="category-inputs" *ngIf="categoryMenu">
                             <div [formGroup]="categoryForm">

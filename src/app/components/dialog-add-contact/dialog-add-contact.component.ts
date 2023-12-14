@@ -25,6 +25,12 @@ export class DialogAddContactComponent implements OnInit {
   }
 
 
+  /**
+   * Initializes the contact form group with fields and validators.
+   * Sets up form fields 'firstname' and 'lastname' as required.
+   * Includes an email field with required and email format validators.
+   * Phone and color fields are optional, with a default value for color.
+   */
   initFormGroup() {
     this.contactForm = this.fb.group({
       firstname: ['', Validators.required],
@@ -36,6 +42,13 @@ export class DialogAddContactComponent implements OnInit {
   }
 
 
+  /**
+   * Handles the submission of the contact form.
+   * Sets a flag indicating the form has been submitted.
+   * If the contactForm is valid, attempts to create a new contact using the form data.
+   * Closes the dialog and returns true on successful creation.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
+   */
   async onSubmit() {
     this.submitted = true;
 
@@ -48,11 +61,13 @@ export class DialogAddContactComponent implements OnInit {
       await this.contService.createContact(formData);
       this.dialogRef.close(true);
     } catch (err) {
-      console.error(err);
     }
   }
 
 
+  /**
+   * Close the dialog-add-contact.
+   */
   closeDialogAddContact() {
     this.dialogRef.close();
   }

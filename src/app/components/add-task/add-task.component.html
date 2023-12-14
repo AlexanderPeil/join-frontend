@@ -39,6 +39,9 @@
                 <!--  Category section  -->
                 <div class="selection-container prevent-select">
                     <label>Category</label>
+                    <span class="warning" *ngIf="categoryAlreadyExist">
+                        Category already exists!
+                    </span>
                     <div *ngIf="submitted && !selectedCategory" class="warning">
                         Please select a category.
                     </div>
