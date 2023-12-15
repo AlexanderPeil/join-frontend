@@ -27,6 +27,12 @@ export class DialogEditContactComponent implements OnInit {
   }
 
 
+  /**
+   * Asynchronously loads a contact by its ID and updates the edit form with the contact's details.
+   * Fetches the contact data using the `getContactById` method of the contService.
+   * Patches the edit form with the contact's information if successfully retrieved.
+   * Logs an error to the console if the contact cannot be loaded.
+   */
   async loadContactsById() {
     try {
       const contact = await this.contService.getContactById(this.data.contactId);
@@ -44,13 +50,19 @@ export class DialogEditContactComponent implements OnInit {
   }
 
 
+  /**
+   * Initializes the edit form with form controls and validation rules.
+   * The form includes 'firstname', 'lastname', 'email', 'phone', and 'color' fields.
+   * 'firstname', 'lastname', and 'email' are required fields, with 'email' also requiring a valid email format.
+   * 'phone' and 'color' have default values but no validation requirements.
+   */
   initFormGroup() {
     this.editForm = this.fb.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: [''],
-      color: ['#000000']
+      color: ['#000000', [Validators.required]]
     });
   }
 
@@ -72,6 +84,9 @@ export class DialogEditContactComponent implements OnInit {
   }
 
 
+  /**
+   * Closes the dialog-edit-contact.
+   */
   closeDialogEditContact() {
     this.dialogRef.close();
   }

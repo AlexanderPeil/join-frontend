@@ -54,6 +54,9 @@
                             <img class="category-accept category-member-selection"
                                 src="../../assets/img/icon_check_subtask.svg" alt="category-accept"
                                 (click)="createNewCategory()">
+                            <img class="category-accept category-member-selection"
+                                src="../../assets/img/icon_check_subtask.svg" alt="category-accept"
+                                (click)="categorySelected()">
                             <img class="category-cancel category-member-selection"
                                 src="../../assets/img/icon_cancel_subtask.svg" alt="close-wrapper"
                                 (click)="closeCategoryMenu($event)">
@@ -149,7 +152,8 @@
                                     title="Create subtask">
                             </div>
                             <div formArrayName="subtasks">
-                                <ul class="subtaskList" *ngFor="let subtask of subtasks.controls; let i=index" [formGroupName]="i">
+                                <ul class="subtaskList" *ngFor="let subtask of subtasks.controls; let i=index"
+                                    [formGroupName]="i">
                                     <li>
                                         <input formControlName="title" class="subtaskList">
                                         <input hidden type="checkbox" formControlName="check" class="subtaskCheckbox">

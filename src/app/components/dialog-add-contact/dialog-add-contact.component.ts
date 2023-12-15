@@ -51,7 +51,6 @@ export class DialogAddContactComponent implements OnInit {
    */
   async onSubmit() {
     this.submitted = true;
-
     if (this.contactForm.invalid) {
       return;
     }

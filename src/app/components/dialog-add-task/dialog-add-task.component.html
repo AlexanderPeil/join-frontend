@@ -41,7 +41,9 @@
                                     <input type="text" placeholder="Category Name" formControlName="name">
                                     <input class="color-picker" type="color" formControlName="color" value="#ff0000">
                                 </div>
-
+                                <img class="category-accept category-member-selection"
+                                    src="../../assets/img/icon_check_subtask.svg" alt="category-accept"
+                                    (click)="createNewCategory()">
                                 <img class="category-accept category-member-selection"
                                     src="../../assets/img/icon_check_subtask.svg" alt="category-accept"
                                     (click)="categorySelected()">

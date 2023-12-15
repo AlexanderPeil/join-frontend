@@ -59,7 +59,6 @@ export class AddTaskComponent implements OnInit {
   ngOnInit() {
     this.initFormGroup();
     this.initCategoryGroup();
-    this.initAllTasks();
     this.initAllCategories();
     this.initAllContacts();
     this.windowWidth = window.innerWidth
@@ -78,10 +77,8 @@ export class AddTaskComponent implements OnInit {
 
 
   /**
-   * Initializes the category form group.
-   * Creates a form group with 'name' and 'color' fields using FormBuilder.
-   * The 'name' field is an empty string by default and is required.
-   * The 'color' field defaults to '#000000' (black) and is also required.
+   * Initializes the category form with default values and validators.
+   * The form includes 'name' and 'color' fields, both required.
    */
   initCategoryGroup() {
     this.categoryForm = this.fb.group({
@@ -95,10 +92,7 @@ export class AddTaskComponent implements OnInit {
   /**
    * Initializes the task form group.
    * Sets up form fields for a task with validators where necessary.
-   * Fields include 'title', 'description', 'due_date', 'category', each marked as required.
-   * 'priority' defaults to 'low', and 'status' defaults to 'todo'.
-   * 'assigned_to' is an array field with a required validator.
-   * 'subtasks' is an array field with no initial validators.
+   * All fields except 'priority' and 'subtasks' are required.
    */
   initFormGroup() {
     this.taskForm = this.fb.group({
@@ -115,22 +109,8 @@ export class AddTaskComponent implements OnInit {
 
 
   /**
-   * Asynchronously initializes all tasks.
-   * Attempts to fetch all tasks from the backend using `ts.getAllTodos()` and assigns them to `this.tasks`.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
-   */
-  async initAllTasks() {
-    try {
-      this.tasks = await this.ts.getAllTodos();
-    } catch (err) {
-    }
-  }
-
-
-
-  /**
-   * Asynchronously initializes all categories.
-   * Fetches categories from the backend using `catService.loadAllCategories()` and assigns them to `this.categories`.
+   * Asynchronously retrieves all categories.
+   * Uses `loadAllCategories` from the catService to fetch categories.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
    */
   async initAllCategories() {
@@ -142,8 +122,8 @@ export class AddTaskComponent implements OnInit {
 
 
   /**
-   * Asynchronously initializes all contacts.
-   * Fetches contacts from the backend using `catService.loadAllContacts()` and assigns them to `this.contacts`.
+   * Asynchronously fetches all contacts.
+   * Retrieves contacts using `loadAllContacts` from the contService.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
    */
   async initAllContacts() {
@@ -155,11 +135,10 @@ export class AddTaskComponent implements OnInit {
 
 
   /**
-   * Sets the priority of a task.
-   * Updates the 'priority' field in the task form with the given priority value.
-   * Also sets boolean flags for 'prioUrgent', 'prioMedium', and 'prioLow' based on the priority.
-   * 
-   * @param priority - The priority value to set ('urgent', 'medium', or 'low').
+   * Sets the priority of a task in the task form and updates priority flags.
+   * Updates the task form's 'priority' field and sets boolean flags for 'urgent', 'medium', and 'low' priorities.
+   *
+   * @param {string} priority - The priority level to be set ('urgent', 'medium', 'low').
    */
   setPriority(priority: string) {
     this.taskForm.get('priority')?.setValue(priority);
@@ -171,13 +150,12 @@ export class AddTaskComponent implements OnInit {
 
 
   /**
-   * Adds a subtask to the task form.
-   * If the provided subtask title is not empty, it creates a new subtask form group 
-   * with the title and a 'check' (default is false). 
-   * This subtask is then added to the 'subtasks' FormArray in the task form.
-   *
-   * @param subtaskTitle - The title of the subtask to be added.
-   */
+    * Adds a new subtask to the task form's 'subtasks' array.
+    * Only adds the subtask if the provided title is not empty.
+    * Each subtask includes a title and a 'check' flag, initially set to false.
+    *
+    * @param {string} subtaskTitle - The title of the subtask to be added.
+    */
   addSubtask(subtaskTitle: string) {
     if (subtaskTitle !== '') {
       const subtask = this.taskForm.get('subtasks') as FormArray;
@@ -190,9 +168,9 @@ export class AddTaskComponent implements OnInit {
 
 
   /**
-   * Removes a subtask from the task form's subtasks array at the specified index.
+   * Removes a subtask from the task form's 'subtasks' array at the specified index.
    *
-   * @param index - The index of the subtask to be removed from the subtasks FormArray.
+   * @param {number} index - The index of the subtask to be removed.
    */
   removeSubtask(index: number) {
     const subtask = this.taskForm.get('subtasks') as FormArray;
@@ -202,10 +180,10 @@ export class AddTaskComponent implements OnInit {
 
 
   /**
-   * Getter for the 'subtasks' FormArray from the task form.
-   * Returns the FormArray containing the subtasks of the task.
+   * Getter for the 'subtasks' form array from the task form.
+   * Returns the FormArray instance corresponding to 'subtasks'.
    *
-   * @returns FormArray of subtasks.
+   * @returns {FormArray} The FormArray instance for 'subtasks'.
    */
   get subtasks(): FormArray {
     return this.taskForm.get('subtasks') as FormArray;
@@ -284,11 +262,10 @@ export class AddTaskComponent implements OnInit {
 
 
   /**
-   * Asynchronously creates a new category based on the categoryForm data.
-   * First checks if the form is valid and if the category name does not already exist.
-   * If valid and unique, it attempts to create the category using the category service.
-   * Updates the selectedCategory and re-initializes all categories upon successful creation.
-   * If the category already exists, sets a flag to indicate this and resets the flag after a delay.
+   * Creates a new category if the category form is valid and the category does not already exist.
+   * Validates the form, checks for the category's existence, and then creates the category using the catService.
+   * Updates the selectedCategory and refreshes all categories upon successful creation.
+   * Sets a temporary flag 'categoryAlreadyExist' if the category already exists.
    */
   async createNewCategory() {
     if (this.categoryForm.valid) {
@@ -307,6 +284,27 @@ export class AddTaskComponent implements OnInit {
           this.categoryAlreadyExist = false;
         }, 2500);
       }
+    }
+  }
+
+
+  /**
+   * Updates the selectedCategory based on the current values of the category name and color in the task form.
+   * Retrieves the category name and color from the form and sets selectedCategory if both are present.
+   * Logs an error to the console if either the category name or color is not selected.
+   */
+  categorySelected() {
+    let categoryValue = this.taskForm.get('category.name')?.value;
+    let colorValue = this.taskForm.get('category.color')?.value;
+
+    if (categoryValue && colorValue) {
+      let newCategory = {
+        name: categoryValue,
+        color: colorValue
+      };
+      this.selectedCategory = newCategory;
+    } else {
+      console.error('Please select a category and a color.');
     }
   }
 
