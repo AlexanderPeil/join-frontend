@@ -1,6 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+/**
+ * I use this component to display the error triggered from the HttpErrorInterceptor.
+ */
 @Component({
   selector: 'app-dialog-error',
   templateUrl: './dialog-error.component.html',

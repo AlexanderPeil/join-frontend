@@ -9,7 +9,6 @@ import { BoardComponent } from './components/board/board.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
-import { EditTaskComponent } from './components/edit-task/edit-task.component';
 import { HelpPageComponent } from './components/help-page/help-page.component';
 import { LegalNoticeComponent } from './components/legal-notice/legal-notice.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -43,7 +42,6 @@ import { HttpErrorInterceptor } from './shared/http-error.interceptor';
     ContactsComponent,
     HeaderComponent,
     NavBarComponent,
-    EditTaskComponent,
     HelpPageComponent,
     LegalNoticeComponent,
     DialogAddContactComponent,

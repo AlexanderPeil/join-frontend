@@ -31,7 +31,7 @@ export class DialogEditContactComponent implements OnInit {
    * Asynchronously loads a contact by its ID and updates the edit form with the contact's details.
    * Fetches the contact data using the `getContactById` method of the contService.
    * Patches the edit form with the contact's information if successfully retrieved.
-   * Logs an error to the console if the contact cannot be loaded.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
    */
   async loadContactsById() {
     try {
@@ -45,7 +45,6 @@ export class DialogEditContactComponent implements OnInit {
         color: contact.color || '#000000'
       });
     } catch (error) {
-      console.error('Error loading contact', error);
     }
   }
 
@@ -62,11 +61,18 @@ export class DialogEditContactComponent implements OnInit {
       lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: [''],
-      color: ['#000000', [Validators.required]]
+      color: ['#000000']
     });
   }
 
 
+  /**
+   * Handles the submission of the edit form.
+   * Sets the 'submitted' flag to true and checks for form validity.
+   * If valid, it sends the form data for updating the contact using the contService.
+   * Closes the dialog with the updated contact data on success.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
+   */
   async onSubmit() {
     this.submitted = true;
 

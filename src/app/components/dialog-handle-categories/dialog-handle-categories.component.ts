@@ -26,16 +26,29 @@ export class DialogHandleCategoriesComponent implements OnInit {
   }
 
 
+  /**
+   * Asynchronously loads a category by its ID.
+   * Retrieves the category data using `getCategoryById` from the catService.
+   * Sets the retrieved category to the local `category` variable.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message..
+   */
   async loadCategoryById() {
     try {
       const category = await this.catService.getCategoryById(this.data.categoryId);
       this.category = category;
     } catch (err) {
-      console.error(err);
     }
   }
 
 
+  /**
+   * Asynchronously updates the name of a category specified by its ID.
+   * Checks if the categoryId is defined, then calls the updateCategory method from the catService.
+   * Notifies about the category update and closes the dialog upon successful update.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message..
+   *
+   * @param {number} categoryId - The ID of the category to be updated.
+   */
   async updateCategoryName(categoryId: number) {
     if (categoryId !== undefined) {
       try {
@@ -43,12 +56,14 @@ export class DialogHandleCategoriesComponent implements OnInit {
         this.catService.notifyCategoriesUpdate();
         this.dialogRef.close();
       } catch (err) {
-        console.error(err);
       }
     }
   }
 
 
+  /**
+   * Closes the dialog.
+   */
   closeMenu() {
     this.dialogRef.close();
   }
