@@ -19,8 +19,12 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        let errorMessage = 'An unexpectedd error has occured.';
-        
+        if ((req.url.endsWith('/login/') || req.url.endsWith('/signup/')) && error.status === 400) {
+          return throwError(() => error);
+        }
+
+        let errorMessage = 'An unexpected error has occurred.';
+
         if (error.status === 403) {
           errorMessage = 'Please sign up to enjoy all the functionalities of this app.';
         } else if (error.status === 400) {
@@ -34,9 +38,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         });
 
         return throwError(() => error);
-
       })
     );
   }
+
 
 }

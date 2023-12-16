@@ -30,7 +30,7 @@ export class DialogHandleCategoriesComponent implements OnInit {
    * Asynchronously loads a category by its ID.
    * Retrieves the category data using `getCategoryById` from the catService.
    * Sets the retrieved category to the local `category` variable.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message..
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
    */
   async loadCategoryById() {
     try {

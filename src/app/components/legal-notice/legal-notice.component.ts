@@ -10,6 +10,10 @@ export class LegalNoticeComponent {
 
   constructor(private location: Location) { }
 
+
+  /**
+   * Go back to the last page.
+   */
   goBack(): void {
     this.location.back(); 
   }

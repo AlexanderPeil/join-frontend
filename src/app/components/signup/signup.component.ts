@@ -31,6 +31,12 @@ export class SignUpComponent implements OnInit {
   }
 
 
+  /**
+   * Initializes the sign-up form with form controls and validation rules.
+   * Sets up form controls for username, firstname, lastname, email, password, privacyPolicy, and confirmPassword.
+   * Includes individual validations for each field, such as required fields and email format.
+   * Adds a custom validator 'checkPasswords' to ensure password and confirmPassword match.
+   */
   initFormGroup() {
     this.signUpForm = this.fb.group({
       username: ['', Validators.required],
@@ -44,6 +50,13 @@ export class SignUpComponent implements OnInit {
   }
 
 
+  /**
+   * Custom validator for checking if the password and confirmPassword fields in a FormGroup match.
+   * Returns a validation error object if passwords don't match, otherwise returns null.
+   *
+   * @param {FormGroup} group - The FormGroup containing the password fields to be validated.
+   * @returns {ValidationErrors | null} - An object with validation error 'notSame' if mismatched, or null if valid.
+   */
   checkPasswords(group: FormGroup): ValidationErrors | null {
     if (!group) {
       return null;
@@ -55,13 +68,29 @@ export class SignUpComponent implements OnInit {
   }
 
 
+  /**
+   * Handles the submission of the sign-up form.
+   * Sets the 'submitted' flag to true and checks if the form is valid.
+   * If the form is valid, proceeds to perform the signup process.
+   */
   async onSubmit() {
     this.submitted = true;
 
     if (this.signUpForm.invalid) {
       return;
     }
+    await this.performSignup();
+  }
 
+
+  /**
+   * Performs the signup operation using the form data.
+   * Attempts to sign up with the provided form data and, on success, stores the received token in local storage.
+   * Sets flags for successful signup and disables the submit button.
+   * Navigates to the summary page after a brief delay upon successful signup.
+   * Invokes `handleSignUpError` to manage any errors during the signup process.
+   */
+  async performSignup() {
     try {
       const formData = this.signUpForm.value;
       let resp: any = await this.as.signup(formData);
@@ -72,12 +101,20 @@ export class SignUpComponent implements OnInit {
         this.router.navigateByUrl('/summary');
       }, 3000);
     } catch (err) {
-      console.error(err);
-      this.userAlreadyExists = true;
-      setTimeout(() => {
-        this.userAlreadyExists = false;
-      }, 3000);
+      this.handlySignUpError();
     }
   }
 
+
+  /**
+   * Manages the error scenario during the signup process.
+   * Activates a 'user already exists' flag and then resets it after a specified timeout period.
+   * This function is typically used to provide feedback to the user in case of a signup error.
+   */
+  handlySignUpError() {
+    this.userAlreadyExists = true;
+    setTimeout(() => {
+      this.userAlreadyExists = false;
+    }, 3000);
+  }
 }
