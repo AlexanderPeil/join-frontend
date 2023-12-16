@@ -63,6 +63,7 @@ export class BoardComponent implements OnInit {
       }
       this.filterTasks();
     } catch (err) {
+      console.error('Could not load tasks!', err);
     }
   }
 
@@ -191,6 +192,7 @@ export class BoardComponent implements OnInit {
       const updatedData: Partial<TodoData> = { status: newStatus };
       await this.ts.updateTodo(todoId, updatedData);
     } catch (err) {
+      console.error('Could not update status!', err);
     }
   }
 

@@ -111,12 +111,14 @@ export class AddTaskComponent implements OnInit {
   /**
    * Asynchronously retrieves all categories.
    * Uses `loadAllCategories` from the catService to fetch categories.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console.
    */
   async initAllCategories() {
     try {
       this.categories = await this.catService.loadAllCategories();
     } catch (err) {
+      console.error('Could not load categories!', err);
     }
   }
 
@@ -124,12 +126,14 @@ export class AddTaskComponent implements OnInit {
   /**
    * Asynchronously fetches all contacts.
    * Retrieves contacts using `loadAllContacts` from the contService.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console
    */
   async initAllContacts() {
     try {
       this.contacts = await this.contService.loadAllContacts();
     } catch (err) {
+      console.error('Could not load contacts!', err);
     }
   }
 
@@ -277,6 +281,7 @@ export class AddTaskComponent implements OnInit {
           this.selectedCategory = categoryData;
           await this.initAllCategories();
         } catch (err) {
+          console.error('Could not create category!', err);
         }
       } else {
         this.categoryAlreadyExist = true;
@@ -413,7 +418,8 @@ export class AddTaskComponent implements OnInit {
    * Asynchronously submits the task form data.
    * Attempts to create a new todo item using the form data.
    * On successful submission, it calls `handleTaskSuccess` to manage post-submission behavior.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console.
    */
   async submitTask() {
     try {
@@ -421,6 +427,7 @@ export class AddTaskComponent implements OnInit {
       await this.ts.createTodo(formData);
       this.handleTaskSuccess();
     } catch (err) {
+      console.error('Could not create taks!', err);
     }
   }
 

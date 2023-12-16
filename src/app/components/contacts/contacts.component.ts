@@ -44,7 +44,7 @@ export class ContactsComponent implements OnInit {
       this.contacts = await this.contService.loadAllContacts();
       this.sortAndGroupContacts(this.contacts);
     } catch (err) {
-
+      console.error('Could not load contacts!', err);
     }
   }
 
@@ -165,6 +165,7 @@ export class ContactsComponent implements OnInit {
         this.initAllContacts();
         this.selectedContact = null;
       } catch (err) {
+        console.error('Could not deöete contact!', err);
       }
     }
   }

@@ -85,7 +85,7 @@ export class DialogEditContactComponent implements OnInit {
       const updatedContact = await this.contService.updateContact(this.data.contactId, formData);
       this.dialogRef.close(updatedContact);
     } catch (err) {
-      console.error(err);
+      console.error('Could not create contact!', err);
     }
   }
 

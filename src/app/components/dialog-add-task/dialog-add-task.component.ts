@@ -142,6 +142,7 @@ export class DialogAddTaskComponent implements OnInit {
     try {
       this.categories = await this.catService.loadAllCategories();
     } catch (err) {
+      console.error('Could not load categories!', err);
     }
   }
 
@@ -155,6 +156,7 @@ export class DialogAddTaskComponent implements OnInit {
     try {
       this.contacts = await this.contService.loadAllContacts();
     } catch (err) {
+      console.error('Could not load contacts!', err);
     }
   }
 
@@ -335,6 +337,7 @@ export class DialogAddTaskComponent implements OnInit {
           this.selectedCategory = categoryData;
           await this.initAllCategories();
         } catch (err) {
+          console.error('Could not create category!', err);          
         }
       } else {
         this.categoryAlreadyExist = true;
@@ -470,6 +473,7 @@ export class DialogAddTaskComponent implements OnInit {
       await this.ts.createTodo(formData);
       this.handleTaskSuccess();
     } catch (err) {
+      console.error('Could not create task!', err);   
     }
   }
 

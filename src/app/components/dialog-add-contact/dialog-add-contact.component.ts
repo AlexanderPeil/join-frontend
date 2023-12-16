@@ -60,6 +60,7 @@ export class DialogAddContactComponent implements OnInit {
       await this.contService.createContact(formData);
       this.dialogRef.close(true);
     } catch (err) {
+      console.error('Could not create contact!', err);
     }
   }
 

@@ -101,7 +101,8 @@ export class DialogEditTaskComponent implements OnInit {
    * Asynchronously loads a task by its ID and updates the form and assigned users.
    * Retrieves the task data using `getTaskById` from the task service.
    * Upon successful retrieval, updates the form with task details and the assigned users.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message..
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console. 
    */
   async loadTaskById() {
     try {
@@ -110,6 +111,7 @@ export class DialogEditTaskComponent implements OnInit {
       this.updateFormWithTask(task);
       this.updateAssignedTo(task.assigned_to);
     } catch (err) {
+      console.error('Could not load task!', err);
     }
   }
 
@@ -166,12 +168,14 @@ export class DialogEditTaskComponent implements OnInit {
   /**
    * Asynchronously retrieves and initializes all categories.
    * Fetches categories using the `loadAllCategories` method from the catService.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message..
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console. 
    */
   async initAllCategories() {
     try {
       this.categories = await this.catService.loadAllCategories();
     } catch (err) {
+      console.error('Could not load categories!', err);
     }
   }
 
@@ -179,12 +183,14 @@ export class DialogEditTaskComponent implements OnInit {
   /**
    * Asynchronously loads all contacts.
    * Retrieves the contacts using `loadAllContacts` from the contService.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message..
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console. 
    */
   async initAllContacts() {
     try {
       this.contacts = await this.contService.loadAllContacts();
     } catch (err) {
+      console.error('Could not load contacts!', err);
     }
   }
 
@@ -225,7 +231,8 @@ export class DialogEditTaskComponent implements OnInit {
    * Asynchronously deletes a subtask by its ID.
    * If a valid subtaskId is provided, it calls the deleteSubtask method from the task service.
    * Notifies about the task update after successful deletion.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message..
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console. 
    *
    * @param {number} subtaskId - The ID of the subtask to be deleted.
    */
@@ -235,6 +242,7 @@ export class DialogEditTaskComponent implements OnInit {
         await this.ts.deleteSubtask(this.task.id, subtaskId);
         this.ts.notifyTaskUpdate();
       } catch (err) {
+        console.error('Could not delete subtask!', err);
       }
     }
   }
@@ -255,7 +263,8 @@ export class DialogEditTaskComponent implements OnInit {
    * Asynchronously adds a subtask to the database.
    * Calls the createSubtask method from the task service with the current task's ID and subtask data.
    * Notifies about the task update after successfully adding the subtask.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message..
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console. 
    *
    * @param {SubtaskData} subtaskData - The data of the subtask to be added.
    */
@@ -264,6 +273,7 @@ export class DialogEditTaskComponent implements OnInit {
       await this.ts.createSubtask(this.data.taskId, subtaskData);
       this.ts.notifyTaskUpdate();
     } catch (err) {
+      console.error('Could not add subtask!', err);
     }
   }
 
@@ -374,6 +384,7 @@ export class DialogEditTaskComponent implements OnInit {
           this.selectedCategory = categoryData;
           await this.initAllCategories();
         } catch (err) {
+          console.error('Could not create category!', err);
         }
       } else {
         this.categoryAlreadyExist = true;
@@ -484,7 +495,8 @@ export class DialogEditTaskComponent implements OnInit {
    * Handles the submission of the todo form.
    * Checks for form validity and then attempts to update the todo item using the task service.
    * Notifies about the task update after successful submission.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message..
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message 
+   * and logs it in the console.
    */
   async onSubmit() {
     if (this.todoForm.valid) {
@@ -493,6 +505,7 @@ export class DialogEditTaskComponent implements OnInit {
         await this.ts.updateTodo(this.data.taskId, formData);
         this.ts.notifyTaskUpdate();
       } catch (err) {
+        console.error('Could not create category!', err);
       }
     }
   }
