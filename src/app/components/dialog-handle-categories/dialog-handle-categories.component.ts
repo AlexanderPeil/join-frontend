@@ -1,8 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CategoryService } from 'src/app/shared/services/category.service';
-import { TodoService } from 'src/app/shared/services/todo.service';
-import { CategoryData } from 'src/app/shared/todo-interface';
+import { CategoryData } from 'src/app/shared/task-interface';
 
 @Component({
   selector: 'app-dialog-handle-categories',
@@ -16,8 +15,7 @@ export class DialogHandleCategoriesComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<DialogHandleCategoriesComponent>,
-    private catService: CategoryService,
-    private ts: TodoService
+    private catService: CategoryService
   ) { }
 
 

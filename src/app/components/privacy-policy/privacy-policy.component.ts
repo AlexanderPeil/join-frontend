@@ -13,7 +13,7 @@ export class PrivacyPolicyComponent implements OnInit {
 
   constructor(
     private location: Location,
-    private as: AuthService) { }
+    private authService: AuthService) { }
 
 
     /**
@@ -31,7 +31,7 @@ export class PrivacyPolicyComponent implements OnInit {
    * accept the terms to signup succesfully), then header and nav should be hidden. 
    */
   ngOnInit(): void {
-    this.showHeaderAndNav = this.as.isLoggedIn();
+    this.showHeaderAndNav = this.authService.isLoggedIn();
   }
 
 }

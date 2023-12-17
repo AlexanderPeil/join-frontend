@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ContactService } from 'src/app/shared/services/contact.service';
-import { ContactData } from 'src/app/shared/todo-interface';
+import { ContactData } from 'src/app/shared/task-interface';
 
 @Component({
   selector: 'app-dialog-add-contact',
@@ -15,8 +15,8 @@ export class DialogAddContactComponent implements OnInit {
 
 
   constructor(
-    private fb: FormBuilder,
-    private contService: ContactService,
+    private formBuilder: FormBuilder,
+    private contactService: ContactService,
     private dialogRef: MatDialogRef<DialogAddContactComponent>) { }
 
 
@@ -32,7 +32,7 @@ export class DialogAddContactComponent implements OnInit {
    * Phone and color fields are optional, with a default value for color.
    */
   initFormGroup() {
-    this.contactForm = this.fb.group({
+    this.contactForm = this.formBuilder.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -47,7 +47,8 @@ export class DialogAddContactComponent implements OnInit {
    * Sets a flag indicating the form has been submitted.
    * If the contactForm is valid, attempts to create a new contact using the form data.
    * Closes the dialog and returns true on successful creation.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console.
    */
   async onSubmit() {
     this.submitted = true;
@@ -57,7 +58,7 @@ export class DialogAddContactComponent implements OnInit {
 
     try {
       const formData: ContactData = this.contactForm.value;
-      await this.contService.createContact(formData);
+      await this.contactService.createContact(formData);
       this.dialogRef.close(true);
     } catch (err) {
       console.error('Could not create contact!', err);

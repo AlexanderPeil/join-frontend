@@ -1,8 +1,8 @@
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
-import { TodoService } from 'src/app/shared/services/todo.service';
+import { TaskService } from 'src/app/shared/services/task.service';
 import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { CategoryData, ContactData, SubtaskData, TodoData } from 'src/app/shared/todo-interface';
+import { CategoryData, ContactData, SubtaskData, TaskData } from 'src/app/shared/task-interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ContactService } from 'src/app/shared/services/contact.service';
 import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dialog-handle-categories.component';
@@ -15,13 +15,13 @@ import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dia
 export class DialogEditTaskComponent implements OnInit {
   @ViewChild('handleCategoryMenu') handleCategoryMenu!: ElementRef;
   @ViewChild('handleASsignedToMenu') handleASsignedToMenu!: ElementRef;
-  todoForm!: FormGroup;
+  taskForm!: FormGroup;
   categoryForm!: FormGroup;
   categories: CategoryData[] = [];
   selectedCategory: any;
   categoryMenu = false;
   categoryAlreadyExist!: boolean;
-  task!: TodoData;
+  task!: TaskData;
   contacts: ContactData[] = [];
   subtaskInput: boolean = false;
   prioUrgent: boolean = false;
@@ -35,8 +35,8 @@ export class DialogEditTaskComponent implements OnInit {
 
 
   constructor(
-    private ts: TodoService,
-    private fb: FormBuilder,
+    private taskService: TaskService,
+    private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
     private dialogRef: MatDialogRef<DialogEditTaskComponent>,
@@ -60,7 +60,7 @@ export class DialogEditTaskComponent implements OnInit {
    * When a task update is received, it calls `loadtaskbyId()` to refresh the task data.
    */
   taskUpdateListener() {
-    this.ts.getTaskUpdateListener().subscribe(() => {
+    this.taskService.getTaskUpdateListener().subscribe(() => {
       this.loadTaskById();
     });
   }
@@ -71,7 +71,7 @@ export class DialogEditTaskComponent implements OnInit {
    * The form consists of 'name' and 'color' fields, both of which are required.
    */
   initCategoryGroup() {
-    this.categoryForm = this.fb.group({
+    this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
       color: ['', Validators.required]
     })
@@ -79,34 +79,34 @@ export class DialogEditTaskComponent implements OnInit {
 
 
   /**
-   * Initializes the todo form with necessary fields and default values.
+   * Initializes the taskForm with necessary fields and default values.
    * Fields include title, description, due_date, category, priority, status, assigned_to, and subtasks.
    * All fields except 'priority' and 'subtasks' are required.
    */
   initFormGroup() {
-    this.todoForm = this.fb.group({
+    this.taskForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
       due_date: ['', Validators.required],
       category: ['', Validators.required],
       priority: '',
       status: 'todo',
-      assigned_to: this.fb.array([], Validators.required),
-      subtasks: this.fb.array([])
+      assigned_to: this.formBuilder.array([], Validators.required),
+      subtasks: this.formBuilder.array([])
     });
   }
 
 
   /**
    * Asynchronously loads a task by its ID and updates the form and assigned users.
-   * Retrieves the task data using `getTaskById` from the task service.
+   * Retrieves the task data using `getTaskById` from the taskService.
    * Upon successful retrieval, updates the form with task details and the assigned users.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
    * and logs the error in the console. 
    */
   async loadTaskById() {
     try {
-      const task = await this.ts.getTaskById(this.data.taskId);
+      const task = await this.taskService.getTaskById(this.data.taskId);
       this.task = task;
       this.updateFormWithTask(task);
       this.updateAssignedTo(task.assigned_to);
@@ -117,14 +117,14 @@ export class DialogEditTaskComponent implements OnInit {
 
 
   /**
-   * Updates the todo form with values from a given task.
-   * Patches the todo form with task details including title, description, due date, category, priority, status, and subtasks.
+   * Updates the taskForm with values from a given task.
+   * Patches the taskForm with task details including title, description, due date, category, priority, status, and subtasks.
    * Also updates the UI to show the current priority of the task.
    *
-   * @param {TodoData} task - The task data used to update the form.
+   * @param {TaskData} task - The task data used to update the form.
    */
-  updateFormWithTask(task: TodoData) {
-    this.todoForm.patchValue({
+  updateFormWithTask(task: TaskData) {
+    this.taskForm.patchValue({
       title: task.title,
       description: task.description,
       due_date: task.due_date,
@@ -138,16 +138,16 @@ export class DialogEditTaskComponent implements OnInit {
 
 
   /**
-   * Updates the 'assigned_to' form array in the todo form with given contact data.
-   * Clears the existing 'assigned_to' form array and repopulates it with the IDs of the provided contacts.
+   * Updates the 'assigned_to' FormArray in the taskForm with given contact data.
+   * Clears the existing 'assigned_to' FormArray and repopulates it with the IDs of the provided contacts.
    *
    * @param {ContactData[]} assignedTo - An array of contact data to update the 'assigned_to' field.
    */
   updateAssignedTo(assignedTo: ContactData[]) {
-    const assignedToFormArray = this.todoForm.get('assigned_to') as FormArray;
+    const assignedToFormArray = this.taskForm.get('assigned_to') as FormArray;
     assignedToFormArray.clear();
     assignedTo.forEach(contact => {
-      assignedToFormArray.push(this.fb.control(contact.id));
+      assignedToFormArray.push(this.formBuilder.control(contact.id));
     });
   }
 
@@ -196,13 +196,13 @@ export class DialogEditTaskComponent implements OnInit {
 
 
   /**
-   * Sets the priority of a task in the todo form and updates priority state flags.
-   * Updates the todo form's 'priority' field and sets boolean flags for 'urgent', 'medium', and 'low' priorities.
+   * Sets the priority of a task in the taskForm and updates priority state flags.
+   * Updates the 'priority' of the taskForm field and sets boolean flags for 'urgent', 'medium', and 'low' priorities.
    *
    * @param {string} priority - The priority level to be set ('urgent', 'medium', 'low').
    */
   setPriority(priority: string) {
-    this.todoForm.get('priority')?.setValue(priority);
+    this.taskForm.get('priority')?.setValue(priority);
 
     this.prioUrgent = priority === 'urgent';
     this.prioMedium = priority === 'medium';
@@ -210,10 +210,10 @@ export class DialogEditTaskComponent implements OnInit {
   }
 
   /**
-   * Adds a new subtask to the todo form and updates the database.
+   * Adds a new subtask to the taskForm and updates the database.
    * Creates a subtask object with the provided title and a default 'check' value set to false.
    * Calls `addSubtaskToDb` to update the subtask in the database.
-   * Pushes the new subtask into the 'subtasks' form array and notifies about the task update.
+   * Pushes the new subtask into the 'subtasks' FormArray and notifies about the task update.
    *
    * @param {string} subtaskTitle - The title of the subtask to be added.
    */
@@ -221,15 +221,15 @@ export class DialogEditTaskComponent implements OnInit {
     const newSubtaskData = { title: subtaskTitle, check: false };
     this.addSubtaskToDb(newSubtaskData);
 
-    const subtasks = this.todoForm.get('subtasks') as FormArray;
-    subtasks.push(this.fb.group(newSubtaskData));
-    this.ts.notifyTaskUpdate();
+    const subtasks = this.taskForm.get('subtasks') as FormArray;
+    subtasks.push(this.formBuilder.group(newSubtaskData));
+    this.taskService.notifyTaskUpdate();
   }
 
 
   /**
    * Asynchronously deletes a subtask by its ID.
-   * If a valid subtaskId is provided, it calls the deleteSubtask method from the task service.
+   * If a valid subtaskId is provided, it calls the deleteSubtask method from the taskService.
    * Notifies about the task update after successful deletion.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
    * and logs the error in the console. 
@@ -239,8 +239,8 @@ export class DialogEditTaskComponent implements OnInit {
   async deleteCurrentSubtask(subtaskId: number) {
     if (subtaskId) {
       try {
-        await this.ts.deleteSubtask(this.task.id, subtaskId);
-        this.ts.notifyTaskUpdate();
+        await this.taskService.deleteSubtask(this.task.id, subtaskId);
+        this.taskService.notifyTaskUpdate();
       } catch (err) {
         console.error('Could not delete subtask!', err);
       }
@@ -249,19 +249,19 @@ export class DialogEditTaskComponent implements OnInit {
 
 
   /**
-   * Getter for the 'subtasks' form array from the todo form.
+   * Getter for the 'subtasks' FormArray from the taskForm.
    * Returns the FormArray instance corresponding to 'subtasks'.
    *
    * @returns {FormArray} The FormArray instance for 'subtasks'.
    */
   get subtasks(): FormArray {
-    return this.todoForm.get('subtasks') as FormArray;
+    return this.taskForm.get('subtasks') as FormArray;
   }
 
 
   /**
    * Asynchronously adds a subtask to the database.
-   * Calls the createSubtask method from the task service with the current task's ID and subtask data.
+   * Calls the createSubtask method from the taskService with the current taskId and subtask data.
    * Notifies about the task update after successfully adding the subtask.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
    * and logs the error in the console. 
@@ -270,8 +270,8 @@ export class DialogEditTaskComponent implements OnInit {
    */
   async addSubtaskToDb(subtaskData: SubtaskData) {
     try {
-      await this.ts.createSubtask(this.data.taskId, subtaskData);
-      this.ts.notifyTaskUpdate();
+      await this.taskService.createSubtask(this.data.taskId, subtaskData);
+      this.taskService.notifyTaskUpdate();
     } catch (err) {
       console.error('Could not add subtask!', err);
     }
@@ -327,7 +327,7 @@ export class DialogEditTaskComponent implements OnInit {
    * @param event - The MouseEvent that triggered this function.
   */
   clickOnCategory(cat: CategoryData) {
-    const categoryForm = this.todoForm.get('category') as FormControl;
+    const categoryForm = this.taskForm.get('category') as FormControl;
     if (categoryForm) {
       categoryForm.setValue(cat.id);
       this.selectedCategory = cat;
@@ -337,21 +337,25 @@ export class DialogEditTaskComponent implements OnInit {
 
 
   /**
-   * Updates the selectedCategory based on the current values of the category name and color in the task form.
+   * Updates the selectedCategory based on the current values of the category name and color in the taskForm.
    * Retrieves the category name and color from the form and sets selectedCategory if both are present.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console.
    */
   categorySelected() {
-    let categoryValue = this.todoForm.get('category.name')?.value;
-    let colorValue = this.todoForm.get('category.color')?.value;
+    let categoryValue = this.taskForm.get('category.name')?.value;
+    let colorValue = this.taskForm.get('category.color')?.value;
 
     if (categoryValue && colorValue) {
-      let newCategory = {
-        name: categoryValue,
-        color: colorValue
-      };
-      this.selectedCategory = newCategory;
-    } else {
+      try {
+        let newCategory = {
+          name: categoryValue,
+          color: colorValue
+        };
+        this.selectedCategory = newCategory;
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
 
@@ -369,7 +373,7 @@ export class DialogEditTaskComponent implements OnInit {
 
 
   /**
-   * Creates a new category if the category form is valid and the category does not already exist.
+   * Creates a new category if the categoryForm is valid and the category does not already exist.
    * Validates the form, checks for the category's existence, and then creates the category using the catService.
    * Updates the selectedCategory and refreshes all categories upon successful creation.
    * Sets a temporary flag 'categoryAlreadyExist' if the category already exists.
@@ -420,7 +424,7 @@ export class DialogEditTaskComponent implements OnInit {
     * @param contact - The ContactData object representing the contact to be toggled.
     */
   selectContact(contact: ContactData) {
-    const assignedTo = this.todoForm.get('assigned_to') as FormArray;
+    const assignedTo = this.taskForm.get('assigned_to') as FormArray;
 
     if (this.isSelected(contact)) {
       const index = assignedTo.controls.findIndex(control => control.value === contact.id);
@@ -428,7 +432,7 @@ export class DialogEditTaskComponent implements OnInit {
         assignedTo.removeAt(index);
       }
     } else {
-      assignedTo.push(this.fb.control(contact.id));
+      assignedTo.push(this.formBuilder.control(contact.id));
     }
   }
 
@@ -441,7 +445,7 @@ export class DialogEditTaskComponent implements OnInit {
    * @returns boolean - True if the contact is selected, false otherwise.
    */
   isSelected(contact: ContactData) {
-    const assignedTo = this.todoForm.get('assigned_to') as FormArray;
+    const assignedTo = this.taskForm.get('assigned_to') as FormArray;
     return assignedTo.controls.some(control => control.value === contact.id);
   }
 
@@ -451,7 +455,7 @@ export class DialogEditTaskComponent implements OnInit {
    * This function is used to reset the state of task assignment selections.
    */
   cancelSelection() {
-    const assignedTo = this.todoForm.get('assigned_to') as FormArray;
+    const assignedTo = this.taskForm.get('assigned_to') as FormArray;
     assignedTo.clear();
     this.assignedToMenu = false;
   }
@@ -492,18 +496,18 @@ export class DialogEditTaskComponent implements OnInit {
 
 
   /**
-   * Handles the submission of the todo form.
-   * Checks for form validity and then attempts to update the todo item using the task service.
+   * Handles the submission of the taskForm.
+   * Checks for form validity and then attempts to update the task item using the taskService.
    * Notifies about the task update after successful submission.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message 
    * and logs it in the console.
    */
   async onSubmit() {
-    if (this.todoForm.valid) {
+    if (this.taskForm.valid) {
       try {
-        const formData: TodoData = this.todoForm.value;
-        await this.ts.updateTodo(this.data.taskId, formData);
-        this.ts.notifyTaskUpdate();
+        const formData: TaskData = this.taskForm.value;
+        await this.taskService.updateTask(this.data.taskId, formData);
+        this.taskService.notifyTaskUpdate();
       } catch (err) {
         console.error('Could not create category!', err);
       }
@@ -512,12 +516,12 @@ export class DialogEditTaskComponent implements OnInit {
 
 
   /**
-   * Executes the onSubmit method and closes the dialog if the todo form is valid.
+   * Executes the onSubmit method and closes the dialog if the task form is valid.
    * Calls onSubmit to handle form submission, and then closes the dialog upon successful submission.
    */
   onSubmitAndNavigate() {
     this.onSubmit();
-    if (this.todoForm.valid) {
+    if (this.taskForm.valid) {
       this.dialogRef.close();
     }
   }

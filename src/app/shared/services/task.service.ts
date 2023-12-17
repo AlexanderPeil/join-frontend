@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Subject, lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { SubtaskData, TodoData } from '../todo-interface';
+import { SubtaskData, TaskData } from '../task-interface';
 
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class TodoService {
+export class TaskService {
   taskUpdated = new Subject<void>();
 
 
@@ -17,49 +17,49 @@ export class TodoService {
 
 
   /**
-   * Creates a new todo task.
+   * Creates a new task task.
    *
-   * Constructs a URL for creating a new todo task using the base URL from the environment configuration.
+   * Constructs a URL for creating a new task using the base URL from the environment configuration.
    * Sets an 'Authorization' header with a token from localStorage for authenticated access. Sends the 
    * `taskData` containing details of the new task as a POST request. Utilizes `lastValueFrom` to convert
-   * the Observable to a Promise, which resolves with the created TodoData object.
+   * the Observable to a Promise, which resolves with the created TaskData object.
    *
-   * @param taskData - TodoData object containing information about the new task.
-   * @returns A Promise resolving with the TodoData object of the newly created task.
+   * @param taskData - TaskData object containing information about the new task.
+   * @returns A Promise resolving with the TaskData object of the newly created task.
    */
-  createTodo(taskData: TodoData) {
+  createTask(taskData: TaskData) {
     const url = environment.baseUrl + '/tasks/';
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
-    return lastValueFrom(this.http.post<TodoData>(url, taskData, { headers: headers }));
+    return lastValueFrom(this.http.post<TaskData>(url, taskData, { headers: headers }));
   }
 
 
   /**
-   * Updates an existing todo task with new data.
+   * Updates an existing task with new data.
    *
    * Forms a URL targeting a specific task using its `taskId`, based on the base URL 
    * from the environment configuration. Sets an 'Authorization' header with a token 
    * from localStorage for authentication. Sends the `updatedData` as a PATCH request 
    * to modify the existing task. Converts the Observable to a Promise using 
-   * `lastValueFrom`, which resolves with the updated TodoData object.
+   * `lastValueFrom`, which resolves with the updated TaskData object.
    *
    * @param taskId - The unique identifier of the task to be updated.
-   * @param updatedData - Partial<TodoData> object containing updated information for the task.
-   * @returns A Promise resolving with the updated TodoData object.
+   * @param updatedData - Partial<TaskData> object containing updated information for the task.
+   * @returns A Promise resolving with the updated TaskData object.
    */
-  updateTodo(taskId: number, updatedData: Partial<TodoData>) {
+  updateTask(taskId: number, updatedData: Partial<TaskData>) {
     const url = `${environment.baseUrl}/tasks/${taskId}/`;
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
-    return lastValueFrom(this.http.patch<TodoData>(url, updatedData, { headers: headers }));
+    return lastValueFrom(this.http.patch<TaskData>(url, updatedData, { headers: headers }));
   }
 
 
   /**
-   * Creates a new subtask for a specific todo task.
+   * Creates a new subtask for a specific task.
    *
    * Constructs a URL to add a subtask to a specified task using the `taskId`, based on the base URL 
    * from the environment configuration. Sets an 'Authorization' header using a token from localStorage 
@@ -109,11 +109,11 @@ export class TodoService {
    * within the given task. This method is useful for displaying summary information about 
    * the progress of a task based on its subtasks.
    *
-   * @param task - A TodoData object representing the task whose subtasks are to be counted.
+   * @param task - A TaskData object representing the task whose subtasks are to be counted.
    * @returns An object with two properties: 'total' indicating the total number of subtasks, 
    *          and 'checked' indicating the number of subtasks that are marked as completed.
    */
-  getSubtaskCountsForTask(task: TodoData): { total: number, checked: number } {
+  getSubtaskCountsForTask(task: TaskData): { total: number, checked: number } {
     const totalSubtasks = task.subtasks.length;
     const checkedSubtasks = task.subtasks.filter(st => st.checked).length;
     return {
@@ -129,19 +129,19 @@ export class TodoService {
    * Constructs a URL targeting a subtask using both `taskId` and `subtaskId`, based on the base URL 
    * from the environment configuration. Sets an 'Authorization' header with a token from localStorage 
    * for authentication. Sends a DELETE request to remove the specified subtask. Utilizes 
-   * `lastValueFrom` to convert the Observable to a Promise, which resolves with the updated TodoData 
+   * `lastValueFrom` to convert the Observable to a Promise, which resolves with the updated TaskData 
    * object reflecting the deletion.
    *
    * @param taskId - The unique identifier of the parent task.
    * @param subtaskId - The unique identifier of the subtask to be deleted.
-   * @returns A Promise resolving with the updated TodoData object post deletion.
+   * @returns A Promise resolving with the updated TaskData object post deletion.
    */
   deleteSubtask(taskId: number, subtaskId: number) {
     const url = `${environment.baseUrl}/tasks/${taskId}/subtasks/${subtaskId}/`;
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
-    return lastValueFrom(this.http.delete<TodoData>(url, { headers: headers }));
+    return lastValueFrom(this.http.delete<TaskData>(url, { headers: headers }));
   }
 
 
@@ -151,57 +151,57 @@ export class TodoService {
    * Forms a URL to target the task using the provided `taskId`, based on the base URL from the
    * environment configuration. Sets an 'Authorization' header with a token from localStorage for
    * authentication. Sends a DELETE request to remove the specified task. Uses `lastValueFrom` to
-   * convert the Observable to a Promise, which resolves with the TodoData object reflecting the
+   * convert the Observable to a Promise, which resolves with the TaskData object reflecting the
    * deletion.
    *
    * @param taskId - The unique identifier of the task to be deleted.
-   * @returns A Promise resolving with the TodoData object post deletion.
+   * @returns A Promise resolving with the TaskData object post deletion.
    */
   deleteTask(taskId: number) {
     const url = `${environment.baseUrl}/tasks/${taskId}/`;
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
-    return lastValueFrom(this.http.delete<TodoData>(url, { headers: headers }));
+    return lastValueFrom(this.http.delete<TaskData>(url, { headers: headers }));
   }
 
 
   /**
-   * Retrieves all todo tasks from the server.
+   * Retrieves all tasks from the server.
    *
-   * Constructs a URL to fetch all todo tasks using the base URL from the environment configuration.
+   * Constructs a URL to fetch all tasks using the base URL from the environment configuration.
    * Sets an 'Authorization' header with a token from localStorage for secure access. Makes a GET
-   * request to retrieve an array of TodoData objects representing all tasks. Utilizes `lastValueFrom`
+   * request to retrieve an array of TaskData objects representing all tasks. Utilizes `lastValueFrom`
    * to convert the returned Observable into a Promise.
    *
-   * @returns A Promise resolving with an array of TodoData objects, representing all todo tasks.
+   * @returns A Promise resolving with an array of TaskData objects, representing all tasks.
    */
-  getAllTodos() {
+  getAllTasks() {
     const url = environment.baseUrl + '/tasks/';
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
-    return lastValueFrom(this.http.get<TodoData[]>(url, { headers: headers }));
+    return lastValueFrom(this.http.get<TaskData[]>(url, { headers: headers }));
   }
 
 
   /**
-   * Fetches a specific todo task by its unique identifier.
+   * Fetches a specific task by its unique identifier.
    *
    * Constructs a URL targeting the task using the provided `id`, based on the base URL 
    * from the environment configuration. An 'Authorization' header is set with a token 
    * from localStorage for secure access. Makes a GET request to retrieve the task data 
-   * as a TodoData object. Utilizes `lastValueFrom` to convert the Observable into a Promise.
+   * as a TaskData object. Utilizes `lastValueFrom` to convert the Observable into a Promise.
    *
-   * @param id - The unique identifier of the todo task to be retrieved.
-   * @returns A Promise resolving with the TodoData object for the requested task.
+   * @param id - The unique identifier of the task to be retrieved.
+   * @returns A Promise resolving with the TaskData object for the requested task.
    */
-  getTaskById(id: number): Promise<TodoData> {
+  getTaskById(id: number): Promise<TaskData> {
     const url = `${environment.baseUrl}/tasks/${id}/`;
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
-    return lastValueFrom(this.http.get<TodoData>(url, { headers }));
+    return lastValueFrom(this.http.get<TaskData>(url, { headers }));
   }
 
 

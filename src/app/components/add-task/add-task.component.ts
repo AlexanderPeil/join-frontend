@@ -1,8 +1,8 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { TodoService } from 'src/app/shared/services/todo.service';
+import { TaskService } from 'src/app/shared/services/task.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
-import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interface';
+import { CategoryData, ContactData, TaskData } from 'src/app/shared/task-interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ContactService } from 'src/app/shared/services/contact.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,7 +19,7 @@ export class AddTaskComponent implements OnInit {
   @ViewChild('handleASsignedToMenu') handleASsignedToMenu!: ElementRef;
 
   taskForm!: FormGroup;
-  tasks: TodoData[] = [];
+  tasks: TaskData[] = [];
   categoryForm!: FormGroup;
   categoryMenu = false;
   categories: CategoryData[] = [];
@@ -42,13 +42,13 @@ export class AddTaskComponent implements OnInit {
 
 
   constructor(
-    private ts: TodoService,
-    private catService: CategoryService,
+    private taskService: TaskService,
+    private categoryService: CategoryService,
     private contService: ContactService,
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private router: Router,
     public dialog: MatDialog) {
-    this.catService.getCategoriesUpdateListener().subscribe(() => {
+    this.categoryService.getCategoriesUpdateListener().subscribe(() => {
       this.initAllCategories();
       this.selectedCategory = null;
     });
@@ -57,8 +57,8 @@ export class AddTaskComponent implements OnInit {
 
 
   ngOnInit() {
-    this.initFormGroup();
     this.initCategoryGroup();
+    this.initFormGroup();
     this.initAllCategories();
     this.initAllContacts();
     this.windowWidth = window.innerWidth
@@ -66,7 +66,7 @@ export class AddTaskComponent implements OnInit {
 
 
   /**
-   * Handles window resize events.
+   * Handles window resize events (in the onInit).
    * Updates the `windowWidth` property of the component with the current inner width of the window.
    * This function is triggered automatically whenever the window is resized.
    */
@@ -77,11 +77,11 @@ export class AddTaskComponent implements OnInit {
 
 
   /**
-   * Initializes the category form with default values and validators.
+   * Initializes the category form with default values and validators (in the onInit).
    * The form includes 'name' and 'color' fields, both required.
    */
   initCategoryGroup() {
-    this.categoryForm = this.fb.group({
+    this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
       color: ['#000000', Validators.required]
     });
@@ -90,33 +90,33 @@ export class AddTaskComponent implements OnInit {
 
 
   /**
-   * Initializes the task form group.
+   * Initializes the task form group (in the onInit).
    * Sets up form fields for a task with validators where necessary.
    * All fields except 'priority' and 'subtasks' are required.
    */
   initFormGroup() {
-    this.taskForm = this.fb.group({
+    this.taskForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
       due_date: ['', Validators.required],
       category: ['', Validators.required],
       priority: 'low',
       status: 'todo',
-      assigned_to: this.fb.array([], Validators.required),
-      subtasks: this.fb.array([])
+      assigned_to: this.formBuilder.array([], Validators.required),
+      subtasks: this.formBuilder.array([])
     });
   }
 
 
   /**
-   * Asynchronously retrieves all categories.
-   * Uses `loadAllCategories` from the catService to fetch categories.
+   * Asynchronously retrieves all categories (in the onInit).
+   * Uses `loadAllCategories` from the categoryService to fetch categories.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
    * and logs the error in the console.
    */
   async initAllCategories() {
     try {
-      this.categories = await this.catService.loadAllCategories();
+      this.categories = await this.categoryService.loadAllCategories();
     } catch (err) {
       console.error('Could not load categories!', err);
     }
@@ -124,7 +124,7 @@ export class AddTaskComponent implements OnInit {
 
 
   /**
-   * Asynchronously fetches all contacts.
+   * Asynchronously fetches all contacts (in the onInit).
    * Retrieves contacts using `loadAllContacts` from the contService.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
    * and logs the error in the console
@@ -163,7 +163,7 @@ export class AddTaskComponent implements OnInit {
   addSubtask(subtaskTitle: string) {
     if (subtaskTitle !== '') {
       const subtask = this.taskForm.get('subtasks') as FormArray;
-      subtask.push(this.fb.group({
+      subtask.push(this.formBuilder.group({
         title: [subtaskTitle],
         check: [false]
       }));
@@ -267,7 +267,7 @@ export class AddTaskComponent implements OnInit {
 
   /**
    * Creates a new category if the category form is valid and the category does not already exist.
-   * Validates the form, checks for the category's existence, and then creates the category using the catService.
+   * Validates the form, checks for the category's existence, and then creates the category using the categoryService.
    * Updates the selectedCategory and refreshes all categories upon successful creation.
    * Sets a temporary flag 'categoryAlreadyExist' if the category already exists.
    */
@@ -277,7 +277,7 @@ export class AddTaskComponent implements OnInit {
 
       if (!this.categoryExists(categoryData.name)) {
         try {
-          await this.catService.createCategory(categoryData);
+          await this.categoryService.createCategory(categoryData);
           this.selectedCategory = categoryData;
           await this.initAllCategories();
         } catch (err) {
@@ -346,7 +346,7 @@ export class AddTaskComponent implements OnInit {
         assignedTo.removeAt(index);
       }
     } else {
-      assignedTo.push(this.fb.control(contact.id));
+      assignedTo.push(this.formBuilder.control(contact.id));
     }
   }
 
@@ -416,15 +416,15 @@ export class AddTaskComponent implements OnInit {
 
   /**
    * Asynchronously submits the task form data.
-   * Attempts to create a new todo item using the form data.
+   * Attempts to create a new task item using the form data.
    * On successful submission, it calls `handleTaskSuccess` to manage post-submission behavior.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
    * and logs the error in the console.
    */
   async submitTask() {
     try {
-      const formData: TodoData = this.taskForm.value;
-      await this.ts.createTodo(formData);
+      const formData: TaskData = this.taskForm.value;
+      await this.taskService.createTask(formData);
       this.handleTaskSuccess();
     } catch (err) {
       console.error('Could not create taks!', err);
@@ -435,7 +435,7 @@ export class AddTaskComponent implements OnInit {
   /**
    * Manages the interface and navigation after successful task addition.
    * Disables the submission button and shows a success message.
-   * Navigates to the '/board' route after a delay of 3000 milliseconds.
+   * Navigates to the 'board' route after a delay of 3000 milliseconds.
    */
   handleTaskSuccess() {
     this.isButtonDisabled = true;
@@ -445,7 +445,7 @@ export class AddTaskComponent implements OnInit {
 
 
   /**
-   * Gtriggers the onSubmit process.
+   * Triggers the onSubmit process.
    */
   onSubmitAndNavigate() {
     this.onSubmit();

@@ -23,24 +23,24 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           return throwError(() => error);
         }
 
-        let errorMessage = 'An unexpected error has occurred.';
-
-        if (error.status === 403) {
-          errorMessage = 'Please sign up to enjoy all the functionalities of this app.';
-        } else if (error.status === 400) {
-          errorMessage = 'A bad request was detected.';
-        } else if (error.status === 401) {
-          errorMessage = 'You are not authorized. Please log in.';
-        }
-
-        this.dialog.open(DialogErrorComponent, {
-          data: { message: errorMessage }
-        });
+        const errorMessage = this.getErrorMessage(error);
+        this.dialog.open(DialogErrorComponent, { data: { message: errorMessage } });
 
         return throwError(() => error);
       })
     );
   }
 
-
+  private getErrorMessage(error: HttpErrorResponse): string {
+    switch (error.status) {
+      case 403:
+        return 'Please sign up to enjoy all the functionalities of this app.';
+      case 400:
+        return 'A bad request was detected.';
+      case 401:
+        return 'You are not authorized. Please log in.';
+      default:
+        return 'An unexpected error has occurred.';
+    }
+  }
 }

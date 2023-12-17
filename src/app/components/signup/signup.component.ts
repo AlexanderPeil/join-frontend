@@ -20,9 +20,9 @@ export class SignUpComponent implements OnInit {
 
 
   constructor(
-    public as: AuthService,
+    public authService: AuthService,
     private router: Router,
-    private fb: FormBuilder
+    private formBuilder: FormBuilder
   ) { }
 
 
@@ -38,7 +38,7 @@ export class SignUpComponent implements OnInit {
    * Adds a custom validator 'checkPasswords' to ensure password and confirmPassword match.
    */
   initFormGroup() {
-    this.signUpForm = this.fb.group({
+    this.signUpForm = this.formBuilder.group({
       username: ['', Validators.required],
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
@@ -69,7 +69,7 @@ export class SignUpComponent implements OnInit {
 
 
   /**
-   * Handles the submission of the sign-up form.
+   * Handles the submission of the signUpForm.
    * Sets the 'submitted' flag to true and checks if the form is valid.
    * If the form is valid, proceeds to perform the signup process.
    */
@@ -84,8 +84,8 @@ export class SignUpComponent implements OnInit {
 
 
   /**
-   * Performs the signup operation using the form data.
-   * Attempts to sign up with the provided form data and, on success, stores the received token in local storage.
+   * Performs the signup operation using the formData.
+   * Attempts to sign up with the provided formData and, on success, stores the received token in local storage.
    * Sets flags for successful signup and disables the submit button.
    * Navigates to the summary page after a brief delay upon successful signup.
    * Invokes `handleSignUpError` to manage any errors during the signup process.
@@ -93,7 +93,7 @@ export class SignUpComponent implements OnInit {
   async performSignup() {
     try {
       const formData = this.signUpForm.value;
-      let resp: any = await this.as.signup(formData);
+      let resp: any = await this.authService.signup(formData);
       localStorage.setItem('token', resp['token']);
       this.signedUpInfo = true;
       this.isButtonDisabled = true;

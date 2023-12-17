@@ -1,7 +1,7 @@
-import { Component, Inject, OnInit, LOCALE_ID } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { TodoService } from 'src/app/shared/services/todo.service';
-import { TodoData } from 'src/app/shared/todo-interface';
+import { TaskService } from 'src/app/shared/services/task.service';
+import { TaskData } from 'src/app/shared/task-interface';
 
 
 @Component({
@@ -12,15 +12,15 @@ import { TodoData } from 'src/app/shared/todo-interface';
 export class SummaryComponent implements OnInit {
   greeting = '';
   firstname = '';
-  tasks: TodoData[] = [];
+  tasks: TaskData[] = [];
   isMobile: boolean = false;
   showMobileGreet = false;
-  urgentTasks: TodoData[] = [];
+  urgentTasks: TaskData[] = [];
   nearestUrgentTaskDate: Date | undefined;
 
   constructor
-    (private as: AuthService,
-      private ts: TodoService) { }
+    (private authService: AuthService,
+      private taskService: TaskService) { }
 
 
   ngOnInit(): void {
@@ -35,13 +35,13 @@ export class SummaryComponent implements OnInit {
 
   /**
    * Asynchronously initializes and loads all tasks.
-   * Fetches tasks using the `getAllTodos` method from the task service.
+   * Fetches tasks using the `getAllTodos` method from the taskService.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
    * and logs the error in the console.
    */
   async initAllTasks() {
     try {
-      this.tasks = await this.ts.getAllTodos();
+      this.tasks = await this.taskService.getAllTasks();
     } catch (err) {
       console.error('Could not load tasks!', err);
     }
@@ -59,14 +59,14 @@ export class SummaryComponent implements OnInit {
 
   /**
    * Asynchronously retrieves the logged-in user's data and sets the username.
-   * Fetches the user's information using `getLoggedUserData` from the authentication service.
+   * Fetches the user's information using `getLoggedUserData` from the authService.
    * Sets the 'firstname' property with the user's first name from the retrieved data.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
    * and logs the error in the console.
    */
   async setUsername() {
     try {
-      const userInfo = await this.as.getLoggedUserData();
+      const userInfo = await this.authService.getLoggedUserData();
       this.firstname = userInfo.first_name;
     } catch (error) {
       console.error('Error fetching user info', error);
@@ -131,7 +131,7 @@ export class SummaryComponent implements OnInit {
 
   /**
    * Get all tasks.
-   * @returns length of the tassks array.
+   * @returns length of the tasks array.
    */
   getTotalTasks(): number {
     return this.tasks.length;

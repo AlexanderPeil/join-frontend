@@ -17,9 +17,9 @@ export class LoginComponent implements OnInit {
 
 
   constructor(
-    public as: AuthService,
+    public authService: AuthService,
     private router: Router,
-    private fb: FormBuilder
+    private formBuilder: FormBuilder
   ) { }
 
 
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
   initFormGroup() {
     const savedUsername = localStorage.getItem('username');
 
-    this.loginForm = this.fb.group({
+    this.loginForm = this.formBuilder.group({
       username: [savedUsername || '', Validators.required],
       password: ['', Validators.required],
       rememberMe: [!!savedUsername],
@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit {
   async performLogin() {
     try {
       const formData = this.loginForm.value;
-      let resp: any = await this.as.login(formData);
+      let resp: any = await this.authService.login(formData);
       localStorage.setItem('token', resp['token']);
       this.checkRememberMe(formData);
       this.router.navigateByUrl('/summary');
@@ -135,7 +135,7 @@ export class LoginComponent implements OnInit {
   async onGuestLogin(event: MouseEvent) {
     event.stopPropagation();
     try {
-      const resp: any = await this.as.guestLogin();
+      const resp: any = await this.authService.guestLogin();
       localStorage.setItem('token', resp['token']);
       this.router.navigateByUrl('/summary');
     } catch (err) {

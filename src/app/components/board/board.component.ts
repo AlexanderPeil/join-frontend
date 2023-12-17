@@ -4,14 +4,14 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { TodoService } from 'src/app/shared/services/todo.service';
-import { SubtaskData, TodoData } from 'src/app/shared/todo-interface';
+import { TaskService } from 'src/app/shared/services/task.service';
+import { SubtaskData, TaskData } from 'src/app/shared/task-interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskMenuComponent } from '../task-menu/task-menu.component';
 import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.component';
 
-type TodoStatus = 'todo' | 'awaiting_feedback' | 'in_progress' | 'done';
+type TaskStatus = 'todo' | 'awaiting_feedback' | 'in_progress' | 'done';
 
 @Component({
   selector: 'app-board',
@@ -20,23 +20,23 @@ type TodoStatus = 'todo' | 'awaiting_feedback' | 'in_progress' | 'done';
 })
 export class BoardComponent implements OnInit {
   searchTerm: string = '';
-  allTasks: TodoData[] = [];
-  filteredTasks: TodoData[] | null = null;
-  todo: TodoData[] = [];
-  inProgress: TodoData[] = [];
-  awaitingFeedback: TodoData[] = [];
-  done: TodoData[] = [];
-  todoForm!: FormGroup;
+  allTasks: TaskData[] = [];
+  filteredTasks: TaskData[] | null = null;
+  task: TaskData[] = [];
+  todo: TaskData[] = [];
+  inProgress: TaskData[] = [];
+  awaitingFeedback: TaskData[] = [];
+  done: TaskData[] = [];
+  taskForm!: FormGroup;
   mousedownTime: number | undefined;
-  task!: TodoData;
   subtaskCountsMap = new Map<number, { total: number, checked: number }>();
 
 
   constructor(
-    private ts: TodoService,
-    private fb: FormBuilder,
+    private taskService: TaskService,
+    private formBuilder: FormBuilder,
     public dialog: MatDialog) {
-    this.ts.getTaskUpdateListener().subscribe(() => {
+    this.taskService.getTaskUpdateListener().subscribe(() => {
       this.initAllTasks();
     });
   }
@@ -49,14 +49,14 @@ export class BoardComponent implements OnInit {
 
   /**
    * Asynchronously initializes and loads all tasks.
-   * Fetches all tasks using `ts.getAllTodos()` and stores them in `this.allTasks`.
+   * Fetches all tasks using `ts.getAllTasks()` and stores them in `this.allTasks`.
    * Iterates over each task to load detailed information for each task by calling `loadTaskDetails`.
    * After loading details for all tasks, applies task filtering through `filterTasks`.
    * If an error occurs during this process, the catch block is currently empty.
    */
   async initAllTasks() {
     try {
-      const allTasks = await this.ts.getAllTodos();
+      const allTasks = await this.taskService.getAllTasks();
       this.allTasks = allTasks;
       for (const task of this.allTasks) {
         await this.loadTaskDetails(task.id);
@@ -70,15 +70,15 @@ export class BoardComponent implements OnInit {
 
   /**
    * Asynchronously initializes and loads all tasks.
-   * Fetches all tasks using `ts.getAllTodos()` and stores them in `this.allTasks`.
+   * Fetches all tasks using `ts.getAllTasks()` and stores them in `this.allTasks`.
    * Iterates over each task to load detailed information for each task by calling `loadTaskDetails`.
    * After loading details for all tasks, applies task filtering through `filterTasks`.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
    */
   async loadTaskDetails(taskId: number) {
     try {
-      const taskData = await this.ts.getTaskById(taskId);
-      const subtaskCounts = this.ts.getSubtaskCountsForTask(taskData);
+      const taskData = await this.taskService.getTaskById(taskId);
+      const subtaskCounts = this.taskService.getSubtaskCountsForTask(taskData);
       this.subtaskCountsMap.set(taskId, subtaskCounts);
     } catch (error) {
     }
@@ -138,7 +138,7 @@ export class BoardComponent implements OnInit {
    *
    * @param event - The CdkDragDrop event containing details about the drag-and-drop operation.
    */
-  drop(event: CdkDragDrop<TodoData[]>) {
+  drop(event: CdkDragDrop<TaskData[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -156,14 +156,14 @@ export class BoardComponent implements OnInit {
 
 
   /**
-   * Determines the TodoStatus based on the container ID.
-   * Maps specific container IDs to their corresponding TodoStatus values.
+   * Determines the TaskStatus based on the container ID.
+   * Maps specific container IDs to their corresponding TaskStatus values.
    * Returns 'todo' as the default status if the container ID does not match any case.
    *
    * @param containerId - The ID of the container.
-   * @returns TodoStatus - The status associated with the given container ID.
+   * @returns TaskStatus - The status associated with the given container ID.
    */
-  getStatusFromContainerId(containerId: string): TodoStatus {
+  getStatusFromContainerId(containerId: string): TaskStatus {
     switch (containerId) {
       case 'todoList':
         return 'todo';
@@ -180,17 +180,17 @@ export class BoardComponent implements OnInit {
 
 
   /**
-   * Asynchronously updates the status of a todo item.
-   * Sends a request to update the status of a specific todo item identified by its ID.
+   * Asynchronously updates the status of a task item.
+   * Sends a request to update the status of a specific task item identified by its ID.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
    *
-   * @param todoId - The ID of the todo item to be updated.
-   * @param newStatus - The new status to be set for the todo item.
+   * @param taskId - The ID of the task item to be updated.
+   * @param newStatus - The new status to be set for the task item.
    */
-  async updateStatus(todoId: number, newStatus: TodoStatus) {
+  async updateStatus(taskId: number, newStatus: TaskStatus) {
     try {
-      const updatedData: Partial<TodoData> = { status: newStatus };
-      await this.ts.updateTodo(todoId, updatedData);
+      const updatedData: Partial<TaskData> = { status: newStatus };
+      await this.taskService.updateTask(taskId, updatedData);
     } catch (err) {
       console.error('Could not update status!', err);
     }
@@ -213,22 +213,22 @@ export class BoardComponent implements OnInit {
 
 
   /**
-   * Initializes the todo form group with default values and validators.
+   * Initializes the task form group with default values and validators.
    * Sets up form fields including 'title', 'description', 'due_date', and 'category', each marked as required.
    * Defaults 'priority' to 'medium' and 'status' to 'todo'.
    * Initializes 'assigned_to' as an array field with a required validator.
    * 'subtasks' is also initialized as an array field without initial validators.
    */
   initFormGroup() {
-    this.todoForm = this.fb.group({
+    this.taskForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
       due_date: ['', Validators.required],
       category: ['', Validators.required],
       priority: ('medium'),
       status: ('todo'),
-      assigned_to: this.fb.array([], Validators.required),
-      subtasks: this.fb.array([])
+      assigned_to: this.formBuilder.array([], Validators.required),
+      subtasks: this.formBuilder.array([])
     });
   }
 

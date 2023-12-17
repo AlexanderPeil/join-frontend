@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ContactData } from 'src/app/shared/todo-interface';
+import { ContactData } from 'src/app/shared/task-interface';
 import { ContactService } from 'src/app/shared/services/contact.service';
-import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditContactComponent } from '../dialog-edit-contact/dialog-edit-contact.component';
 import { DialogAddContactComponent } from '../dialog-add-contact/dialog-add-contact.component';
@@ -20,10 +18,8 @@ export class ContactsComponent implements OnInit {
   uniqueLetters: string[] = [];
 
   constructor(
-    private contService: ContactService,
-    private fb: FormBuilder,
+    private contactService: ContactService,
     public dialog: MatDialog,
-    private router: Router,
   ) { }
 
 
@@ -35,13 +31,14 @@ export class ContactsComponent implements OnInit {
 
   /**
    * Asynchronously initializes and loads all contacts.
-   * Fetches contacts using `contService.loadAllContacts()` and stores them in `this.contacts`.
+   * Fetches contacts using `contactService.loadAllContacts()` and stores them in `this.contacts`.
    * After fetching, it sorts and groups the contacts by calling `sortAndGroupContacts`.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console.
    */
   async initAllContacts() {
     try {
-      this.contacts = await this.contService.loadAllContacts();
+      this.contacts = await this.contactService.loadAllContacts();
       this.sortAndGroupContacts(this.contacts);
     } catch (err) {
       console.error('Could not load contacts!', err);
@@ -154,14 +151,15 @@ export class ContactsComponent implements OnInit {
    * Asynchronously deletes a contact by its ID.
    * Calls the contact service to delete the contact if a valid ID is provided.
    * After deletion, re-initializes all contacts and resets the selected contact to null.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console. 
    *
    * @param contactId - The ID of the contact to be deleted.
    */
   async deleteContact(contactId: number) {
     if (contactId) {
       try {
-        await this.contService.deleteContact(contactId);
+        await this.contactService.deleteContact(contactId);
         this.initAllContacts();
         this.selectedContact = null;
       } catch (err) {

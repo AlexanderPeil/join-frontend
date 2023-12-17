@@ -1,7 +1,7 @@
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
-import { TodoService } from 'src/app/shared/services/todo.service';
+import { TaskService } from 'src/app/shared/services/task.service';
 import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
-import { CategoryData, ContactData, TodoData } from 'src/app/shared/todo-interface';
+import { CategoryData, ContactData, TaskData } from 'src/app/shared/task-interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ContactService } from 'src/app/shared/services/contact.service';
 import { Router } from '@angular/router';
@@ -24,7 +24,7 @@ export class DialogAddTaskComponent implements OnInit {
   categoryMenu = false;
   categoryAlreadyExist!: boolean;
   submitted = false;
-  tasks: TodoData[] = [];
+  tasks: TaskData[] = [];
   contacts: ContactData[] = [];
   subtaskInput: boolean = false;
   selectedCategory: any;
@@ -43,10 +43,10 @@ export class DialogAddTaskComponent implements OnInit {
 
 
   constructor(
-    private ts: TodoService,
+    private taskService: TaskService,
     private catService: CategoryService,
     private contService: ContactService,
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
@@ -84,7 +84,7 @@ export class DialogAddTaskComponent implements OnInit {
    * The form includes 'name' and 'color' fields, both required.
    */
   initCategoryGroup() {
-    this.categoryForm = this.fb.group({
+    this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
       color: ['#000000', Validators.required]
     })
@@ -105,7 +105,7 @@ export class DialogAddTaskComponent implements OnInit {
 
 
   /**
-   * Assigns the currentContactId from the provided data if contactId is available.
+   * Assigns the currentContactId from the provided data if contact Id is available.
    */
   getContactId() {
     if (this.data.contactId) {
@@ -117,18 +117,19 @@ export class DialogAddTaskComponent implements OnInit {
   /**
    * Initializes the task form with necessary fields and default values.
    * Fields include title, description, due_date, category, priority, status, assigned_to, and subtasks.
-   * All fields except 'priority' and 'subtasks' are required.
+   * All fields except 'subtasks' are required (if the user doesn't select a value to priority and status
+   * the default value will be used).
    */
   initFormGroup() {
-    this.taskForm = this.fb.group({
+    this.taskForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
       due_date: ['', Validators.required],
       category: ['', Validators.required],
       priority: 'low',
       status: 'todo',
-      assigned_to: this.fb.array([], Validators.required),
-      subtasks: this.fb.array([])
+      assigned_to: this.formBuilder.array([], Validators.required),
+      subtasks: this.formBuilder.array([])
     });
   }
 
@@ -136,7 +137,8 @@ export class DialogAddTaskComponent implements OnInit {
   /**
    * Asynchronously retrieves all categories.
    * Uses `loadAllCategories` from the catService to fetch categories.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console.
    */
   async initAllCategories() {
     try {
@@ -150,7 +152,8 @@ export class DialogAddTaskComponent implements OnInit {
   /**
    * Asynchronously fetches all contacts.
    * Retrieves contacts using `loadAllContacts` from the contService.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console.
    */
   async initAllContacts() {
     try {
@@ -186,7 +189,7 @@ export class DialogAddTaskComponent implements OnInit {
   addSubtask(subtaskTitle: string) {
     if (subtaskTitle != '') {
       const subtask = this.taskForm.get('subtasks') as FormArray;
-      subtask.push(this.fb.group({
+      subtask.push(this.formBuilder.group({
         title: [subtaskTitle],
         check: [false]
       }));
@@ -228,7 +231,7 @@ export class DialogAddTaskComponent implements OnInit {
         this.selectContact(contactToPreselect);
       } else {
         const assignedTo = this.taskForm.get('assigned_to') as FormArray;
-        assignedTo.push(this.fb.control(this.currentContactId));
+        assignedTo.push(this.formBuilder.control(this.currentContactId));
       }
     }
   }
@@ -337,7 +340,7 @@ export class DialogAddTaskComponent implements OnInit {
           this.selectedCategory = categoryData;
           await this.initAllCategories();
         } catch (err) {
-          console.error('Could not create category!', err);          
+          console.error('Could not create category!', err);
         }
       } else {
         this.categoryAlreadyExist = true;
@@ -385,7 +388,7 @@ export class DialogAddTaskComponent implements OnInit {
         assignedTo.removeAt(index);
       }
     } else {
-      assignedTo.push(this.fb.control(contact.id));
+      assignedTo.push(this.formBuilder.control(contact.id));
     }
   }
 
@@ -449,11 +452,11 @@ export class DialogAddTaskComponent implements OnInit {
 
 
   /**
- * Asynchronously handles the submission of the task form.
- * Sets a flag to indicate the form has been submitted.
- * If the task form is invalid or a category is not selected, the submission is aborted.
- * Otherwise, it proceeds to call `submitTask` to handle the actual submission process.
- */
+   * Asynchronously handles the submission of the task form.
+   * Sets a flag to indicate the form has been submitted.
+   * If the task form is invalid or a category is not selected, the submission is aborted.
+   * Otherwise, it proceeds to call `submitTask` to handle the actual submission process.
+   */
   async onSubmit() {
     this.submitted = true;
     if (this.taskForm.invalid && !this.selectedCategory) return;
@@ -463,17 +466,18 @@ export class DialogAddTaskComponent implements OnInit {
 
   /**
    * Asynchronously submits the task form data.
-   * Attempts to create a new todo item using the form data.
+   * Attempts to create a new task item using the form data.
    * On successful submission, it calls `handleTaskSuccess` to manage post-submission behavior.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
+   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
+   * and logs the error in the console.
    */
   async submitTask() {
     try {
-      const formData: TodoData = this.taskForm.value;
-      await this.ts.createTodo(formData);
+      const formData: TaskData = this.taskForm.value;
+      await this.taskService.createTask(formData);
       this.handleTaskSuccess();
     } catch (err) {
-      console.error('Could not create task!', err);   
+      console.error('Could not create task!', err);
     }
   }
 
@@ -481,7 +485,7 @@ export class DialogAddTaskComponent implements OnInit {
   /**
    * Manages the interface and navigation after successful task addition.
    * Disables the submission button and shows a success message.
-   * Navigates to the '/board' route after a delay of 3000 milliseconds.
+   * Navigates to the 'board' route after a delay of 3000 milliseconds.
    */
   handleTaskSuccess() {
     this.isButtonDisabled = true;
@@ -489,7 +493,7 @@ export class DialogAddTaskComponent implements OnInit {
     setTimeout(() => {
       this.dialogRef.close();
       this.router.navigate(['/board']);
-      this.ts.notifyTaskUpdate();
+      this.taskService.notifyTaskUpdate();
     }, 3000);
   }
 

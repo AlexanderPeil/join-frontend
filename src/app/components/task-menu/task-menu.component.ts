@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TodoService } from 'src/app/shared/services/todo.service';
-import { TodoData } from 'src/app/shared/todo-interface';
+import { TaskService } from 'src/app/shared/services/task.service';
+import { TaskData } from 'src/app/shared/task-interface';
 import { DialogEditTaskComponent } from '../dialog-edit-task/dialog-edit-task.component';
 
 @Component({
@@ -11,19 +11,19 @@ import { DialogEditTaskComponent } from '../dialog-edit-task/dialog-edit-task.co
   styleUrls: ['./task-menu.component.scss']
 })
 export class TaskMenuComponent implements OnInit {
-  todoForm!: FormGroup;
-  task!: TodoData;
+  taskForm!: FormGroup;
+  task!: TaskData;
   statuses: string[] = ['todo', 'in_progress', 'awaiting_feedback', 'done'];
 
 
   constructor(
     private dialogRef: MatDialogRef<TaskMenuComponent>,
-    private fb: FormBuilder,
-    private ts: TodoService,
+    private formBuilder: FormBuilder,
+    private taskService: TaskService,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.ts.getTaskUpdateListener().subscribe(() => {
+    this.taskService.getTaskUpdateListener().subscribe(() => {
       this.loadtaskbyId();
     });
   }
@@ -36,37 +36,37 @@ export class TaskMenuComponent implements OnInit {
 
 
   /**
-   * Initializes the todo form with necessary fields and default values.
+   * Initializes the task form with necessary fields and default values.
    * Fields include title, description, due_date, category, priority, status, assigned_to, and subtasks.
    * All fields except 'priority' and 'subtasks' are required.
    * Default values are set for 'priority' as 'medium' and 'status' as 'todo'.
    */
   initFormGroup() {
-    this.todoForm = this.fb.group({
+    this.taskForm = this.formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
       due_date: ['', Validators.required],
       category: ['', Validators.required],
       priority: 'medium',
       status: 'todo',
-      assigned_to: this.fb.array([], Validators.required),
-      subtasks: this.fb.array([])
+      assigned_to: this.formBuilder.array([], Validators.required),
+      subtasks: this.formBuilder.array([])
     });
   }
 
 
   /**
-   * Asynchronously loads a task by its ID and updates the todo form with its details.
-   * Fetches the task data using `getTaskById` from the task service.
+   * Asynchronously loads a task by its ID and updates the taskForm with its details.
+   * Fetches the task data using `getTaskById` from the taskService.
    * Upon successful retrieval, updates the form with task details including title, description, due date, category, priority, status, assigned to, and subtasks.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
    * and logs the error in the console.
    */
   async loadtaskbyId() {
     try {
-      const task = await this.ts.getTaskById(this.data.taskId);
+      const task = await this.taskService.getTaskById(this.data.taskId);
       this.task = task;
-      this.todoForm.patchValue({
+      this.taskForm.patchValue({
         title: task.title,
         description: task.description,
         due_date: task.due_date,
@@ -84,7 +84,7 @@ export class TaskMenuComponent implements OnInit {
 
   /**
    * Asynchronously deletes a task by its ID.
-   * If a valid taskId is provided, it calls the deleteTask method from the task service.
+   * If a valid taskId is provided, it calls the deleteTask method from the taskService.
    * Closes the dialog with a success indication upon successful deletion.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
    * and logs the error in the console.
@@ -94,7 +94,7 @@ export class TaskMenuComponent implements OnInit {
   async deleteTask(taskId: number) {
     if (taskId) {
       try {
-        await this.ts.deleteTask(taskId);
+        await this.taskService.deleteTask(taskId);
         this.dialogRef.close(true);
       } catch (err) {
         console.error(err);
@@ -127,7 +127,7 @@ export class TaskMenuComponent implements OnInit {
   /**
    * Asynchronously updates the status of a task.
    * Checks if the task exists and the new status is valid before updating.
-   * Calls the updateTodo method of the task service to update the task's status.
+   * Calls the updateTask method of the task service to update the task's status.
    * Notifies about the task update on successful status change.
    * Logs an error to the console if the update operation fails.
    *
@@ -137,8 +137,8 @@ export class TaskMenuComponent implements OnInit {
     if (this.task && this.statuses.includes(newStatus)) {
       try {
         const updatedTask = { status: newStatus };
-        await this.ts.updateTodo(this.task.id, updatedTask);
-        this.ts.notifyTaskUpdate();
+        await this.taskService.updateTask(this.task.id, updatedTask);
+        this.taskService.notifyTaskUpdate();
       } catch (err) {
         console.error('Error updating task status:', err);
       }
@@ -171,7 +171,7 @@ export class TaskMenuComponent implements OnInit {
 
   /**
    * Opens a dialog for editing a task specified by its ID.
-   * Launches the DialogEditTaskComponent with the given task ID as data.
+   * Launches the DialogEditTaskComponent with the given taskId as data.
    * Closes the current dialog after opening the edit dialog.
    *
    * @param {number} taskId - The ID of the task to be edited.
@@ -199,8 +199,8 @@ export class TaskMenuComponent implements OnInit {
     if (target) {
       try {
         const updatedData = { checked: target.checked };
-        await this.ts.updateSubtask(this.data.taskId, subtaskId, updatedData);
-        this.ts.notifyTaskUpdate();
+        await this.taskService.updateSubtask(this.data.taskId, subtaskId, updatedData);
+        this.taskService.notifyTaskUpdate();
       } catch (err) {
         console.error(err);
       }
@@ -210,7 +210,7 @@ export class TaskMenuComponent implements OnInit {
 
   /**
    * Asynchronously updates the title of a subtask.
-   * If a valid subtaskId is provided, calls the updateSubtask method from the task service with the new title.
+   * If a valid subtaskId is provided, calls the updateSubtask method from the taskService with the new title.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
    * and logs the error in the console
    *
@@ -221,7 +221,7 @@ export class TaskMenuComponent implements OnInit {
     if (subtaskId !== undefined) {
       try {
         const updatedData = { title: title };
-        await this.ts.updateSubtask(this.data.taskId, subtaskId, updatedData);
+        await this.taskService.updateSubtask(this.data.taskId, subtaskId, updatedData);
       } catch (err) {
         console.error(err);
       }
@@ -231,7 +231,7 @@ export class TaskMenuComponent implements OnInit {
 
   /**
    * Asynchronously deletes a subtask by its ID.
-   * If a valid subtaskId is provided, it calls the deleteSubtask method from the task service.
+   * If a valid subtaskId is provided, it calls the deleteSubtask method from the taskService.
    * Notifies about the task update after successful deletion.
    * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
    * and logs the error in the console
@@ -241,8 +241,8 @@ export class TaskMenuComponent implements OnInit {
   async deleteCurrentSubtask(subtaskId: number) {
     if (subtaskId) {
       try {
-        await this.ts.deleteSubtask(this.task.id, subtaskId);
-        this.ts.notifyTaskUpdate();
+        await this.taskService.deleteSubtask(this.task.id, subtaskId);
+        this.taskService.notifyTaskUpdate();
       } catch (err) {
         console.error(err);
       }
