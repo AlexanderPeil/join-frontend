@@ -131,9 +131,26 @@ export class DialogEditTaskComponent implements OnInit {
       category: task.category.id,
       priority: task.priority,
       status: task.status,
-      subtasks: task.subtasks
     });
     this.showCurrentTaskPrio(task.priority);
+    this.addSubtaskToDb(task);
+  }
+
+
+  /**
+   * Add Subtask to database.
+   * @param {TaskData} task - The task data used to update the form.
+   */
+  addSubtaskToDb(task: TaskData) {
+    const subtasksFormArray = this.taskForm.get('subtasks') as FormArray;
+    subtasksFormArray.clear();
+    task.subtasks.forEach(subtask => {
+      subtasksFormArray.push(this.formBuilder.group({
+        id: subtask.id,
+        title: subtask.title,
+        checked: subtask.checked
+      }));
+    });
   }
 
 
@@ -209,42 +226,33 @@ export class DialogEditTaskComponent implements OnInit {
     this.prioLow = priority === 'low';
   }
 
-  /**
-   * Adds a new subtask to the taskForm and updates the database.
-   * Creates a subtask object with the provided title and a default 'check' value set to false.
-   * Calls `addSubtaskToDb` to update the subtask in the database.
-   * Pushes the new subtask into the 'subtasks' FormArray and notifies about the task update.
-   *
-   * @param {string} subtaskTitle - The title of the subtask to be added.
-   */
-  addSubtask(subtaskTitle: string) {
-    const newSubtaskData = { title: subtaskTitle, check: false };
-    this.addSubtaskToDb(newSubtaskData);
 
-    const subtasks = this.taskForm.get('subtasks') as FormArray;
-    subtasks.push(this.formBuilder.group(newSubtaskData));
-    this.taskService.notifyTaskUpdate();
+  /**
+     * Adds a new subtask to the task form's 'subtasks' array.
+     * Only adds the subtask if the provided title is not empty.
+     * Each subtask includes a title and a 'checked' flag, initially set to false.
+     *
+     * @param {string} subtaskTitle - The title of the subtask to be added.
+     */
+  addSubtask(subtaskTitle: string) {
+    if (subtaskTitle !== '') {
+      const subtask = this.taskForm.get('subtasks') as FormArray;
+      subtask.push(this.formBuilder.group({
+        title: [subtaskTitle],
+        checked: [false]
+      }));      
+    }
   }
 
 
   /**
-   * Asynchronously deletes a subtask by its ID.
-   * If a valid subtaskId is provided, it calls the deleteSubtask method from the taskService.
-   * Notifies about the task update after successful deletion.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
-   * and logs the error in the console. 
+   * Removes a subtask from the task form's 'subtasks' array at the specified index.
    *
-   * @param {number} subtaskId - The ID of the subtask to be deleted.
+   * @param {number} index - The index of the subtask to be removed.
    */
-  async deleteCurrentSubtask(subtaskId: number) {
-    if (subtaskId) {
-      try {
-        await this.taskService.deleteSubtask(this.task.id, subtaskId);
-        this.taskService.notifyTaskUpdate();
-      } catch (err) {
-        console.error('Could not delete subtask!', err);
-      }
-    }
+  removeSubtask(index: number) {
+    const subtask = this.taskForm.get('subtasks') as FormArray;
+    subtask.removeAt(index);
   }
 
 
@@ -256,25 +264,6 @@ export class DialogEditTaskComponent implements OnInit {
    */
   get subtasks(): FormArray {
     return this.taskForm.get('subtasks') as FormArray;
-  }
-
-
-  /**
-   * Asynchronously adds a subtask to the database.
-   * Calls the createSubtask method from the taskService with the current taskId and subtask data.
-   * Notifies about the task update after successfully adding the subtask.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
-   * and logs the error in the console. 
-   *
-   * @param {SubtaskData} subtaskData - The data of the subtask to be added.
-   */
-  async addSubtaskToDb(subtaskData: SubtaskData) {
-    try {
-      await this.taskService.createSubtask(this.data.taskId, subtaskData);
-      this.taskService.notifyTaskUpdate();
-    } catch (err) {
-      console.error('Could not add subtask!', err);
-    }
   }
 
 
@@ -516,11 +505,9 @@ export class DialogEditTaskComponent implements OnInit {
 
 
   /**
-   * Executes the onSubmit method and closes the dialog if the task form is valid.
    * Calls onSubmit to handle form submission, and then closes the dialog upon successful submission.
    */
   onSubmitAndNavigate() {
-    this.onSubmit();
     if (this.taskForm.valid) {
       this.dialogRef.close();
     }
@@ -530,7 +517,7 @@ export class DialogEditTaskComponent implements OnInit {
   /**
    * Closes the dialog
    */
-  onClear() {
+  onCancel() {
     this.dialogRef.close();
   }
 

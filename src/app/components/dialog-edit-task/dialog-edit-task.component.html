@@ -1,7 +1,8 @@
 <div class="add-task-menu">
     <div class="header-popup">
         <h2>Edit Task</h2>
-        <img class="close-header-popup" src="../../assets/img/xicon.svg" (click)="closeDialogEditTask()" title="Close menu"> 
+        <img class="close-header-popup" src="../../assets/img/xicon.svg" (click)="closeDialogEditTask()"
+            title="Close menu">
     </div>
     <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
         <div class="content-container">
@@ -95,39 +96,41 @@
                         <div class="prio-btn-container">
                             <button class="prio-btn" *ngIf="!prioUrgent" (click)="setPriority('urgent')">Urgent <img
                                     src="../../assets/img/prio_urgent.png"></button>
-                            <img class="prioHoverImage" *ngIf="prioUrgent"
-                                src="../../assets/img/prio_urgent_btn.png">
+                            <img class="prioHoverImage" *ngIf="prioUrgent" src="../../assets/img/prio_urgent_btn.png">
                             <button class="prio-btn" *ngIf="!prioMedium" (click)="setPriority('medium')">Medium <img
                                     src="../../assets/img/prio_medium.png"></button>
-                            <img class="prioHoverImage" *ngIf="prioMedium"
-                                src="../../assets/img/prio_medium_btn.png">
+                            <img class="prioHoverImage" *ngIf="prioMedium" src="../../assets/img/prio_medium_btn.png">
                             <button class="prio-btn" *ngIf="!prioLow" (click)="setPriority('low')">Low <img
                                     src="../../assets/img/prio_low_white.png"></button>
-                            <img class="prioHoverImage" *ngIf="prioLow"
-                                src="../../assets/img/prio_low_btn.png">
+                            <img class="prioHoverImage" *ngIf="prioLow" src="../../assets/img/prio_low_btn.png">
                         </div>
                         <!-- Prio section -->
 
                         <!-- Subtask section -->
-                        <div class="features-container" *ngIf="task">
+                        <div class="features-container">
                             <label>Subtasks</label>
                             <div class="subtask-container">
-                                <input class="subtaskList subtask-input"placeholder="Add new subtask" #subtaskTitleInput>
+                                <input class="subtask-input" placeholder="Add new subtask" #subtaskTitleInput>
                                 <img class="plus-icon" src="assets/img/plus_icon.png"
-                                    (click)="addSubtask(subtaskTitleInput.value); subtaskTitleInput.value='';" title="Create subtask">
+                                    (click)="addSubtask(subtaskTitleInput.value); subtaskTitleInput.value='';"
+                                    title="Create subtask">
                             </div>
-                            <ul *ngFor="let subtask of task.subtasks">
-                                <li>
-                                    <span>{{ subtask.title }}</span>
-                                    <img (click)="subtask.id !== undefined && deleteCurrentSubtask(subtask.id)"
-                                        src="/assets/img/xicon.svg" alt="Remove Subtask" class="subtaskRemove" title="Delete subtask">
-                                </li>
-                            </ul>
+                            <div formArrayName="subtasks">
+                                <ul class="subtaskList" *ngFor="let subtask of subtasks.controls; let i=index"
+                                    [formGroupName]="i">
+                                    <li>
+                                        <input formControlName="title" class="subtaskList">
+                                        <input hidden type="checkbox" formControlName="checked" class="subtaskCheckbox">
+                                        <img (click)="removeSubtask(i)" src="/assets/img/xicon.svg" alt="Remove Subtask"
+                                            class="subtaskRemove">
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                         <!-- Subtask section -->
                     </div>
                     <div class="submit-and-clear">
-                        <div class="btn-clear" (click)="onClear()">Clear<img class="clear-img"
+                        <div class="btn-clear" (click)="onCancel()">Cancel<img class="clear-img"
                                 src="assets/img/iconoir_cancel.png">
                         </div>
                         <div><Button class="btn-createTask" (click)="onSubmitAndNavigate()">Save Task<img
