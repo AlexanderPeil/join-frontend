@@ -1,17 +1,17 @@
 <div class="add-contact-menu">
     <div class="contact-form-left">
-        <img class="contact-form-logo" src="../../assets/img/join_logo_add_contact.png">
+        <img class="contact-form-logo" src="assets/img/join_logo_add_contact.png">
         <h1>Add Contact</h1>
         <p>Tasks are better with a team!</p>
-        <img class="contact-form-underline" src="../../assets/img/add_contact_underline.png">
+        <img class="contact-form-underline" src="assets/img/add_contact_underline.png">
     </div>
     <div class="contact-form-right">
-        <img class="user-icon" src="../../assets/img/contact_user_icon.png">
+        <img class="user-icon" src="assets/img/contact_user_icon.png">
         <div class="contact-input-container">
             <div class="icon-top-right">
-                <img class="close-popup-mobile" src="../../assets/img/x_ixon.png" (click)="closeDialogAddContact()"
+                <img class="close-popup-mobile" src="assets/img/x_ixon.png" (click)="closeDialogAddContact()"
                     title="Close menu">
-                <img class="close" src="../../assets/img/xicon.svg" (click)="closeDialogAddContact()"
+                <img class="close" src="assets/img/xicon.svg" (click)="closeDialogAddContact()"
                     title="Close menu">
             </div>
             <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
@@ -43,7 +43,7 @@
                 <div class="contact-popup-bottom">
                     <input class="p-none" type="color" formControlName="color">
                     <button mat-raised-button class="disabled-conditions">Create Contact <img
-                            src="../../assets/img/checkmark.png">
+                            src="assets/img/checkmark.png">
                     </button>
                 </div>
             </form>

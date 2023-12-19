@@ -114,11 +114,11 @@ export class TaskMenuComponent implements OnInit {
   getPriorityImage(prio: string) {
     switch (prio) {
       case 'low':
-        return '../../assets/img/prio_low_white.png';
+        return 'assets/img/prio_low_white.png';
       case 'medium':
-        return '../../assets/img/prio_medium.png';
+        return 'assets/img/prio_medium.png';
       case 'urgent':
-        return '../../assets/img/prio_urgent.png';
+        return 'assets/img/prio_urgent.png';
       default: return '';
     }
   }

@@ -4,8 +4,8 @@
         <input *ngIf="category" class="catName" type="text" [(ngModel)]="category.name">
         <div class="bottomContent">
             <input *ngIf="category" class="catColor" type="color" [(ngModel)]="category.color">
-            <img src="../../assets/img/icon_check_subtask.svg" alt="Update category" title="Update Category" (click)="category.id !== undefined && updateCategoryName(category.id)">
-            <img src="../../assets/img/icon_cancel_subtask.svg" alt="Delete category" title="Delete Category" (click)="closeMenu()">
+            <img src="assets/img/icon_check_subtask.svg" alt="Update category" title="Update Category" (click)="category.id !== undefined && updateCategoryName(category.id)">
+            <img src="assets/img/icon_cancel_subtask.svg" alt="Delete category" title="Delete Category" (click)="closeMenu()">
         </div>
     </div>
 </div>

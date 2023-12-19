@@ -1,7 +1,7 @@
 <div class="add-task-menu">
     <div class="header-popup">
         <h2>Add Task</h2>
-        <img class="close-header-popup" src="../../assets/img/xicon.svg" (click)="closeDialogAddTask()">
+        <img class="close-header-popup" src="assets/img/xicon.svg" (click)="closeDialogAddTask()">
     </div>
 
     <!--  taskForm form  -->
@@ -42,13 +42,13 @@
                                     <input class="color-picker" type="color" formControlName="color" value="#ff0000">
                                 </div>
                                 <img class="category-accept category-member-selection"
-                                    src="../../assets/img/icon_check_subtask.svg" alt="category-accept"
+                                    src="assets/img/icon_check_subtask.svg" alt="category-accept"
                                     (click)="createNewCategory()">
                                 <img class="category-accept category-member-selection"
-                                    src="../../assets/img/icon_check_subtask.svg" alt="category-accept"
+                                    src="assets/img/icon_check_subtask.svg" alt="category-accept"
                                     (click)="categorySelected()">
                                 <img class="category-cancel category-member-selection"
-                                    src="../../assets/img/icon_cancel_subtask.svg" alt="close-wrapper"
+                                    src="assets/img/icon_cancel_subtask.svg" alt="close-wrapper"
                                     (click)="closeCategoryMenu($event)">
                                 <div class="member-category-wrapper category-wrapper">
                                     <div class="each-member-category each-category" *ngFor="let category of categories"
@@ -63,7 +63,7 @@
                             </div>
                             <div class="sector-top" *ngIf="!categoryMenu" (click)="toggleCategoryMenu($event)">
                                 <p>{{ selectedCategory ? selectedCategory.name : 'Select your Category' }}</p>
-                                <img src="../../assets/img/arrow_down.png">
+                                <img src="assets/img/arrow_down.png">
                             </div>
                         </div>
                     </div>
@@ -80,10 +80,10 @@
                             <div class="postion-relative" *ngIf="assignedToMenu">
                                 <span>Select your members</span>
                                 <img class="category-accept category-member-selection"
-                                    src="../../assets/img/icon_check_subtask.svg" alt="category-accept"
+                                    src="assets/img/icon_check_subtask.svg" alt="category-accept"
                                     (click)="membersSelected()">
                                 <img class="category-cancel category-member-selection"
-                                    src="../../assets/img/icon_cancel_subtask.svg" alt="close-wrapper"
+                                    src="assets/img/icon_cancel_subtask.svg" alt="close-wrapper"
                                     (click)="cancelSelection()">
                                 <div class="member-category-wrapper">
                                     <div class="each-member-category" *ngFor="let contact of contacts"
@@ -94,7 +94,7 @@
                                 </div>
                             </div>
                             <div class="sector-top" *ngIf="!assignedToMenu" (click)="toggleAssignedToMenu($event)">
-                                <p>{{ feedbackMessageMembers }}</p><img src="../../assets/img/arrow_down.png">
+                                <p>{{ feedbackMessageMembers }}</p><img src="assets/img/arrow_down.png">
                             </div>
                         </div>
                     </div>
@@ -119,16 +119,16 @@
                             <label>Prio</label>
                             <div class="prio-btn-container">
                                 <button class="prio-btn" *ngIf="!prioUrgent" (click)="setPriority('urgent')">Urgent <img
-                                        src="../../assets/img/prio_urgent.png"></button>
+                                        src="assets/img/prio_urgent.png"></button>
                                 <img class="prioHoverImage" *ngIf="prioUrgent"
-                                    src="../../assets/img/prio_urgent_btn.png">
+                                    src="assets/img/prio_urgent_btn.png">
                                 <button class="prio-btn" *ngIf="!prioMedium" (click)="setPriority('medium')">Medium <img
-                                        src="../../assets/img/prio_medium.png"></button>
+                                        src="assets/img/prio_medium.png"></button>
                                 <img class="prioHoverImage" *ngIf="prioMedium"
-                                    src="../../assets/img/prio_medium_btn.png">
+                                    src="assets/img/prio_medium_btn.png">
                                 <button class="prio-btn" *ngIf="!prioLow" (click)="setPriority('low')">Low <img
-                                        src="../../assets/img/prio_low_white.png"></button>
-                                <img class="prioHoverImage" *ngIf="prioLow" src="../../assets/img/prio_low_btn.png">
+                                        src="assets/img/prio_low_white.png"></button>
+                                <img class="prioHoverImage" *ngIf="prioLow" src="assets/img/prio_low_btn.png">
                             </div>
                             <!-- Prio section -->
 
