@@ -26,7 +26,7 @@ export class AuthService {
    * @returns A Promise resolving with the server response.
    */
   signup(formData: SignUpData) {
-    const url = environment.baseUrl + '/signup/';
+    const url = environment.baseUrl + 'signup/';
     return lastValueFrom(this.http.post(url, formData));
   }
 
@@ -42,12 +42,12 @@ export class AuthService {
    * @returns A Promise that resolves with the server's response.
    */
   login(formData: LoginData) {
-    const url = environment.baseUrl + '/login/';
-    const csrfToken = this.getCookie('csrftoken');
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'X-CSRFToken': csrfToken || '' // Füge den CSRF-Token hinzu oder einen leeren String, falls kein Token vorhanden ist
-    });
+    const url = environment.baseUrl + 'login/';
+    // const csrfToken = this.getCookie('csrftoken');
+    // const headers = new HttpHeaders({
+    //   'Content-Type': 'application/json',
+    //   'X-CSRFToken': csrfToken || '' // Füge den CSRF-Token hinzu oder einen leeren String, falls kein Token vorhanden ist
+    // });
     return lastValueFrom(this.http.post(url, formData));
   }
 
@@ -79,7 +79,7 @@ export class AuthService {
    * @returns A Promise that resolves with the server's response to the logout request.
    */
   signout() {
-    const url = environment.baseUrl + '/logout/';
+    const url = environment.baseUrl + 'logout/';
     const headers = new HttpHeaders().set('Authorization', `Token ${localStorage.getItem('token')}`);
     return lastValueFrom(this.http.post(url, {}, { headers: headers }));
   }
@@ -129,7 +129,7 @@ export class AuthService {
    * @returns A Promise that resolves with the server's response to the guest login request.
    */
   guestLogin() {
-    const url = environment.baseUrl + '/guest-login/';
+    const url = environment.baseUrl + 'guest-login/';
     return lastValueFrom(this.http.post(url, {}));
   }
 

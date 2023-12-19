@@ -23,7 +23,7 @@ export class ContactService {
    * @returns A Promise resolving with the ContactData object of the newly created contact.
    */
   createContact(formData: ContactData) {
-    const url = environment.baseUrl + '/contacts/';
+    const url = environment.baseUrl + 'contacts/';
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
@@ -72,7 +72,7 @@ export class ContactService {
    * @returns A Promise resolving with an array of ContactData objects, representing all contacts.
    */
   loadAllContacts() {
-    const url = environment.baseUrl + '/contacts/';
+    const url = environment.baseUrl + 'contacts/';
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
