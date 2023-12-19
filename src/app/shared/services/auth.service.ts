@@ -43,7 +43,28 @@ export class AuthService {
    */
   login(formData: LoginData) {
     const url = environment.baseUrl + '/login/';
+    const csrfToken = this.getCookie('csrftoken');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken || '' // Füge den CSRF-Token hinzu oder einen leeren String, falls kein Token vorhanden ist
+    });
     return lastValueFrom(this.http.post(url, formData));
+  }
+
+
+  private getCookie(name: string): string | null {
+    let ca: Array<string> = document.cookie.split(';');
+    let caLen: number = ca.length;
+    let cookieName = `${name}=`;
+    let c: string;
+
+    for (let i = 0; i < caLen; i += 1) {
+      c = ca[i].replace(/^\s+/g, '');
+      if (c.indexOf(cookieName) == 0) {
+        return c.substring(cookieName.length, c.length);
+      }
+    }
+    return null;
   }
 
 
