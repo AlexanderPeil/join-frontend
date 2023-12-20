@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TaskService } from 'src/app/shared/services/task.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
@@ -7,6 +7,7 @@ import { CategoryService } from 'src/app/shared/services/category.service';
 import { ContactService } from 'src/app/shared/services/contact.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dialog-handle-categories.component';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dia
   templateUrl: './add-task.component.html',
   styleUrls: ['./add-task.component.scss']
 })
-export class AddTaskComponent implements OnInit {
+export class AddTaskComponent implements OnInit, OnDestroy {
   @ViewChild('handleCategoryMenu') handleCategoryMenu!: ElementRef;
   @ViewChild('handleASsignedToMenu') handleASsignedToMenu!: ElementRef;
 
@@ -39,19 +40,16 @@ export class AddTaskComponent implements OnInit {
   newSubtaskTitle = '';
   taskAddedInfo!: boolean;
   isButtonDisabled = false;
+  categorySubscritpion!: Subscription;
 
 
   constructor(
     private taskService: TaskService,
-    private categoryService: CategoryService,
+    private catService: CategoryService,
     private contService: ContactService,
     private formBuilder: FormBuilder,
     private router: Router,
     public dialog: MatDialog) {
-    this.categoryService.getCategoriesUpdateListener().subscribe(() => {
-      this.initAllCategories();
-      this.selectedCategory = null;
-    });
     this.minDate = new Date().toISOString().split('T')[0];
   }
 
@@ -62,6 +60,19 @@ export class AddTaskComponent implements OnInit {
     this.initAllCategories();
     this.initAllContacts();
     this.windowWidth = window.innerWidth
+    this.categoryUpdateListener();
+  }
+
+
+  /**
+   * Initializes a subscription to category updates using `catService`.
+   * On receiving updates, it refreshes the category list and resets the selected category.
+   */
+  categoryUpdateListener() {
+    this.categorySubscritpion = this.catService.getCategoriesUpdateListener().subscribe(() => {
+      this.initAllCategories();
+      this.selectedCategory = null;
+    });
   }
 
 
@@ -83,10 +94,9 @@ export class AddTaskComponent implements OnInit {
   initCategoryGroup() {
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
-      color: ['#000000', Validators.required]
-    });
+      color: ['#000000',]
+    })
   }
-
 
 
   /**
@@ -116,7 +126,7 @@ export class AddTaskComponent implements OnInit {
    */
   async initAllCategories() {
     try {
-      this.categories = await this.categoryService.loadAllCategories();
+      this.categories = await this.catService.loadAllCategories();
     } catch (err) {
       console.error('Could not load categories!', err);
     }
@@ -272,12 +282,14 @@ export class AddTaskComponent implements OnInit {
    * Sets a temporary flag 'categoryAlreadyExist' if the category already exists.
    */
   async createNewCategory() {
+    console.log('Try to create new category',this.categoryForm.value);
     if (this.categoryForm.valid) {
       const categoryData: CategoryData = this.categoryForm.value;
 
+
       if (!this.categoryExists(categoryData.name)) {
         try {
-          await this.categoryService.createCategory(categoryData);
+          await this.catService.createCategory(categoryData);
           this.selectedCategory = categoryData;
           await this.initAllCategories();
         } catch (err) {
@@ -289,27 +301,6 @@ export class AddTaskComponent implements OnInit {
           this.categoryAlreadyExist = false;
         }, 2500);
       }
-    }
-  }
-
-
-  /**
-   * Updates the selectedCategory based on the current values of the category name and color in the task form.
-   * Retrieves the category name and color from the form and sets selectedCategory if both are present.
-   * Logs an error to the console if either the category name or color is not selected.
-   */
-  categorySelected() {
-    let categoryValue = this.taskForm.get('category.name')?.value;
-    let colorValue = this.taskForm.get('category.color')?.value;
-
-    if (categoryValue && colorValue) {
-      let newCategory = {
-        name: categoryValue,
-        color: colorValue
-      };
-      this.selectedCategory = newCategory;
-    } else {
-      console.error('Please select a category and a color.');
     }
   }
 
@@ -470,6 +461,11 @@ export class AddTaskComponent implements OnInit {
     const subtask = this.taskForm.get('subtasks') as FormArray;
     this.submitted = false;
     subtask.clear();
+  }
+
+
+  ngOnDestroy() {
+    this.categorySubscritpion?.unsubscribe();
   }
 
 }

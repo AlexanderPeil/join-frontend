@@ -27,7 +27,7 @@ export class CategoryService {
    * @returns A Promise resolving with an array of CategoryData objects, including the newly created category.
    */
   createCategory(newCategory: CategoryData) {
-    const url = environment.baseUrl + 'categories/';
+    const url = environment.baseUrl + '/categories/';
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
@@ -46,7 +46,7 @@ export class CategoryService {
    * @returns A Promise resolving with an array of CategoryData objects, representing all available categories.
    */
   loadAllCategories() {
-    const url = environment.baseUrl + 'categories/';
+    const url = environment.baseUrl + '/categories/';
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });

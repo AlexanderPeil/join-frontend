@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
+import { Subject, lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ContactData } from '../task-interface';
@@ -8,6 +8,8 @@ import { ContactData } from '../task-interface';
   providedIn: 'root'
 })
 export class ContactService {
+  contactUpdated = new Subject<void>();
+
   constructor(private http: HttpClient) { }
 
 
@@ -23,7 +25,7 @@ export class ContactService {
    * @returns A Promise resolving with the ContactData object of the newly created contact.
    */
   createContact(formData: ContactData) {
-    const url = environment.baseUrl + 'contacts/';
+    const url = environment.baseUrl + '/contacts/';
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
@@ -72,7 +74,7 @@ export class ContactService {
    * @returns A Promise resolving with an array of ContactData objects, representing all contacts.
    */
   loadAllContacts() {
-    const url = environment.baseUrl + 'contacts/';
+    const url = environment.baseUrl + '/contacts/';
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
@@ -97,6 +99,34 @@ export class ContactService {
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
     return lastValueFrom(this.http.get<ContactData>(url, { headers }));
+  }
+
+
+
+  /**
+   * Notifies subscribers about an update of the contact.
+   *
+   * Triggers the `next` method on the `contactUpdated` Subject, signaling to all subscribers 
+   * that there has been an update in the contact list. This method is used after adding, 
+   * or updating contact data, to inform components or services that are observing 
+   * `contactUpdated`.
+   */
+  notifyContactUpdate() {
+    this.contactUpdated.next();
+  }
+
+
+  /**
+   * Provides an Observable for contact updates.
+   *
+   * Returns an Observable derived from the `contactUpdated` Subject, allowing components and 
+   * services to subscribe to updates o the contacts. This is for reacting to changes 
+   * additions or modifications in the contact data.
+   *
+   * @returns An Observable that subscribers can use to be notified of updates of the contacts.
+   */
+  getContactUpdateListener() {
+    return this.contactUpdated.asObservable();
   }
 
 }

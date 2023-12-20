@@ -1,18 +1,19 @@
-import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TaskService } from 'src/app/shared/services/task.service';
 import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { CategoryData, ContactData, SubtaskData, TaskData } from 'src/app/shared/task-interface';
+import { CategoryData, ContactData, TaskData } from 'src/app/shared/task-interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { ContactService } from 'src/app/shared/services/contact.service';
 import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dialog-handle-categories.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dialog-edit-task',
   templateUrl: './dialog-edit-task.component.html',
   styleUrls: ['./dialog-edit-task.component.scss']
 })
-export class DialogEditTaskComponent implements OnInit {
+export class DialogEditTaskComponent implements OnInit, OnDestroy {
   @ViewChild('handleCategoryMenu') handleCategoryMenu!: ElementRef;
   @ViewChild('handleASsignedToMenu') handleASsignedToMenu!: ElementRef;
   taskForm!: FormGroup;
@@ -32,6 +33,7 @@ export class DialogEditTaskComponent implements OnInit {
   feedbackMessageMembers = 'Select your Members';
   createdSubtasks: string[] = [];
   newSubtaskTitle = '';
+  categorySubscritpion!: Subscription;
 
 
   constructor(
@@ -51,17 +53,18 @@ export class DialogEditTaskComponent implements OnInit {
     this.loadTaskById();
     this.initAllCategories();
     this.initAllContacts();
-    this.taskUpdateListener();
+    this.categoryUpdateListener();
   }
 
 
   /**
-   * Sets up a subscription to listen for task updates.
-   * When a task update is received, it calls `loadtaskbyId()` to refresh the task data.
+   * Initializes a subscription to category updates using `catService`.
+   * On receiving updates, it refreshes the category list and resets the selected category.
    */
-  taskUpdateListener() {
-    this.taskService.getTaskUpdateListener().subscribe(() => {
-      this.loadTaskById();
+  categoryUpdateListener() {
+    this.categorySubscritpion = this.catService.getCategoriesUpdateListener().subscribe(() => {
+      this.initAllCategories();
+      // this.selectedCategory = null;
     });
   }
 
@@ -73,7 +76,7 @@ export class DialogEditTaskComponent implements OnInit {
   initCategoryGroup() {
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
-      color: ['', Validators.required]
+      color: ['#000000',]
     })
   }
 
@@ -326,30 +329,6 @@ export class DialogEditTaskComponent implements OnInit {
 
 
   /**
-   * Updates the selectedCategory based on the current values of the category name and color in the taskForm.
-   * Retrieves the category name and color from the form and sets selectedCategory if both are present.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message
-   * and logs the error in the console.
-   */
-  categorySelected() {
-    let categoryValue = this.taskForm.get('category.name')?.value;
-    let colorValue = this.taskForm.get('category.color')?.value;
-
-    if (categoryValue && colorValue) {
-      try {
-        let newCategory = {
-          name: categoryValue,
-          color: colorValue
-        };
-        this.selectedCategory = newCategory;
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  }
-
-
-  /**
    * Checks if a category with the given name already exists in the categories list.
    * Compares the provided name with existing category names in a case-insensitive manner.
    *
@@ -519,6 +498,11 @@ export class DialogEditTaskComponent implements OnInit {
    */
   onCancel() {
     this.dialogRef.close();
+  }
+
+
+  ngOnDestroy() {
+    this.categorySubscritpion?.unsubscribe();
   }
 
 }

@@ -44,9 +44,6 @@
                                 <img class="category-accept category-member-selection"
                                     src="assets/img/icon_check_subtask.svg" alt="category-accept"
                                     (click)="createNewCategory()">
-                                <img class="category-accept category-member-selection"
-                                    src="assets/img/icon_check_subtask.svg" alt="category-accept"
-                                    (click)="categorySelected()">
                                 <img class="category-cancel category-member-selection"
                                     src="assets/img/icon_cancel_subtask.svg" alt="close-wrapper"
                                     (click)="closeCategoryMenu($event)">
@@ -120,12 +117,10 @@
                             <div class="prio-btn-container">
                                 <button class="prio-btn" *ngIf="!prioUrgent" (click)="setPriority('urgent')">Urgent <img
                                         src="assets/img/prio_urgent.png"></button>
-                                <img class="prioHoverImage" *ngIf="prioUrgent"
-                                    src="assets/img/prio_urgent_btn.png">
+                                <img class="prioHoverImage" *ngIf="prioUrgent" src="assets/img/prio_urgent_btn.png">
                                 <button class="prio-btn" *ngIf="!prioMedium" (click)="setPriority('medium')">Medium <img
                                         src="assets/img/prio_medium.png"></button>
-                                <img class="prioHoverImage" *ngIf="prioMedium"
-                                    src="assets/img/prio_medium_btn.png">
+                                <img class="prioHoverImage" *ngIf="prioMedium" src="assets/img/prio_medium_btn.png">
                                 <button class="prio-btn" *ngIf="!prioLow" (click)="setPriority('low')">Low <img
                                         src="assets/img/prio_low_white.png"></button>
                                 <img class="prioHoverImage" *ngIf="prioLow" src="assets/img/prio_low_btn.png">

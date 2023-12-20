@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TaskService } from 'src/app/shared/services/task.service';
 import { FormGroup, FormBuilder, FormArray, Validators, FormControl } from '@angular/forms';
 import { CategoryData, ContactData, TaskData } from 'src/app/shared/task-interface';
@@ -7,6 +7,7 @@ import { ContactService } from 'src/app/shared/services/contact.service';
 import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dialog-handle-categories.component';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dia
   templateUrl: './dialog-add-task.component.html',
   styleUrls: ['./dialog-add-task.component.scss']
 })
-export class DialogAddTaskComponent implements OnInit {
+export class DialogAddTaskComponent implements OnInit, OnDestroy {
   @ViewChild('handleCategoryMenu') handleCategoryMenu!: ElementRef;
   @ViewChild('handleASsignedToMenu') handleASsignedToMenu!: ElementRef;
 
@@ -40,6 +41,7 @@ export class DialogAddTaskComponent implements OnInit {
   newSubtaskTitle = '';
   currentStatus!: string;
   currentContactId!: number;
+  categorySubscritpion!: Subscription;
 
 
   constructor(
@@ -72,7 +74,7 @@ export class DialogAddTaskComponent implements OnInit {
    * On receiving updates, it refreshes the category list and resets the selected category.
    */
   categoryUpdateListener() {
-    this.catService.getCategoriesUpdateListener().subscribe(() => {
+    this.categorySubscritpion = this.catService.getCategoriesUpdateListener().subscribe(() => {
       this.initAllCategories();
       this.selectedCategory = null;
     });
@@ -353,26 +355,6 @@ export class DialogAddTaskComponent implements OnInit {
 
 
   /**
-   * Updates the selectedCategory based on the current values of the category name and color in the task form.
-   * Retrieves the category name and color from the form and sets selectedCategory if both are present.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
-   */
-  categorySelected() {
-    let categoryValue = this.taskForm.get('category.name')?.value;
-    let colorValue = this.taskForm.get('category.color')?.value;
-
-    if (categoryValue && colorValue) {
-      let newCategory = {
-        name: categoryValue,
-        color: colorValue
-      };
-      this.selectedCategory = newCategory;
-    } else {
-    }
-  }
-
-
-  /**
    * Toggles the selection of a contact for assignment.
    * If the contact is already selected, it is removed from the 'assigned_to' FormArray.
    * If the contact is not selected, it is added to the 'assigned_to' FormArray.
@@ -516,6 +498,11 @@ export class DialogAddTaskComponent implements OnInit {
     const subtask = this.taskForm.get('subtasks') as FormArray;
     this.submitted = false;
     subtask.clear();
+  }
+
+
+  ngOnDestroy() {
+    this.categorySubscritpion?.unsubscribe();
   }
 
 }

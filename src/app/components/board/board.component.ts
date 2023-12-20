@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskMenuComponent } from '../task-menu/task-menu.component';
 import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.component';
+import { Subscription } from 'rxjs';
 
 type TaskStatus = 'todo' | 'awaiting_feedback' | 'in_progress' | 'done';
 
@@ -18,7 +19,7 @@ type TaskStatus = 'todo' | 'awaiting_feedback' | 'in_progress' | 'done';
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss']
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnDestroy {
   searchTerm: string = '';
   allTasks: TaskData[] = [];
   filteredTasks: TaskData[] | null = null;
@@ -30,20 +31,25 @@ export class BoardComponent implements OnInit {
   taskForm!: FormGroup;
   mousedownTime: number | undefined;
   subtaskCountsMap = new Map<number, { total: number, checked: number }>();
+  taskSubscription!: Subscription;
 
 
   constructor(
     private taskService: TaskService,
     private formBuilder: FormBuilder,
-    public dialog: MatDialog) {
-    this.taskService.getTaskUpdateListener().subscribe(() => {
-      this.initAllTasks();
-    });
-  }
+    public dialog: MatDialog) { }
 
 
   ngOnInit(): void {
     this.initAllTasks();
+    this.taskUpdateListener();
+  }
+
+
+  taskUpdateListener() {
+    this.taskSubscription = this.taskService.getTaskUpdateListener().subscribe(() => {
+      this.initAllTasks();
+    });
   }
 
 
@@ -331,6 +337,11 @@ export class BoardComponent implements OnInit {
     const checkedSubtasks = subtasks.filter(subtask => subtask.checked).length;
     const progress = (checkedSubtasks / totalSubtasks) * 100;
     return progress;
+  }
+
+
+  ngOnDestroy() {
+    this.taskSubscription?.unsubscribe();
   }
 
 }

@@ -1,21 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ContactData } from 'src/app/shared/task-interface';
 import { ContactService } from 'src/app/shared/services/contact.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogEditContactComponent } from '../dialog-edit-contact/dialog-edit-contact.component';
 import { DialogAddContactComponent } from '../dialog-add-contact/dialog-add-contact.component';
 import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss']
 })
-export class ContactsComponent implements OnInit {
+export class ContactsComponent implements OnInit, OnDestroy {
   contacts: ContactData[] = [];
   sortedContacts: { [key: string]: ContactData[] } = {};
   selectedContact: ContactData | null = null;
   uniqueLetters: string[] = [];
+  contactSubscritpion!: Subscription;
 
   constructor(
     private contactService: ContactService,
@@ -23,9 +25,16 @@ export class ContactsComponent implements OnInit {
   ) { }
 
 
-
   ngOnInit(): void {
     this.initAllContacts();
+    this.contactUpdateListener();
+  }
+
+
+  contactUpdateListener() {
+    this.contactSubscritpion = this.contactService.getContactUpdateListener().subscribe(() => {
+      this.initAllContacts();
+    })
   }
 
 
@@ -187,6 +196,11 @@ export class ContactsComponent implements OnInit {
    */
   deselectContact(): void {
     this.selectedContact = null;
+  }
+
+
+  ngOnDestroy() {
+    this.contactSubscritpion?.unsubscribe();
   }
 
 }

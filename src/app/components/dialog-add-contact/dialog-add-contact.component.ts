@@ -59,6 +59,7 @@ export class DialogAddContactComponent implements OnInit {
     try {
       const formData: ContactData = this.contactForm.value;
       await this.contactService.createContact(formData);
+      this.contactService.notifyContactUpdate();
       this.dialogRef.close(true);
     } catch (err) {
       console.error('Could not create contact!', err);

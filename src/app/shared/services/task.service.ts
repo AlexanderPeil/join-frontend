@@ -28,7 +28,7 @@ export class TaskService {
    * @returns A Promise resolving with the TaskData object of the newly created task.
    */
   createTask(taskData: TaskData) {
-    const url = environment.baseUrl + 'tasks/';
+    const url = environment.baseUrl + '/tasks/';
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
@@ -177,7 +177,7 @@ export class TaskService {
    * @returns A Promise resolving with an array of TaskData objects, representing all tasks.
    */
   getAllTasks() {
-    const url = environment.baseUrl + 'tasks/';
+    const url = environment.baseUrl + '/tasks/';
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });

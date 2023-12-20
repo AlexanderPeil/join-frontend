@@ -1,5 +1,4 @@
 export const environment = {
-    production: true,
-    baseUrl: 'https://Alex85.pythonanywhere.com/' 
-  };
-  
+  production: false,
+  baseUrl: 'http://localhost:8000'
+};

@@ -26,7 +26,7 @@ export class AuthService {
    * @returns A Promise resolving with the server response.
    */
   signup(formData: SignUpData) {
-    const url = environment.baseUrl + 'signup/';
+    const url = environment.baseUrl + '/signup/';
     return lastValueFrom(this.http.post(url, formData));
   }
 
@@ -42,29 +42,8 @@ export class AuthService {
    * @returns A Promise that resolves with the server's response.
    */
   login(formData: LoginData) {
-    const url = environment.baseUrl + 'login/';
-    // const csrfToken = this.getCookie('csrftoken');
-    // const headers = new HttpHeaders({
-    //   'Content-Type': 'application/json',
-    //   'X-CSRFToken': csrfToken || '' // Füge den CSRF-Token hinzu oder einen leeren String, falls kein Token vorhanden ist
-    // });
+    const url = environment.baseUrl + '/login/';
     return lastValueFrom(this.http.post(url, formData));
-  }
-
-
-  private getCookie(name: string): string | null {
-    let ca: Array<string> = document.cookie.split(';');
-    let caLen: number = ca.length;
-    let cookieName = `${name}=`;
-    let c: string;
-
-    for (let i = 0; i < caLen; i += 1) {
-      c = ca[i].replace(/^\s+/g, '');
-      if (c.indexOf(cookieName) == 0) {
-        return c.substring(cookieName.length, c.length);
-      }
-    }
-    return null;
   }
 
 
@@ -79,7 +58,7 @@ export class AuthService {
    * @returns A Promise that resolves with the server's response to the logout request.
    */
   signout() {
-    const url = environment.baseUrl + 'logout/';
+    const url = environment.baseUrl + '/logout/';
     const headers = new HttpHeaders().set('Authorization', `Token ${localStorage.getItem('token')}`);
     return lastValueFrom(this.http.post(url, {}, { headers: headers }));
   }
@@ -97,7 +76,7 @@ export class AuthService {
    * @returns A Promise of SignUpData type resolving with the user's data.
    */
   getLoggedUserData() {
-    const url = `${environment.baseUrl}/user-info/`;
+    const url = environment.baseUrl + '/user-info/';
     const headers = new HttpHeaders({
       'Authorization': `Token ${localStorage.getItem('token')}`
     });
@@ -129,7 +108,7 @@ export class AuthService {
    * @returns A Promise that resolves with the server's response to the guest login request.
    */
   guestLogin() {
-    const url = environment.baseUrl + 'guest-login/';
+    const url = environment.baseUrl + '/guest-login/';
     return lastValueFrom(this.http.post(url, {}));
   }
 
