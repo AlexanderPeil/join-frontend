@@ -22,14 +22,14 @@
 
             <!-- Firstname section -->
             <input class="input-name-img input-email-pw" type="text" placeholder="Firstname"
-                formControlName="firstname">
-            <div *ngIf="submitted && signUpForm.get('firstname')?.errors?.['required']" class="warning">
+                formControlName="first_name">
+            <div *ngIf="submitted && signUpForm.get('first_name')?.errors?.['required']" class="warning">
                 Please enter your firstname.
             </div>
 
             <!-- Lastname section -->
-            <input class="input-name-img input-email-pw" type="text" placeholder="Lastname" formControlName="lastname">
-            <div *ngIf="submitted && signUpForm.get('lastname')?.errors?.['required']" class="warning">
+            <input class="input-name-img input-email-pw" type="text" placeholder="Lastname" formControlName="last_name">
+            <div *ngIf="submitted && signUpForm.get('last_name')?.errors?.['required']" class="warning">
                 Please enter your lastname.
             </div>
 

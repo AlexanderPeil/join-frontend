@@ -40,8 +40,8 @@ export class SignUpComponent implements OnInit {
   initFormGroup() {
     this.signUpForm = this.formBuilder.group({
       username: ['', Validators.required],
-      firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
+      first_name  : ['', Validators.required],
+      last_name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       privacyPolicy: [false, Validators.requiredTrue],
@@ -94,7 +94,7 @@ export class SignUpComponent implements OnInit {
     try {
       const formData = this.signUpForm.value;
       let resp: any = await this.authService.signup(formData);
-      localStorage.setItem('token', resp['token']);
+      localStorage.setItem('token', resp.token);
       this.signedUpInfo = true;
       this.isButtonDisabled = true;
       setTimeout(() => {
