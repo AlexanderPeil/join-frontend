@@ -25,7 +25,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { TaskMenuComponent } from './components/task-menu/task-menu.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { DialogHandleCategoriesComponent } from './components/dialog-handle-categories/dialog-handle-categories.component';
 import { DialogErrorComponent } from './components/dialog-error/dialog-error.component';
 import { HttpErrorInterceptor } from './shared/http-error.interceptor';
