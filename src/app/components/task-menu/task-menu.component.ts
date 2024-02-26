@@ -222,6 +222,7 @@ export class TaskMenuComponent implements OnInit {
       try {
         const updatedData = { title: title };
         await this.taskService.updateSubtask(this.data.taskId, subtaskId, updatedData);
+        this.taskService.notifyTaskUpdate();
       } catch (err) {
         console.error(err);
       }

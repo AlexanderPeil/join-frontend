@@ -98,7 +98,7 @@ export class SignUpComponent implements OnInit {
       this.signedUpInfo = true;
       this.isButtonDisabled = true;
       setTimeout(() => {
-        this.router.navigateByUrl('/summary');
+        this.router.navigateByUrl('/login');
       }, 3000);
     } catch (err) {
       this.handlySignUpError();

@@ -59,8 +59,7 @@ export class AuthService {
    */
   signout() {
     const url = environment.baseUrl + '/logout/';
-    const headers = new HttpHeaders().set('Authorization', `Token ${localStorage.getItem('token')}`);
-    return lastValueFrom(this.http.post(url, {}, { headers: headers }));
+    return lastValueFrom(this.http.post(url, {}));
   }
 
 
@@ -77,10 +76,7 @@ export class AuthService {
    */
   getLoggedUserData() {
     const url = environment.baseUrl + '/user-info/';
-    const headers = new HttpHeaders({
-      'Authorization': `Token ${localStorage.getItem('token')}`
-    });
-    return lastValueFrom(this.http.get<SignUpData>(url, { headers: headers }));
+    return lastValueFrom(this.http.get<SignUpData>(url));
   }
 
 
@@ -110,6 +106,44 @@ export class AuthService {
   guestLogin() {
     const url = environment.baseUrl + '/guest-login/';
     return lastValueFrom(this.http.post(url, {}));
+  }
+
+
+  /**
+     Initiates a password reset for a user by their email.
+   * Sends a POST request to the backend with the user's email to start the password reset process. 
+   * The backend should then send a reset token to the provided email if it exists in the database.
+   * @param email The email address of the user requesting a password reset.
+   * @returns A promise that resolves with the server's response to the password reset request.
+    */
+  forgotPassword(email: string) {
+    const url = environment.baseUrl + '/api/password_reset/';
+    return lastValueFrom(this.http.post(url, { email: email }));
+  }
+
+  /**
+    Sends a POST request to the backend with the reset token and new password to finalize the password reset. 
+   * The backend verifies the token's validity and, if successful, updates the user's password with the provided new password.
+   * @param token The password reset token provided to the user via email or other means.
+   * @param password The new password chosen by the user.
+   * @returns A promise that resolves with the backend's response, typically indicating the success or failure of the password update.
+   */
+  resetPassword(token: string, password: string) {
+    const url = environment.baseUrl + '/api/password_reset/confirm/';
+    return lastValueFrom(this.http.post(url, { token: token, password: password }));
+  }
+
+
+  /**
+     Sends a POST request to the backend with the reset token to validate its authenticity and validity. 
+   * This is typically used before allowing the user to proceed with setting a new password.
+   *
+   * @param token The password reset token to be validated.
+   * @returns A promise that resolves with the server's response, indicating whether the token is valid.
+  */
+  validateToken(token: string) {
+    const url = environment.baseUrl + '/api/password_reset/validate_token/';
+    return lastValueFrom(this.http.post(url, { token: token }));
   }
 
 }

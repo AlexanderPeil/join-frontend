@@ -28,7 +28,9 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
 import { MatMenuModule } from '@angular/material/menu';
 import { DialogHandleCategoriesComponent } from './components/dialog-handle-categories/dialog-handle-categories.component';
 import { DialogErrorComponent } from './components/dialog-error/dialog-error.component';
-import { HttpErrorInterceptor } from './shared/http-error.interceptor';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { AuthInterceptorService } from './shared/services/auth-interceptor.service';
 
 
 
@@ -53,6 +55,8 @@ import { HttpErrorInterceptor } from './shared/http-error.interceptor';
     PrivacyPolicyComponent,
     DialogHandleCategoriesComponent,
     DialogErrorComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,11 +74,11 @@ import { HttpErrorInterceptor } from './shared/http-error.interceptor';
   ],
   providers: [
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpErrorInterceptor,
-      multi: true
-    },
-  ],
+     provide: HTTP_INTERCEPTORS,
+     useClass: AuthInterceptorService,
+     multi: true
+    }
+ ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
