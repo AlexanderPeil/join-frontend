@@ -8,6 +8,7 @@
             <span>Not a Join user?</span>
             <button routerLink="/signup">Sign up</button>
         </div>
+
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <span class="heading-span">Log in</span>
             <span class="msg-box" [class.d-none]="!isEmailPasswordInvalid">Invalid email or password!</span>
@@ -28,9 +29,12 @@
 
             <div class="login-buttons">
                 <button [disabled]="!loginForm.valid" type="submit" class="login-btn login-btn-mob">Login</button>
-                <button type="button" class="guest-login-btn login-btn-mob"
-                    (click)="onGuestLogin($event)">Guest Login</button>
+                <button type="button" class="guest-login-btn login-btn-mob" (click)="openDialog($event)">Guest
+                    Login</button>
+                <!-- <button type="button" class="guest-login-btn login-btn-mob"
+                    (click)="onGuestLogin($event)">Guest Login</button> -->
             </div>
         </form>
+
     </div>
 </div>

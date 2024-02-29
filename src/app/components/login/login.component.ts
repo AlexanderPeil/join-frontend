@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { LoginData } from 'src/app/shared/user-interface';
+import { DialogGuestLoginComponent } from '../dialog-guest-login/dialog-guest-login.component';
 
 
 @Component({
@@ -19,7 +21,8 @@ export class LoginComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public dialog: MatDialog
   ) { }
 
 
@@ -124,22 +127,10 @@ export class LoginComponent implements OnInit {
   }
 
 
-  /**
-   * Handles the guest login process.
-   * Prevents event propagation, then attempts a guest login using the authService.
-   * On successful login, saves the received token to local storage and navigates to the summary page.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
-   *
-   * @param {MouseEvent} event - The mouse event triggering the guest login.
-   */
-  async onGuestLogin(event: MouseEvent) {
+  openDialog(event: MouseEvent): void {
     event.stopPropagation();
-    try {
-      const resp: any = await this.authService.guestLogin();
-      localStorage.setItem('token', resp['token']);
-      this.router.navigateByUrl('/summary');
-    } catch (err) {
-    }
+    const dialogRef = this.dialog.open(DialogGuestLoginComponent, { 
+    });
   }
 
 

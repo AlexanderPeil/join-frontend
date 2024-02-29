@@ -1,0 +1,67 @@
+@import "../../shared/variables.scss";
+
+.mainContent {
+    padding: 20px;
+    max-width: 900px;
+}
+
+.content-top {
+    @include space_between_center;
+}
+
+.img-container {
+    @include button_styles;
+    @include flex_center;
+    @include width_height(30px, 30px);
+    border-radius: 5px;
+
+    &:hover {
+        background: $main_color_bright;
+    }
+
+    img {
+        @include width_height(18px, 18px);
+        object-fit: contain;
+    }
+}
+
+button {
+    @include font(21px, 700, 25.2px);
+    border-radius: 8px;
+    padding: 4px 0;
+    cursor: pointer;
+}
+
+.guest-login-btn {
+    @include width_height(150px, 51px);
+    background-color: white;
+    color: $main_color_dark;
+    border: 1px solid black;
+
+    &:hover {
+        color: $main_color_bright;
+        border-color: $main_color_bright;
+        transition: all 125ms ease-in-out;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+}
+
+.mdc-dialog__actions {
+    padding: 20px !important;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+}
+
+
+@media(max-width: 700px) {
+    .login-btn-mob {
+        width: 180px !important;
+    }
+
+    .mainContent {
+        padding: unset;
+    }
+}

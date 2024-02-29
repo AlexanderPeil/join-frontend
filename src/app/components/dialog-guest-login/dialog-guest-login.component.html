@@ -1,0 +1,21 @@
+<div class="mainContent">
+    <div mat-dialog-content>
+        <div class="content-top">
+            <h1>Herzlich Willkommen!</h1>
+            <div class="img-container" (click)="closeDialog()">
+                <img src="assets/img/iconoir_cancel.png" alt="">
+            </div>
+        </div>
+        <p>
+            Vielen Dank, dass Sie sich die Zeit nehmen, meine App zu erkunden. Um Ihnen ein vollständiges Erlebnis zu
+            bieten, habe ich alle Funktionen der App auch für Gastnutzer freigeschaltet. So können Sie jede Facette
+            meiner Anwendung in Ruhe ausprobieren und kennenlernen - ohne Einschränkungen.
+        </p>
+    </div>
+    <div class="buttonContainer">
+        <div mat-dialog-actions>
+            <button mat-button mat-dialog-close class="guest-login-btn login-btn-mob"
+                (click)="onGuestLogin()">Login</button>
+        </div>
+    </div>
+</div>

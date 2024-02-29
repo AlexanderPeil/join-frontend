@@ -31,6 +31,7 @@ import { DialogErrorComponent } from './components/dialog-error/dialog-error.com
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { AuthInterceptorService } from './shared/services/auth-interceptor.service';
+import { DialogGuestLoginComponent } from './components/dialog-guest-login/dialog-guest-login.component';
 
 
 
@@ -57,6 +58,7 @@ import { AuthInterceptorService } from './shared/services/auth-interceptor.servi
     DialogErrorComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    DialogGuestLoginComponent,
   ],
   imports: [
     BrowserModule,
