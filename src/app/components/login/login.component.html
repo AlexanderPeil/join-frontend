@@ -1,15 +1,18 @@
-<img class="join-logo logo-animation" src="assets/img/join_logo.png" alt="join-logo">
+<img class="join-logo logo-animation logoDesktop" src="assets/img/join_logo.png" alt="join-logo">
 <img class="d-none" [class.animation-stop]="animationStopped" id="animation-mobile"
     src="assets/img/animation_mobile.png" alt="animation mobile">
 
 <div class="start-bg">
+
     <div class="content">
-        <div class="sign-up">
+
+        <div class="sign-up signUpDesktop">
             <span>Not a Join user?</span>
             <button routerLink="/signup">Sign up</button>
         </div>
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <img class="joinLogoMobile" src="assets/img/join_logo.png" alt="join-logo">
             <span class="heading-span">Log in</span>
             <span class="msg-box" [class.d-none]="!isEmailPasswordInvalid">Invalid email or password!</span>
             <img src="assets/img/underline.png" alt="underline" class="underline">
@@ -31,10 +34,15 @@
                 <button [disabled]="!loginForm.valid" type="submit" class="login-btn login-btn-mob">Login</button>
                 <button type="button" class="guest-login-btn login-btn-mob" (click)="openDialog($event)">Guest
                     Login</button>
-                <!-- <button type="button" class="guest-login-btn login-btn-mob"
-                    (click)="onGuestLogin($event)">Guest Login</button> -->
             </div>
         </form>
 
     </div>
+    
+    <div class="sign-up signupMobile d-none">
+        <span>Not a Join user?</span>
+        <button routerLink="/signup">Sign up</button>
+    </div>
+
+
 </div>

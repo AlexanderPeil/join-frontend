@@ -172,10 +172,6 @@ form {
 }
 
 @media (max-width: 700px) {
-    .content {
-        margin-top: 15%;
-    }
-
     .join-logo {
         top: 37px;
         width: 70px;
@@ -203,7 +199,7 @@ form {
     }
 
     form {
-        width: 100%;
+        width: 320px;
     }
 
     .back-img-sign-up-mobile {

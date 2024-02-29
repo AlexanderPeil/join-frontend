@@ -1,4 +1,4 @@
-@import '../../shared/variables.scss';
+@import "../../shared/variables.scss";
 
 .d-none {
     display: none;
@@ -6,7 +6,7 @@
 
 .content {
     @include flex_column_center;
-    @include width_height(100%, 100vh);
+    width: 100%;
 }
 
 .join-logo {
@@ -18,9 +18,11 @@
 }
 
 .start-bg {
+    @include flex_column_center;
     z-index: 10;
     animation: animation-bg 1s ease-in-out;
     animation-direction: normal;
+    height: 100vh;
 
     @keyframes animation-bg {
         0% {
@@ -100,6 +102,7 @@
 
 form {
     @include column_center;
+    position: relative;
     gap: 35px;
     width: 652px;
     padding-top: 70px;
@@ -228,6 +231,11 @@ form {
 }
 
 @media (max-width: 700px) {
+
+    .logoDesktop {
+        display: none;
+    }
+
     .join-logo {
         top: 37px;
         width: 70px;
@@ -245,7 +253,6 @@ form {
 
     .login-bottom {
         flex-direction: column-reverse;
-        margin-right: 110px;
     }
 
     .login-bottom span {
@@ -322,23 +329,39 @@ form {
         display: none !important;
     }
 
-    @media (max-width: 400px) {
-        .join-logo {
-            @include width_height(40px, 104px);
-            top: 10px;
-            left: 41px;
-        }
+    .signUpDesktop {
+        display: none;
+    }
 
-        .content {
-            height: 90vh;
-        }
+    .signupMobile {
+        display: flex;
+        position: unset;
+    }
+
+    .start-bg {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .joinLogoMobile {
+        position: absolute;
+        width: 40px;
+        left: 20px;
+        top: 34px;
     }
 }
 
-@media(max-height: 600px) {
-    .content {
-        height: unset;
+@media (max-width: 400px) {
+    .join-logo {
+        @include width_height(40px, 104px);
+        top: 10px;
+        left: 41px;
     }
+}
+
+@media (max-height: 600px) {
 
     .join-logo {
         top: 10px;
