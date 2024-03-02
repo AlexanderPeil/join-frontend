@@ -7,6 +7,7 @@ import { CategoryService } from 'src/app/shared/services/category.service';
 import { ContactService } from 'src/app/shared/services/contact.service';
 import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dialog-handle-categories.component';
 import { Subscription } from 'rxjs';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-dialog-edit-task',
@@ -115,6 +116,7 @@ export class DialogEditTaskComponent implements OnInit, OnDestroy {
       this.updateAssignedTo(task.assigned_to);
     } catch (err) {
       console.error('Could not load task!', err);
+      this.handleError();
     }
   }
 
@@ -196,6 +198,7 @@ export class DialogEditTaskComponent implements OnInit, OnDestroy {
       this.categories = await this.catService.loadAllCategories();
     } catch (err) {
       console.error('Could not load categories!', err);
+      this.handleError();
     }
   }
 
@@ -211,6 +214,7 @@ export class DialogEditTaskComponent implements OnInit, OnDestroy {
       this.contacts = await this.contService.loadAllContacts();
     } catch (err) {
       console.error('Could not load contacts!', err);
+      this.handleError();
     }
   }
 
@@ -243,7 +247,7 @@ export class DialogEditTaskComponent implements OnInit, OnDestroy {
       subtask.push(this.formBuilder.group({
         title: [subtaskTitle],
         checked: [false]
-      }));      
+      }));
     }
   }
 
@@ -356,7 +360,7 @@ export class DialogEditTaskComponent implements OnInit, OnDestroy {
           this.selectedCategory = categoryData;
           await this.initAllCategories();
         } catch (err) {
-          console.error('Could not create category!', err);
+          this.handleError();
         }
       } else {
         this.categoryAlreadyExist = true;
@@ -478,6 +482,7 @@ export class DialogEditTaskComponent implements OnInit, OnDestroy {
         this.taskService.notifyTaskUpdate();
       } catch (err) {
         console.error('Could not create category!', err);
+        this.handleError();
       }
     }
   }
@@ -498,6 +503,16 @@ export class DialogEditTaskComponent implements OnInit, OnDestroy {
    */
   onCancel() {
     this.dialogRef.close();
+  }
+
+
+  /**
+  * Opens a dialog using DialogErrorComponent to show error messages in a unified manner.
+  * @returns {void} Nothing is returned by this method.
+   */
+  handleError(): void {
+    this.dialog.open(DialogErrorComponent, {
+    });
   }
 
 

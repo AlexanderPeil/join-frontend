@@ -37,5 +37,4 @@ export class DialogGuestLoginComponent {
     this.dialogRef.close();
   }
 
-
 }

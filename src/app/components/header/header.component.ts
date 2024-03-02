@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -13,7 +15,8 @@ export class HeaderComponent {
 
   constructor(
     public authService: AuthService,
-    private router: Router) { }
+    private router: Router,
+    public dialog: MatDialog) { }
 
 
   /**
@@ -35,6 +38,7 @@ export class HeaderComponent {
       localStorage.removeItem('token');
       this.router.navigateByUrl('/login');
     } catch (err) {
+      this.handleError();
     }
   }
 
@@ -46,6 +50,16 @@ export class HeaderComponent {
    */
   stopPropagation(event: Event) {
     event.stopPropagation();
+  }
+
+
+  /**
+  * Opens a dialog using DialogErrorComponent to show error messages in a unified manner.
+  * @returns {void} Nothing is returned by this method.
+   */
+  handleError(): void {
+    this.dialog.open(DialogErrorComponent, {
+    });
   }
 
 }

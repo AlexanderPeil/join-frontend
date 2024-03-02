@@ -7,7 +7,8 @@ import { CategoryService } from 'src/app/shared/services/category.service';
 import { ContactService } from 'src/app/shared/services/contact.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogHandleCategoriesComponent } from '../dialog-handle-categories/dialog-handle-categories.component';
-import { Subscription } from 'rxjs';
+import { Subscription, timeout } from 'rxjs';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
 
 
 @Component({
@@ -127,8 +128,8 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   async initAllCategories() {
     try {
       this.categories = await this.catService.loadAllCategories();
-    } catch (err) {
-      console.error('Could not load categories!', err);
+    } catch (err: any) {
+      this.handleError();
     }
   }
 
@@ -143,7 +144,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     try {
       this.contacts = await this.contService.loadAllContacts();
     } catch (err) {
-      console.error('Could not load contacts!', err);
+      this.handleError();
     }
   }
 
@@ -282,18 +283,15 @@ export class AddTaskComponent implements OnInit, OnDestroy {
    * Sets a temporary flag 'categoryAlreadyExist' if the category already exists.
    */
   async createNewCategory() {
-    console.log('Try to create new category',this.categoryForm.value);
     if (this.categoryForm.valid) {
       const categoryData: CategoryData = this.categoryForm.value;
-
-
       if (!this.categoryExists(categoryData.name)) {
         try {
           await this.catService.createCategory(categoryData);
           this.selectedCategory = categoryData;
           await this.initAllCategories();
         } catch (err) {
-          console.error('Could not create category!', err);
+          this.handleError();
         }
       } else {
         this.categoryAlreadyExist = true;
@@ -418,7 +416,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       await this.taskService.createTask(formData);
       this.handleTaskSuccess();
     } catch (err) {
-      console.error('Could not create taks!', err);
+      this.handleError();
     }
   }
 
@@ -461,6 +459,16 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     const subtask = this.taskForm.get('subtasks') as FormArray;
     this.submitted = false;
     subtask.clear();
+  }
+
+
+  /**
+  * Opens a dialog using DialogErrorComponent to show error messages in a unified manner.
+  * @returns {void} Nothing is returned by this method.
+   */
+  handleError(): void {
+    this.dialog.open(DialogErrorComponent, {
+    });
   }
 
 

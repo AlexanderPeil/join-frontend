@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { CategoryData } from 'src/app/shared/task-interface';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-dialog-handle-categories',
@@ -15,7 +16,8 @@ export class DialogHandleCategoriesComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<DialogHandleCategoriesComponent>,
-    private catService: CategoryService
+    private catService: CategoryService,
+    public dialog: MatDialog
   ) { }
 
 
@@ -37,7 +39,7 @@ export class DialogHandleCategoriesComponent implements OnInit {
       this.category = category;
     } catch (err) {
       console.error('Could not load category!', err);
-      
+      this.handleError();
     }
   }
 
@@ -59,6 +61,7 @@ export class DialogHandleCategoriesComponent implements OnInit {
         this.dialogRef.close();
       } catch (err) {
         console.error('Could not update category!', err);
+        this.handleError();
       }
     }
   }
@@ -69,6 +72,16 @@ export class DialogHandleCategoriesComponent implements OnInit {
    */
   closeMenu() {
     this.dialogRef.close();
+  }
+
+
+  /**
+  * Opens a dialog using DialogErrorComponent to show error messages in a unified manner.
+  * @returns {void} Nothing is returned by this method.
+   */
+  handleError(): void {
+    this.dialog.open(DialogErrorComponent, {
+    });
   }
 
 }

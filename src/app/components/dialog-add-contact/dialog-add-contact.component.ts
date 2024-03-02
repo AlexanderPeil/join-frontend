@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ContactService } from 'src/app/shared/services/contact.service';
 import { ContactData } from 'src/app/shared/task-interface';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-dialog-add-contact',
@@ -17,7 +18,8 @@ export class DialogAddContactComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private contactService: ContactService,
-    private dialogRef: MatDialogRef<DialogAddContactComponent>) { }
+    private dialogRef: MatDialogRef<DialogAddContactComponent>,
+    public dialog: MatDialog) { }
 
 
   ngOnInit(): void {
@@ -62,8 +64,18 @@ export class DialogAddContactComponent implements OnInit {
       this.contactService.notifyContactUpdate();
       this.dialogRef.close(true);
     } catch (err) {
-      console.error('Could not create contact!', err);
+      this.handleError();
     }
+  }
+
+
+  /**
+  * Opens a dialog using DialogErrorComponent to show error messages in a unified manner.
+  * @returns {void} Nothing is returned by this method.
+   */
+  handleError(): void {
+    this.dialog.open(DialogErrorComponent, {
+    });
   }
 
 

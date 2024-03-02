@@ -6,6 +6,7 @@ import { DialogEditContactComponent } from '../dialog-edit-contact/dialog-edit-c
 import { DialogAddContactComponent } from '../dialog-add-contact/dialog-add-contact.component';
 import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.component';
 import { Subscription } from 'rxjs';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-contacts',
@@ -51,6 +52,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       this.sortAndGroupContacts(this.contacts);
     } catch (err) {
       console.error('Could not load contacts!', err);
+      this.handleError();
     }
   }
 
@@ -173,6 +175,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
         this.selectedContact = null;
       } catch (err) {
         console.error('Could not deöete contact!', err);
+        this.handleError();
       }
     }
   }
@@ -196,6 +199,16 @@ export class ContactsComponent implements OnInit, OnDestroy {
    */
   deselectContact(): void {
     this.selectedContact = null;
+  }
+
+
+  /**
+  * Opens a dialog using DialogErrorComponent to show error messages in a unified manner.
+  * @returns {void} Nothing is returned by this method.
+   */
+  handleError(): void {
+    this.dialog.open(DialogErrorComponent, {
+    });
   }
 
 

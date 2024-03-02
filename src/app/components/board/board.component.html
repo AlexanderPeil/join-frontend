@@ -3,11 +3,16 @@
 
 <div class="board-section">
     <div class="board-header">
+
+        <!-- Headline for mobile version -->
         <div class="headline-mobile d-none">Kanban Project Management Tool</div>
+
         <div class="board-add-task width">
             <h2>Board</h2>
             <button class="add-task-btn-mobile d-none" (click)="openDialogAddTask('todo')">+</button>
         </div>
+
+        <!-- Search section for the board -->
         <div class="search-container">
             <div class="search-box">
                 <input #searchInput type="text" placeholder="Find Task" [(ngModel)]="searchTerm"
@@ -19,22 +24,25 @@
         </div>
     </div>
 
+    <!-- Main content of the board -->
     <div cdkDropListGroup>
         <div class="board-content">
             <div class="statusContainer">
                 <div class="status">
                     <h2>To do</h2>
-                    <button class="add-task" (click)="openDialogAddTask('todo')" title="Add task with status todo">+</button>
+                    <button class="add-task" (click)="openDialogAddTask('todo')"
+                        title="Add task with status todo">+</button>
                 </div>
 
                 <!-- Current status -->
                 <div cdkDropList id="todoList" [cdkDropListData]="todo"
-                    [cdkDropListConnectedTo]="['inProgressList', 'awaitingFeedbackList', 'doneList']"
-                    class="statusList" (cdkDropListDropped)="drop($event)">
+                    [cdkDropListConnectedTo]="['inProgressList', 'awaitingFeedbackList', 'doneList']" class="statusList"
+                    (cdkDropListDropped)="drop($event)">
 
                     <!-- Loop over all tasks in todo -->
                     <div class="satusBox" *ngFor="let task of todo" (mousedown)="onMousedown($event)"
-                        (mouseup)="onMouseup($event, task.id)" cdkDrag title="Click to open task-detail-menu. Hold to drag&drop the task to another status">
+                        (mouseup)="onMouseup($event, task.id)" cdkDrag
+                        title="Click to open task-detail-menu. Hold to drag&drop the task to another status">
                         <div class="card-head" [style.background-color]="task.category.color">{{ task.category.name }}
                         </div>
 
@@ -71,7 +79,8 @@
             <div class="statusContainer">
                 <div class="status">
                     <h2>In Progress</h2>
-                    <button class="add-task" (click)="openDialogAddTask('in_progress')" title="Add task with status in-progress">+</button>
+                    <button class="add-task" (click)="openDialogAddTask('in_progress')"
+                        title="Add task with status in-progress">+</button>
                 </div>
 
                 <!-- Current status -->
@@ -81,7 +90,8 @@
 
                     <!-- Loop over all tasks in todo -->
                     <div class="satusBox" *ngFor="let task of inProgress" (mousedown)="onMousedown($event)"
-                        (mouseup)="onMouseup($event, task.id)" cdkDrag title="Click to open task-detail-menu. Hold to drag&drop the task to another status">
+                        (mouseup)="onMouseup($event, task.id)" cdkDrag
+                        title="Click to open task-detail-menu. Hold to drag&drop the task to another status">
                         <div class="card-head" [style.background-color]="task.category.color">{{ task.category.name }}
                         </div>
 
@@ -117,7 +127,8 @@
             <div class="statusContainer">
                 <div class="status">
                     <h2>Awaitng Feedback</h2>
-                    <button class="add-task" (click)="openDialogAddTask('awaiting_feedback')" title="Add task with status awaiting feedback">+</button>
+                    <button class="add-task" (click)="openDialogAddTask('awaiting_feedback')"
+                        title="Add task with status awaiting feedback">+</button>
                 </div>
 
                 <!-- Current status -->
@@ -127,7 +138,8 @@
 
                     <!-- Loop over all tasks in todo -->
                     <div class="satusBox" *ngFor="let task of awaitingFeedback" (mousedown)="onMousedown($event)"
-                        (mouseup)="onMouseup($event, task.id)" cdkDrag title="Click to open task-detail-menu. Hold to drag&drop the task to another status">
+                        (mouseup)="onMouseup($event, task.id)" cdkDrag
+                        title="Click to open task-detail-menu. Hold to drag&drop the task to another status">
                         <div class="card-head" [style.background-color]="task.category.color">{{ task.category.name }}
                         </div>
 
@@ -163,17 +175,19 @@
             <div class="statusContainer">
                 <div class="status">
                     <h2>Done</h2>
-                    <button class="add-task" (click)="openDialogAddTask('done')" title="Add task with status done">+</button>
+                    <button class="add-task" (click)="openDialogAddTask('done')"
+                        title="Add task with status done">+</button>
                 </div>
 
                 <!-- Current status -->
                 <div cdkDropList id="doneList" [cdkDropListData]="done"
-                    [cdkDropListConnectedTo]="['todoList', 'inProgressList', 'awaitingFeedbackList']"
-                    class="statusList" (cdkDropListDropped)="drop($event)">
+                    [cdkDropListConnectedTo]="['todoList', 'inProgressList', 'awaitingFeedbackList']" class="statusList"
+                    (cdkDropListDropped)="drop($event)">
 
                     <!-- Loop over all tasks in todo -->
                     <div class="satusBox marginBottom" *ngFor="let task of done" (mousedown)="onMousedown($event)"
-                        (mouseup)="onMouseup($event, task.id)" cdkDrag title="Click to open task-detail-menu. Hold to drag&drop the task to another status">
+                        (mouseup)="onMouseup($event, task.id)" cdkDrag
+                        title="Click to open task-detail-menu. Hold to drag&drop the task to another status">
                         <div class="card-head" [style.background-color]="task.category.color">{{ task.category.name }}
                         </div>
 

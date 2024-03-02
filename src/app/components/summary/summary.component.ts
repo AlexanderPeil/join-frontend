@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { TaskService } from 'src/app/shared/services/task.service';
 import { TaskData } from 'src/app/shared/task-interface';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -20,7 +22,8 @@ export class SummaryComponent implements OnInit {
 
   constructor
     (private authService: AuthService,
-      private taskService: TaskService) { }
+      private taskService: TaskService,
+      public dialog: MatDialog) { }
 
 
   ngOnInit(): void {
@@ -44,6 +47,7 @@ export class SummaryComponent implements OnInit {
       this.tasks = await this.taskService.getAllTasks();
     } catch (err) {
       console.error('Could not load tasks!', err);
+      this.handleError();
     }
   }
 
@@ -73,6 +77,7 @@ export class SummaryComponent implements OnInit {
       }
     } catch (error) {
       console.error('Error fetching user info', error);
+      this.handleError();
     }
   }
 
@@ -225,5 +230,15 @@ export class SummaryComponent implements OnInit {
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
     return d.toLocaleDateString(undefined, options);
   }
+
+
+    /**
+  * Opens a dialog using DialogErrorComponent to show error messages in a unified manner.
+  * @returns {void} Nothing is returned by this method.
+   */
+    handleError(): void {
+      this.dialog.open(DialogErrorComponent, {
+      });
+    }
 
 }

@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { TaskService } from 'src/app/shared/services/task.service';
 import { TaskData } from 'src/app/shared/task-interface';
 import { DialogEditTaskComponent } from '../dialog-edit-task/dialog-edit-task.component';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-task-menu',
@@ -78,6 +79,7 @@ export class TaskMenuComponent implements OnInit {
       });
     } catch (err) {
       console.error('Could not load task!', err);
+      this.handleError();
     }
   }
 
@@ -98,6 +100,7 @@ export class TaskMenuComponent implements OnInit {
         this.dialogRef.close(true);
       } catch (err) {
         console.error(err);
+        this.handleError();
       }
     }
   }
@@ -141,6 +144,7 @@ export class TaskMenuComponent implements OnInit {
         this.taskService.notifyTaskUpdate();
       } catch (err) {
         console.error('Error updating task status:', err);
+        this.handleError();
       }
     }
   }
@@ -203,6 +207,7 @@ export class TaskMenuComponent implements OnInit {
         this.taskService.notifyTaskUpdate();
       } catch (err) {
         console.error(err);
+        this.handleError();
       }
     }
   }
@@ -225,6 +230,7 @@ export class TaskMenuComponent implements OnInit {
         this.taskService.notifyTaskUpdate();
       } catch (err) {
         console.error(err);
+        this.handleError();
       }
     }
   }
@@ -246,8 +252,19 @@ export class TaskMenuComponent implements OnInit {
         this.taskService.notifyTaskUpdate();
       } catch (err) {
         console.error(err);
+        this.handleError();
       }
     }
+  }
+
+
+  /**
+  * Opens a dialog using DialogErrorComponent to show error messages in a unified manner.
+  * @returns {void} Nothing is returned by this method.
+   */
+  handleError(): void {
+    this.dialog.open(DialogErrorComponent, {
+    });
   }
 
 }

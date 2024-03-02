@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { ContactService } from 'src/app/shared/services/contact.service';
 import { ContactData } from 'src/app/shared/task-interface';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-dialog-edit-contact',
@@ -18,7 +19,8 @@ export class DialogEditContactComponent implements OnInit {
     private dialogRef: MatDialogRef<DialogEditContactComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private contService: ContactService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    public dialog: MatDialog) { }
 
 
   ngOnInit(): void {
@@ -47,7 +49,7 @@ export class DialogEditContactComponent implements OnInit {
       });
     } catch (error) {
       console.error('Could not load contact!', error);
-      
+      this.handleError();
     }
   }
 
@@ -79,7 +81,6 @@ export class DialogEditContactComponent implements OnInit {
    */
   async onSubmit() {
     this.submitted = true;
-
     if (this.editForm.invalid) {
       return;
     }
@@ -91,6 +92,7 @@ export class DialogEditContactComponent implements OnInit {
       this.dialogRef.close(updatedContact);
     } catch (err) {
       console.error('Could not create contact!', err);
+      this.handleError();
     }
   }
 
@@ -100,6 +102,17 @@ export class DialogEditContactComponent implements OnInit {
    */
   closeDialogEditContact() {
     this.dialogRef.close();
+  }
+
+
+  
+  /**
+  * Opens a dialog using DialogErrorComponent to show error messages in a unified manner.
+  * @returns {void} Nothing is returned by this method.
+   */
+  handleError(): void {
+    this.dialog.open(DialogErrorComponent, {
+    });
   }
 
 }

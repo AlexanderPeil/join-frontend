@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TaskMenuComponent } from '../task-menu/task-menu.component';
 import { DialogAddTaskComponent } from '../dialog-add-task/dialog-add-task.component';
 import { Subscription } from 'rxjs';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
 
 type TaskStatus = 'todo' | 'awaiting_feedback' | 'in_progress' | 'done';
 
@@ -69,7 +70,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       }
       this.filterTasks();
     } catch (err) {
-      console.error('Could not load tasks!', err);
+      this.handleError();
     }
   }
 
@@ -198,7 +199,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       const updatedData: Partial<TaskData> = { status: newStatus };
       await this.taskService.updateTask(taskId, updatedData);
     } catch (err) {
-      console.error('Could not update status!', err);
+      this.handleError();
     }
   }
 
@@ -337,6 +338,16 @@ export class BoardComponent implements OnInit, OnDestroy {
     const checkedSubtasks = subtasks.filter(subtask => subtask.checked).length;
     const progress = (checkedSubtasks / totalSubtasks) * 100;
     return progress;
+  }
+
+
+  /**
+  * Opens a dialog using DialogErrorComponent to show error messages in a unified manner.
+  * @returns {void} Nothing is returned by this method.
+   */
+  handleError(): void {
+    this.dialog.open(DialogErrorComponent, {
+    });
   }
 
 
