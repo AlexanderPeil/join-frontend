@@ -148,12 +148,6 @@ form {
     }
 }
 
-.msg-box {
-    @include font_size_weight(22px, 700);
-    text-align: center;
-    color: $main_color_bright;
-}
-
 .privacyPolicySection {
     input {
         cursor: pointer;
@@ -169,6 +163,10 @@ form {
     position: absolute;
     bottom: 28px;
     width: 250px;
+}
+
+.signedUpInfo {
+    width: 260px;
 }
 
 @media (max-width: 700px) {
@@ -243,6 +241,18 @@ form {
 
     .animation-stop {
         display: none !important;
+    }
+
+    .messageContainer {
+        width: 320px;
+    }
+
+    .msg-box {
+        flex-direction: column;
+    }
+
+    .errorNotice {
+        width: 90%;
     }
 }
 

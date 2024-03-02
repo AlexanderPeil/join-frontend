@@ -69,6 +69,25 @@ body {
     color: white !important;
 
     &:hover {
-     color: $main_color_bright !important;   
+        color: $main_color_bright !important;
     }
+}
+
+// Style for Message Texts: Handling Errors and Successes
+.messageContainer {
+    text-align: center;
+    width: 600px;
+
+    p {
+        margin: 0;
+        line-height: 30px;
+    }
+}
+
+.msg-box {
+    @include font_size_weight(20px, 500);
+    display: flex; 
+    flex-wrap: wrap; 
+    align-items: center; 
+    justify-content: center;
 }

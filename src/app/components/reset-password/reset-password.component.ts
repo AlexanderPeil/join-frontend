@@ -10,9 +10,10 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class ResetPasswordComponent implements OnInit {
   resetPasswordForm!: FormGroup;
-  isButtonDisabled!: boolean;
-  submitted!: boolean;
-  passwortReset!: boolean;
+  isButtonDisabled: boolean = false;
+  submitted: boolean = false;
+  passwortResetSuccess: boolean = false;
+  passwortResetSuccessFail: boolean = false;
 
 
   constructor(
@@ -28,6 +29,9 @@ export class ResetPasswordComponent implements OnInit {
   }
 
 
+  /**
+   * Initializes the form group for the reset password form with validators.
+   */
   initFormGroup() {
     this.resetPasswordForm = this.formBuilder.group({
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -35,7 +39,11 @@ export class ResetPasswordComponent implements OnInit {
     }, { validators: this.checkPasswords } as AbstractControlOptions);
   }
 
-
+  /**
+  * Custom validator function that checks if the password and confirm password fields match.
+  * @param {FormGroup} group - The form group that contains the password and confirm password fields.
+  * @returns {ValidationErrors | null} - Returns an object if validation fails, or null if validation is successful.
+  */
   checkPasswords(group: FormGroup): ValidationErrors | null {
     if (!group) {
       return null;
@@ -43,47 +51,79 @@ export class ResetPasswordComponent implements OnInit {
 
     let pass = group.get('password')?.value;
     let confirmPass = group.get('confirmPassword')?.value;
-    return pass === confirmPass ? null : { notSame: true }
+    return pass === confirmPass ? null : { notSame: true };
   }
 
-
+  /**
+  * Handles the form submission. Validates the form and triggers the password reset process if valid.
+  */
   onSubmit() {
+    console.log('Try to save passwort', this.resetPasswordForm);
+    
     this.submitted = true;
-
     if (this.resetPasswordForm.invalid) {
+      this.handleError();
       return;
     }
     this.performResetPassword();
   }
 
+  /**
+  * Performs the password reset operation. It uses a token from the route parameters and the new password from the form.
+  */
+  async performResetPassword() {    
+    let token = this.route.snapshot.queryParamMap.get('token');
+    this.toggleButton(true);
+    if (!token) return this.handleMissingToken();
 
-  async performResetPassword() {
     try {
-      let formData = this.resetPasswordForm.value;
-      const token = this.route.snapshot.queryParamMap.get('token');
-      this.isButtonDisabled = true;
-
-      if(!token) {
-        console.error('Password reset token is missing.');
-        setTimeout(() => {
-          this.isButtonDisabled = false;
-          this.resetPasswordForm.reset();
-        }, 3000);
-        return;
-      }
-
-      await this.authService.resetPassword(token, formData.password);
-      this.passwortReset = true;
-      setTimeout(() => {
-        this.router.navigateByUrl('/login');
-      }, 3000);
+      await this.authService.resetPassword(token, this.resetPasswordForm.value.password);
+      this.handleSuccess();
     } catch (err) {
-      console.error('Could not reset password.', err);
-      setTimeout(() => {
-        this.isButtonDisabled = false;
-        this.resetPasswordForm.reset();
-      }, 3000);
+      this.handleError();
     }
+  }
+
+  /**
+  * Toggles the state of the form submission button and resets the form if enabled.
+  * @param {boolean} isDisabled - Determines whether the button should be disabled.
+  */
+  toggleButton(isDisabled: boolean) {
+    this.isButtonDisabled = isDisabled;
+    if (!isDisabled) this.resetPasswordForm.reset();
+  }
+
+  /**
+  * Handles scenarios where the password reset token is missing by logging an error and resetting UI elements.
+  */
+  handleMissingToken() {
+    console.error('Password reset token is missing.');
+    this.passwortResetSuccessFail = true;
+    setTimeout(() => {
+      this.toggleButton(false);
+      this.passwortResetSuccessFail = false;
+    }, 3000);
+  }
+
+  /**
+  * Handles the successful password reset operation by navigating to the login page after a short delay.
+  */
+  handleSuccess() {
+    this.passwortResetSuccess = true;
+    this.isButtonDisabled = true;
+    setTimeout(() => this.router.navigateByUrl('/login'), 3000);
+  }
+
+  /**
+  * Handles errors during the password reset operation by logging the error and resetting UI elements.
+  * @param {any} err - The error object or message encountered during the password reset operation.
+  */
+  handleError() {
+    this.passwortResetSuccessFail = true;
+    setTimeout(() => {
+      this.toggleButton(false);
+      this.passwortResetSuccessFail = false;
+    }, 3000);
   }
 
 }

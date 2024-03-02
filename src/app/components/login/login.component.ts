@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   animationStopped = false;
   isEmailPasswordInvalid = false;
   loginForm!: FormGroup;
+  loginFail: boolean = false;
 
 
   constructor(
@@ -76,7 +77,7 @@ export class LoginComponent implements OnInit {
       return;
     }
     await this.performLogin();
-  }  
+  }
 
 
   /**
@@ -93,7 +94,7 @@ export class LoginComponent implements OnInit {
       this.checkRememberMe(formData);
       this.router.navigateByUrl('/summary');
     } catch (err) {
-      this.handleLoginError();
+      this.handleLoginError(err);
     }
   }
 
@@ -119,19 +120,25 @@ export class LoginComponent implements OnInit {
    * Handles login errors by setting a flag for invalid email or password.
    * Activates an 'invalid email or password' flag and then resets it after a specified timeout period.
    */
-  handleLoginError() {
-    this.isEmailPasswordInvalid = true;
-    setTimeout(() => {
-      this.isEmailPasswordInvalid = false;
-    }, 3000);
+  handleLoginError(err: any) {
+    if (err.status == 400) {
+      this.isEmailPasswordInvalid = true;
+      setTimeout(() => {
+        this.isEmailPasswordInvalid = false;
+      }, 3000);
+    } else {
+      this.loginFail = true;
+      setTimeout(() => {
+        this.loginFail = false;
+      }, 3000);
+    }
   }
 
 
   openDialog(event: MouseEvent): void {
     event.stopPropagation();
-    const dialogRef = this.dialog.open(DialogGuestLoginComponent, { 
+    const dialogRef = this.dialog.open(DialogGuestLoginComponent, {
     });
   }
-
 
 }

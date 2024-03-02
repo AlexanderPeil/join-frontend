@@ -224,10 +224,8 @@ form {
     left: 50px;
 }
 
-.msg-box {
-    @include font_size_weight(22px, 700);
-    text-align: center;
-    color: $main_color_bright;
+.joinLogoMobile {
+    display: none;
 }
 
 @media (max-width: 700px) {
@@ -346,11 +344,20 @@ form {
     }
 
     .joinLogoMobile {
+        display: block;
         position: absolute;
         width: 40px;
         left: 20px;
         top: 34px;
     }
+
+    .messageContainer {
+        width: 320px;
+    }
+    
+    .msg-box {
+        flex-direction: column; 
+      }
 }
 
 @media (max-width: 400px) {

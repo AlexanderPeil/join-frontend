@@ -22,6 +22,7 @@ export class ForgotPasswordComponent implements OnInit {
   forgotPasswordForm!: FormGroup;
   isError: boolean = false;
   isEmailSent: boolean = false;
+  submitted: boolean = false;
 
 
   /**
@@ -30,20 +31,20 @@ export class ForgotPasswordComponent implements OnInit {
    * @property {FormGroup} forgotPasswordForm - Form group for the forgot password form. 
    */
   constructor(
-    private authService: AuthService, 
-    public router: Router, 
+    private authService: AuthService,
+    public router: Router,
     private formBuilder: FormBuilder) {
   }
 
 
   ngOnInit(): void {
     this.initFormGroup();
-   }
-  
+  }
 
-   /**
-    * 
-    */
+
+  /**
+   * 
+   */
   initFormGroup() {
     this.forgotPasswordForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]]
@@ -57,21 +58,27 @@ export class ForgotPasswordComponent implements OnInit {
    * If the email sending is successful, the user is redirected to the login page after 2 seconds. 
    * If the user is not found, an error flag is set.
    */
-  onSubmit() {
-    const email = this.forgotPasswordForm.get('email')?.value;
-    if (email) {
-      this.authService.forgotPassword(email)
-        .then(() => {
-          this.isEmailSent = true;
-          setTimeout(() => {
-            this.router.navigate(['login']);
-          }, 3000);
-        })
-        .catch((error) => {
-          if (error.code === "auth/user-not-found") {
-            this.isError = true;
-          }
-        });
+  async onSubmit() {
+    this.submitted = true;
+    if (this.forgotPasswordForm.valid) {
+      try {
+        const email = this.forgotPasswordForm.get('email')?.value;
+        await this.authService.forgotPassword(email);
+        this.isEmailSent = true;
+        setTimeout(() => {
+          this.router.navigate(['login']);
+        }, 3000);
+      } catch (err) {
+        this.handleError();
+      }
     }
+  }
+
+
+  handleError() {
+    this.isError = true;
+    setTimeout(() => {
+      this.isError = false;
+    }, 3000);
   }
 }

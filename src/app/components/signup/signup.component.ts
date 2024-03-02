@@ -12,11 +12,11 @@ import { Router } from '@angular/router';
 
 
 export class SignUpComponent implements OnInit {
-  userAlreadyExists = false;
+  signupFail: boolean = false;
   signUpForm!: FormGroup;
-  submitted = false;
-  signedUpInfo!: boolean;
-  isButtonDisabled = false;
+  submitted: boolean = false;
+  signedUpInfo: boolean = false;
+  isButtonDisabled: boolean = false;
 
 
   constructor(
@@ -112,9 +112,9 @@ export class SignUpComponent implements OnInit {
    * This function is typically used to provide feedback to the user in case of a signup error.
    */
   handlySignUpError() {
-    this.userAlreadyExists = true;
+    this.signupFail = true;
     setTimeout(() => {
-      this.userAlreadyExists = false;
+      this.signupFail = false;
     }, 3000);
   }
 }

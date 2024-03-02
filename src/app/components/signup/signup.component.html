@@ -12,7 +12,6 @@
             <span class="heading-span">Sign up</span>
             <img src="assets/img/underline.png" alt="underline" class="underline" id="hide-underline">
             <img src="assets/img/log_in_underline_mob.png" alt="underline" class="underline-mobile d-none">
-            <span class="d-none msg-box" [class.d-none]="!userAlreadyExists">This user already exists</span>
 
             <!-- Username section -->
             <input class="input-name-img input-email-pw" type="text" placeholder="Username" formControlName="username">
@@ -62,10 +61,20 @@
                 You must accept the Privacy Policy to continue.
             </div>
 
-            <div *ngIf="signUpForm.errors?.['notSame'] && signUpForm.get('confirmPassword')?.touched">Passwords do not
+            <div class="warning" *ngIf="signUpForm.errors?.['notSame'] && signUpForm.get('confirmPassword')?.touched">
+                Passwords do not
                 match.</div>
             <button class="sign-up-btn btn-font" [disabled]="isButtonDisabled">Sign up</button>
-            <img *ngIf="signedUpInfo" src="assets/img/signed_up_info.png" alt="Signed up succesfully">
+            <img class="signedUpInfo" *ngIf="signedUpInfo" src="assets/img/signed_up_info.png"
+                alt="Signed up succesfully">
         </form>
+
+        <!-- Texts for error and success -->
+        <div class="messageContainer">
+            <span class="msg-box warning" [class.d-none]="!signupFail">
+                <p>Something went wrong. <br></p>
+                <p>Please try again.</p>
+            </span>
+        </div>
     </div>
 </div>
