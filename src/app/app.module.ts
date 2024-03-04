@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule, APP_INITIALIZER  } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,7 +32,8 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { AuthInterceptorService } from './shared/services/auth-interceptor.service';
 import { DialogGuestLoginComponent } from './components/dialog-guest-login/dialog-guest-login.component';
-
+import * as Sentry from "@sentry/angular-ivy";
+import { Router } from '@angular/router';
 
 
 @NgModule({
@@ -79,6 +80,21 @@ import { DialogGuestLoginComponent } from './components/dialog-guest-login/dialo
      provide: HTTP_INTERCEPTORS,
      useClass: AuthInterceptorService,
      multi: true
+    },
+    {
+      provide: ErrorHandler,
+      useValue: Sentry.createErrorHandler({
+        showDialog: true, // Während der Entwicklung hilfreich, für Produktion überdenken
+      }),
+    }, {
+      provide: Sentry.TraceService,
+      deps: [Router],
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => () => {},
+      deps: [Sentry.TraceService],
+      multi: true,
     }
  ],
   bootstrap: [AppComponent]
