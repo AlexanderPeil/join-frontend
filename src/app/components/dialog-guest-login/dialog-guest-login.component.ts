@@ -14,23 +14,24 @@ export class DialogGuestLoginComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogGuestLoginComponent>,
     private authService: AuthService,
-    private router: Router) {}
+    private router: Router) { }
 
 
-    /**
-   * Handles the guest login process.
-   * Prevents event propagation, then attempts a guest login using the authService.
-   * On successful login, saves the received token to local storage and navigates to the summary page.
-   * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
-   */
-    async onGuestLogin() {
-      try {
-        const resp: any = await this.authService.guestLogin();
-        localStorage.setItem('token', resp['token']);
-        this.router.navigateByUrl('/summary');
-      } catch (err) {
-      }
+  /**
+ * Handles the guest login process.
+ * Prevents event propagation, then attempts a guest login using the authService.
+ * On successful login, saves the received token to local storage and navigates to the summary page.
+ * In case of an error, the HttpErrorInterceptor triggers the dialog-error-component with the error message.
+ */
+  async onGuestLogin() {
+    try {
+      localStorage.removeItem('token'); 
+      const resp: any = await this.authService.guestLogin();
+      localStorage.setItem('token', resp['token']);
+      this.router.navigateByUrl('/summary');
+    } catch (err) {
     }
+  }
 
 
   closeDialog() {
