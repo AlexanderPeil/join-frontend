@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
+
 
 @Component({
   selector: 'app-dialog-guest-login',
@@ -9,12 +11,14 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./dialog-guest-login.component.scss']
 })
 export class DialogGuestLoginComponent {
+  loggingIn: boolean = false;
 
 
   constructor(
     public dialogRef: MatDialogRef<DialogGuestLoginComponent>,
     private authService: AuthService,
-    private router: Router) { }
+    private router: Router,
+    public dialog: MatDialog) { }
 
 
   /**
@@ -25,20 +29,32 @@ export class DialogGuestLoginComponent {
  */
   async onGuestLogin() {
     try {
-      // localStorage.removeItem('token'); 
-      if(!this.authService.storageToken){
+      if (!this.authService.storageToken) {
+        this.loggingIn = true;
         const resp: any = await this.authService.guestLogin();
         this.authService.token$.next(resp['token']);
       }
-      // localStorage.setItem('token', resp['token']);
       this.router.navigateByUrl('/summary');
+      this.closeDialog();
     } catch (err) {
+      this.handleError();
+      console.error(err);
     }
   }
 
 
   closeDialog() {
     this.dialogRef.close();
+  }
+
+
+  /**
+* Opens a dialog using DialogErrorComponent to show error messages in a unified manner.
+* @returns {void} Nothing is returned by this method.
+ */
+  handleError(): void {
+    this.dialog.open(DialogErrorComponent, {
+    });
   }
 
 }

@@ -34,6 +34,7 @@ import { AuthInterceptorService } from './shared/services/auth-interceptor.servi
 import { DialogGuestLoginComponent } from './components/dialog-guest-login/dialog-guest-login.component';
 import * as Sentry from "@sentry/angular-ivy";
 import { Router } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -74,6 +75,7 @@ import { Router } from '@angular/router';
     MatDialogModule,
     MatProgressBarModule,
     MatMenuModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     {

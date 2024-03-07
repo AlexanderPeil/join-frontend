@@ -228,6 +228,10 @@ form {
     display: none;
 }
 
+.loadingSpinner {
+    position: absolute
+}
+
 @media (max-width: 700px) {
 
     .logoDesktop {

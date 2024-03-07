@@ -18,6 +18,7 @@
         <!-- Login form -->
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <img class="joinLogoMobile" src="assets/img/join_logo.png" alt="join-logo">
+            <mat-spinner class="loadingSpinner" *ngIf="loggingIn"></mat-spinner>
             <span class="heading-span">Log in</span>
             <img src="assets/img/underline.png" alt="underline" class="underline">
             <img src="assets/img/log_in_underline_mob.png" alt="underline-mobile" class="underline-mobile d-none">

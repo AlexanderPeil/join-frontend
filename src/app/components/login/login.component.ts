@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   isEmailPasswordInvalid = false;
   loginForm!: FormGroup;
   loginFail: boolean = false;
+  loggingIn: boolean = false;
 
 
   constructor(
@@ -88,10 +89,13 @@ export class LoginComponent implements OnInit {
    */
   async performLogin() {
     try {
-      const formData = this.loginForm.value;
-      let resp: any = await this.authService.login(formData);
-      localStorage.setItem('token', resp['token']);
-      this.checkRememberMe(formData);
+      if (!this.authService.storageToken) {
+        this.loggingIn = true;
+        const formData = this.loginForm.value;
+        let resp: any = await this.authService.login(formData);
+        this.authService.token$.next(resp['token']);
+        this.checkRememberMe(formData);
+      }
       this.router.navigateByUrl('/summary');
     } catch (err) {
       this.handleLoginError(err);
@@ -121,6 +125,7 @@ export class LoginComponent implements OnInit {
    * Activates an 'invalid email or password' flag and then resets it after a specified timeout period.
    */
   handleLoginError(err: any) {
+    this.loggingIn = false;
     if (err.status == 400) {
       this.isEmailPasswordInvalid = true;
       setTimeout(() => {

@@ -2,6 +2,7 @@
     <div mat-dialog-content>
         <div class="content-top">
             <h1>Herzlich Willkommen!</h1>
+            <mat-spinner *ngIf="loggingIn"></mat-spinner>
             <div class="img-container" (click)="closeDialog()">
                 <img src="assets/img/iconoir_cancel.png" alt="">
             </div>
@@ -14,7 +15,7 @@
     </div>
     <div class="buttonContainer">
         <div mat-dialog-actions>
-            <button mat-button mat-dialog-close class="guest-login-btn login-btn-mob"
+            <button mat-button class="guest-login-btn login-btn-mob"
                 (click)="onGuestLogin()">Login</button>
         </div>
     </div>
