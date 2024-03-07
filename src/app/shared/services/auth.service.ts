@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
+import { BehaviorSubject, lastValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LoginData, SignUpData } from '../user-interface';
@@ -11,9 +11,31 @@ import { LoginData, SignUpData } from '../user-interface';
 
 
 export class AuthService {
+  token = "";
+  token$ = new BehaviorSubject<string>(this.storageToken);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.token$.subscribe((token)=> {
+        this.token = token;
+        this.storageToken = token;
+    });
+  }
 
+  set storageToken(token: string) {
+    try {
+      localStorage.setItem("token", token);
+    } catch (error) {
+      this.token = token;
+    }
+  }
+
+  get storageToken() {
+    try {
+      return localStorage.getItem("token") || "";
+    } catch (error) {
+      return this.token;
+    }
+  }
 
   /**
    * Sends signup data to the server.

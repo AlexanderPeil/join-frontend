@@ -2,22 +2,23 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, catchError, throwError } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthInterceptorService implements HttpInterceptor {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
 
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
 
     if (!request.url.endsWith('/guest-login/')) {
-      const token = localStorage.getItem('token');
+      const token = this.authService.token;
       if (token) {
         request = request.clone({
           setHeaders: { Authorization: `Token ${token}` }

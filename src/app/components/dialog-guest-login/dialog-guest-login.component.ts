@@ -25,9 +25,12 @@ export class DialogGuestLoginComponent {
  */
   async onGuestLogin() {
     try {
-      localStorage.removeItem('token'); 
-      const resp: any = await this.authService.guestLogin();
-      localStorage.setItem('token', resp['token']);
+      // localStorage.removeItem('token'); 
+      if(!this.authService.storageToken){
+        const resp: any = await this.authService.guestLogin();
+        this.authService.token$.next(resp['token']);
+      }
+      // localStorage.setItem('token', resp['token']);
       this.router.navigateByUrl('/summary');
     } catch (err) {
     }
