@@ -88,19 +88,26 @@ export class LoginComponent implements OnInit {
    * Invokes `handleLoginError` to manage any errors during the login process.
    */
   async performLogin() {
+    this.loggingIn = true;
+    const formData = this.loginForm.value;
+  
     try {
-      if (!this.authService.storageToken) {
-        this.loggingIn = true;
-        const formData = this.loginForm.value;
-        let resp: any = await this.authService.login(formData);
-        this.authService.token$.next(resp['token']);
-        this.checkRememberMe(formData);
-      }
+      localStorage.removeItem('token');
+  
+      let resp: any = await this.authService.login(formData);
+      
+      this.authService.token$.next(resp['token']);
+      this.checkRememberMe(formData);
+      
+      console.log('Neuer Token gesetzt:', this.authService.storageToken);
       this.router.navigateByUrl('/summary');
     } catch (err) {
       this.handleLoginError(err);
     }
   }
+  
+  
+
 
 
   /**

@@ -29,11 +29,9 @@ export class DialogGuestLoginComponent {
  */
   async onGuestLogin() {
     try {
-      if (!this.authService.storageToken) {
-        this.loggingIn = true;
-        const resp: any = await this.authService.guestLogin();
-        this.authService.token$.next(resp['token']);
-      }
+      this.loggingIn = true;
+      const resp: any = await this.authService.guestLogin();
+      this.authService.token$.next(resp['token']);
       this.router.navigateByUrl('/summary');
       this.closeDialog();
     } catch (err) {

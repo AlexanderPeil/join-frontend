@@ -8,34 +8,31 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class AuthInterceptorService implements HttpInterceptor {
-
-  constructor(private router: Router, private authService: AuthService) { }
-
+  constructor(private router: Router, private authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-
-    // const token = localStorage.getItem('token');
-
-    if (!request.url.endsWith('/guest-login/')) {
-      const token = this.authService.token;
-      if (token) {
-        request = request.clone({
-          setHeaders: { Authorization: `Token ${token}` }
-        });
-      }
+    if (request.url.endsWith('/login/') || request.url.endsWith('/guest-login/')) {
+      return next.handle(request); 
     }
 
+    const token = this.authService.token;
+    if (token) {
+      request = request.clone({
+        setHeaders: { Authorization: `Token ${token}` }
+      });
+    } else {
+      console.log('No Token available for the request.');
+    }
 
     return next.handle(request).pipe(
       catchError((err) => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401) {
-            console.log('No Token');
+            console.log('Unauthorized request, navigating to login.');
             this.router.navigateByUrl('/login');
           }
         }
-        return throwError(() => err)
+        return throwError(() => err);
       })
     );
   }
