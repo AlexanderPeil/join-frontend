@@ -29,6 +29,7 @@ export class DialogGuestLoginComponent {
  */
   async onGuestLogin() {
     try {
+      localStorage.removeItem('token');  
       this.loggingIn = true;
       const resp: any = await this.authService.guestLogin();
       this.authService.token$.next(resp['token']);

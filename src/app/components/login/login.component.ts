@@ -92,14 +92,10 @@ export class LoginComponent implements OnInit {
     const formData = this.loginForm.value;
   
     try {
-      localStorage.removeItem('token');
-  
-      let resp: any = await this.authService.login(formData);
-      
+      localStorage.removeItem('token');  
+      let resp: any = await this.authService.login(formData);      
       this.authService.token$.next(resp['token']);
-      this.checkRememberMe(formData);
-      
-      console.log('Neuer Token gesetzt:', this.authService.storageToken);
+      this.checkRememberMe(formData);      
       this.router.navigateByUrl('/summary');
     } catch (err) {
       this.handleLoginError(err);
